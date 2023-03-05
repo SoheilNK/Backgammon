@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+let imgUrl = "";
+let clr: string = "";
+
 function Game() {
   return (
     <div>
@@ -9,8 +12,6 @@ function Game() {
 }
 
 export default Game;
-let imgUrl = "";
-let clr = "";
 
 let data = [
   { column: 1, checkers: ["black", "black"] },
@@ -18,8 +19,8 @@ let data = [
   { column: 13, checkers: ["white"] },
   { column: 19, checkers: ["black"] },
 ];
-
-function Checker({ clr }) {
+type checker = { clr: string };
+function Checker({ clr }: checker) {
   if (clr == "White") {
     imgUrl = "Checker-W.png";
   }
@@ -61,7 +62,7 @@ let initialData = [
 ];
 
 function Board() {
-  const [points, setPoints] = useState(initialData)
+  const [points, setPoints] = useState(initialData);
   return (
     <div className="board">
       <div className="grid-container">
@@ -105,54 +106,50 @@ function Board() {
         </div>
       </div>
       <div className="grid-container">
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[11]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[10]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[9]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[8]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[7]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[6]} />
         </div>
       </div>{" "}
       <div className="grid-container">
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[5]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[4]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[3]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[2]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[1]} />
         </div>
-        <div className="grid-item">
+        <div className="grid-item bottom-items">
           <Point value={points[0]} />
         </div>
       </div>
     </div>
   );
 }
-
-function Point({ value }) {
-  const checkers = value.map((checker) => (
-      <Checker clr={checker} />
-  ));
+type point = { value: Array <string> };
+function Point({ value }: point) {
+  const checkers = value.map((checker) => <Checker clr={checker} />);
   return <>{checkers}</>;
-
-  
 }

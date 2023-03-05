@@ -17,8 +17,7 @@
 }
 .grid-item {
   display: flex;
-  flex-direction: column;
-  
+  flex-direction:column;
   background-color: rgb(238, 204, 159);
   border: 1px solid rgba(0, 0, 0, 0.8);
   padding: 2px;
@@ -26,6 +25,10 @@
   width: var(--checkerSize);
   height: calc(var(--checkerSize)*6.5);
   text-align: center;
+}
+.bottom-items{
+    flex-direction:column-reverse;
+
 }
 
 li {
