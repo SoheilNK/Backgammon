@@ -148,8 +148,9 @@ function Board() {
     </div>
   );
 }
-type point = { value: Array <string> };
+type point = { value: Array<string> };
 function Point({ value }: point) {
   const checkers = value.map((checker) => <Checker clr={checker} />);
+
   return <>{checkers}</>;
 }
