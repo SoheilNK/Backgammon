@@ -38,9 +38,9 @@ function Checker({ clr }: CheckerProps) {
     // </div>
   );
 }
-type PointProps = { value: Array<Color> };
-function Point({ value }: PointProps) {
-  const checkers = value.map((checker) => <Checker clr={checker} />);
+type PointProps = { value: Array<Color>};
+function Point({ value}: PointProps) {
+  const checkers = value.map((checker, i) => <Checker key={i} clr={checker} />);
 
   return <>{checkers}</>;
 }
