@@ -19,8 +19,12 @@ let data = [
   { column: 13, checkers: ["white"] },
   { column: 19, checkers: ["black"] },
 ];
-type checker = { clr: string };
-function Checker({ clr }: checker) {
+
+type Color = "White" | "Black";
+type CheckerProps = {
+  clr: Color;
+}
+function Checker({ clr }: CheckerProps) {
   if (clr == "White") {
     imgUrl = "Checker-W.png";
   }
@@ -34,7 +38,13 @@ function Checker({ clr }: checker) {
     // </div>
   );
 }
-let initialData = [
+type PointProps = { value: Array<Color> };
+function Point({ value }: PointProps) {
+  const checkers = value.map((checker) => <Checker clr={checker} />);
+
+  return <>{checkers}</>;
+}
+let initialData: Color[][] = [
   ["White", "White"],
   [],
   [],
@@ -148,9 +158,4 @@ function Board() {
     </div>
   );
 }
-type point = { value: Array<string> };
-function Point({ value }: point) {
-  const checkers = value.map((checker) => <Checker clr={checker} />);
 
-  return <>{checkers}</>;
-}
