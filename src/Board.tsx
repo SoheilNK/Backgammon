@@ -26,35 +26,10 @@ function Point({ value }: PointProps) {
 
   return <>{checkers}</>;
 }
-let initialData: Color[][] = [
-  ["White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  ["Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White", "White"],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White"],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black"],
-];
 
-export function Board() {
-  const [points, setPoints] = useState(initialData);
+type BoardProps = { currentState: Color[][]}
+export function Board({ currentState }: BoardProps) {
+  const [points, setPoints] = useState(currentState);
   return (
     <div className="board">
       <div className="grid-container">

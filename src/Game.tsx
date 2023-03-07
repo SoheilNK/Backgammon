@@ -5,7 +5,7 @@ export type Color = "White" | "Black";
 function Game() {
   return (
     <div>
-      <Board />
+      <Board currentState={initialState} />
     </div>
   );
 }
@@ -19,7 +19,32 @@ let data = [
   { column: 19, checkers: ["black"] },
 ];
 
-
+let initialState: Color[][] = [
+  ["White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White", "White", "White"],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White"],
+  [],
+  ["White", "White", "White", "White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black"],
+];
 
 
 
