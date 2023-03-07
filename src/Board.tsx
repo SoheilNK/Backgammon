@@ -1,29 +1,11 @@
+import { Color } from "./Game";
 import { useState } from "react";
 
 let imgUrl = "";
-let clr: string = "";
 
-function Game() {
-  return (
-    <div>
-      <Board />
-    </div>
-  );
-}
-
-export default Game;
-
-let data = [
-  { column: 1, checkers: ["black", "black"] },
-  { column: 7, checkers: ["white", "white"] },
-  { column: 13, checkers: ["white"] },
-  { column: 19, checkers: ["black"] },
-];
-
-type Color = "White" | "Black";
 type CheckerProps = {
   clr: Color;
-}
+};
 function Checker({ clr }: CheckerProps) {
   if (clr == "White") {
     imgUrl = "Checker-W.png";
@@ -38,8 +20,8 @@ function Checker({ clr }: CheckerProps) {
     // </div>
   );
 }
-type PointProps = { value: Array<Color>};
-function Point({ value}: PointProps) {
+type PointProps = { value: Array<Color> };
+function Point({ value }: PointProps) {
   const checkers = value.map((checker, i) => <Checker key={i} clr={checker} />);
 
   return <>{checkers}</>;
@@ -71,7 +53,7 @@ let initialData: Color[][] = [
   ["Black", "Black"],
 ];
 
-function Board() {
+export function Board() {
   const [points, setPoints] = useState(initialData);
   return (
     <div className="board">
@@ -158,4 +140,3 @@ function Board() {
     </div>
   );
 }
-
