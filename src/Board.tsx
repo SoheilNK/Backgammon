@@ -15,9 +15,7 @@ function Checker({ clr }: CheckerProps) {
   }
 
   return (
-    // <div>
     <img className="checker" src={imgUrl} />
-    // </div>
   );
 }
 type PointProps = { value: Array<Color> };
