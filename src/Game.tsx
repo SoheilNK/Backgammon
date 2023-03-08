@@ -1,6 +1,7 @@
 import { Board } from "./Board";
 
 export type Color = "White" | "Black";
+export type Direction = "rtl" | "ltr";
 
 function Game() {
   return (
@@ -11,13 +12,6 @@ function Game() {
 }
 
 export default Game;
-
-let data = [
-  { column: 1, checkers: ["black", "black"] },
-  { column: 7, checkers: ["white", "white"] },
-  { column: 13, checkers: ["white"] },
-  { column: 19, checkers: ["black"] },
-];
 
 let initialState: Color[][] = [
   ["White", "White"],

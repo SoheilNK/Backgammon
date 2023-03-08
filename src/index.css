@@ -24,9 +24,10 @@
   height: calc(var(--checkerSize)*6.5);
   text-align: center;
 }
-.bottom-items{
+.rtl
+{
     flex-direction:column-reverse;
-
+  direction: rtl;
 }
 
 li {
