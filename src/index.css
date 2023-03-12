@@ -24,11 +24,19 @@
   height: calc(var(--checkerSize)*6.5);
   text-align: center;
 }
+.point{
+  display: flex;
+  flex-direction:column;
+   width: var(--checkerSize);
+  height: calc(var(--checkerSize)*6.5);
+ 
+}
 .rtl
 {
     flex-direction:column-reverse;
   direction: rtl;
 }
+
 
 li {
   list-style-type: none;
