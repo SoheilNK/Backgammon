@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Component, useState } from "react";
 import { Color } from "./Game";
 import { Direction } from "./Game";
 
@@ -86,7 +86,7 @@ function Container({ points, start, end, drction }: ContainerProps) {
     <div className={"grid-container " + drction}>
       {points.slice(start, end).map((point, i) => (
         <div key={start + i} className={"grid-item " + drction}>
-          <Point items={point} colName={"Point-" + (start + i)} />
+          <Point items={point} colName={"Point-" + (10 + start + i)} />
         </div>
       ))}
     </div>
@@ -102,15 +102,35 @@ export function Board({ currentState }: BoardProps) {
       collisionDetection={closestCenter}
       onDragEnd={(e) => {
         const container = e.over?.id;
-        const myuuid = e.active.data.current?.myuuid ?? ""; //checker
+        const title = e.active.data.current?.title ?? ""; //checker
         const index = e.active.data.current?.index ?? 0;
         const parent = e.active.data.current?.parent ?? "";
         console.log("---------------");
 
-        console.log("Checker ID = ", myuuid);
+        console.log("Checker ID = ", title);
         console.log("Parent Point = ", parent);
         console.log("Target Point = ", container);
         console.log("Checker index = ", index);
+        const oldCol: number = +parent.slice(6, 8) - 10;
+        const newCol: number = +container.slice(6, 8) - 10;
+        console.log(oldCol + newCol)
+        const test = currentState[oldCol][index]
+        console.log("picked up checker is : " + test);
+
+        const newState = currentState;
+                
+        console.log(newState[newCol]);  
+        newState[newCol].push(
+          <Checker
+            title={title}
+            clr={test}
+            index={newState[newCol.lenght]}
+            parent={container}
+          />
+        );
+        console.log(newState[newCol])
+        newState[oldCol].pop()
+
 
         // if (container === "ToDo") {
         //   setTodoItems([...todoItems, { myuuid }]);
