@@ -6,6 +6,12 @@
 .checker{
     width: var(--checkerSize);
 }
+img.checker:hover {
+  cursor:grab;
+}
+img.checker:active  {
+  cursor:grabbing;
+}
 
 .grid-container {
   display: inline-grid;
@@ -51,3 +57,5 @@ li {
   column-gap: var(--checkerSize);
 
 }
+
+

@@ -1,12 +1,11 @@
-import { Component, useState } from "react";
+import { useState } from "react";
 import { Color } from "./Game";
 import { Direction } from "./Game";
 
-// import { Flex, Text } from "@chakra-ui/react";
-import { useDraggable } from "@dnd-kit/core";
+import { DragEndEvent, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useDroppable } from "@dnd-kit/core";
-import { closestCenter, DndContext, rectIntersection } from "@dnd-kit/core";
+import { closestCenter, DndContext } from "@dnd-kit/core";
 
 
 
@@ -15,15 +14,13 @@ let imgUrl = "";
 interface CheckerProps {
   title: string;
   clr: Color;
-  index: number;
   parent: string;
 }
-function Checker({ title, clr, index, parent }: CheckerProps) {
+function Checker({ title, clr, parent }: CheckerProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: title,
     data: {
       title,
-      index,
       parent,
     },
   });
@@ -64,7 +61,6 @@ function Point({ colName, items, drction }: PointProps) {
       {items.map((checkerClr, key) => (
         <Checker
           key={key}
-          index={key}
           parent={colName}
           clr={checkerClr}
           title={colName + "-ch-" + key}
@@ -112,29 +108,31 @@ export function Board({ currentState }: BoardProps) {
     </DndContext>
   );
 
-  function handleDragEnd(e)  {
-        const target = e.over?.id;
-        const title = e.active.data.current?.title ?? ""; //checker
-        const index = e.active.data.current?.index ?? 0;
-        const parent = e.active.data.current?.parent ?? "";
-        console.log("---------------");
+  function handleDragEnd(e: DragEndEvent) {
+    if (!e.over) return;
+    const target = e.over.id as string;
+    if (typeof e.over.id !== "string") throw new Error("id is not string")
+    const title = e.active.data.current?.title ?? ""; //checker
+    const index = e.active.data.current?.index ?? 0;
+    const parent = e.active.data.current?.parent ?? "";
+    console.log("---------------");
 
-        console.log("Checker ID = ", title);
-        console.log("Parent Point = ", parent);
-        console.log("Target Point = ", target);
-        console.log("Checker index = ", index);
-        const oldCol: number = +parent.slice(6, 8) - 10;
-        const newCol: number = +target.slice(6, 8) - 10;
-        console.log(oldCol + newCol)
-        const test = currentState[oldCol][index];
-        console.log("picked up checker is : " + test);
+    console.log("Checker ID = ", title);
+    console.log("Parent Point = ", parent);
+    console.log("Target Point = ", target);
+    console.log("Checker index = ", index);
+    const oldCol: number = +parent.slice(6, 8) - 10;
+    const newCol: number = +target.slice(6, 8) - 10;
+    console.log(oldCol + newCol);
+    const colorName = currentState[oldCol][index];
+    console.log("picked up checker is : " + colorName);
 
-        const newState = currentState;
-                
-        console.log(newState[newCol]);
-        newState[newCol].push(test)
-        console.log(newState[newCol])
-    newState[oldCol].pop()
+    const newState = currentState;
+
+    console.log(newState[newCol]);
+    newState[newCol].push(colorName);
+    console.log(newState[newCol]);
+    newState[oldCol].pop();
   }
 
 }
