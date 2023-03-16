@@ -12,6 +12,7 @@
     "@chakra-ui/react": "^2.5.1",
     "@dnd-kit/core": "^6.0.8",
     "react": "^18.2.0",
+    "react-dice-roll": "^1.2.2",
     "react-dom": "^18.2.0",
     "uuid": "^9.0.0"
   },
