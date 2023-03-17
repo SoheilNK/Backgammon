@@ -2,7 +2,7 @@ import { Board } from "./Board";
 
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
-
+export type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6 | undefined;
 
 import { render } from "react-dom";
 
@@ -14,7 +14,7 @@ function Game() {
   return (
     <div>
       <Board currentState={initialState} />
-      <Dice1 d1={1} d2={2} />
+      <Dice1 currentDiceRoll={[1, 2]} callback={undefined} disabled={false}/>
     </div>
   );
 }
