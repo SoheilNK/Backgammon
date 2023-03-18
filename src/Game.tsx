@@ -14,7 +14,7 @@ function Game() {
   return (
     <div>
       <Board currentState={initialState} />
-      <Dice1 currentDiceRoll={[1, 2]} callback={undefined} disabled={false}/>
+      <Dice1 currentDiceRoll={[1, 1]} callback={undefined} disabled={false}/>
     </div>
   );
 }

@@ -19,28 +19,55 @@ export default function Dice1({ currentDiceRoll,  callback, disabled }: Dice1Pro
       </button>
 
       <Dice
-        cheatValue={currentDiceRoll[0]}
-        size={80}
-        sound="./dice-142528.mp3"
-        disabled={disabled}
-        // triggers={["click"]}
-      />
-      <Dice
-        cheatValue={currentDiceRoll[1]}
+        // cheatValue={d1}
+        onRoll={(value) => {
+          console.log(value);
+          currentDiceRoll[0] = value;
+        }}
         size={80}
         sound="./dice-142528.mp3"
         disabled={disabled}
       />
+      <Dice
+        // cheatValue={d2}
+        onRoll={(value) => {
+          console.log(value);
+          currentDiceRoll[1] = value;
+        }}
+        size={80}
+        sound="./dice-142528.mp3"
+        disabled={disabled}
+      />
+      {/* {console.log(currentDiceRoll)} */}
+    
     </div>
-  );
-}
+    
+    );
+      
 
+  function rollDice() {
+    // let currentDiceRoll[0] =
+    let d1: DiceRoll = Math.round(Math.random() * 5 + 1) as DiceRoll;
+    let d2: DiceRoll = Math.round(Math.random() * 5 + 1) as DiceRoll;
 
-function rollDice() {
-  let diceElement: HTMLCollectionOf<Element> =
-    document.getElementsByClassName("_space3d six false");
+    console.log(d1, d2);
+    let diceElement: HTMLCollectionOf<HTMLElement> =
+      document.getElementsByClassName(
+        "_space3d six false"
+      ) as HTMLCollectionOf<HTMLElement>;
+    
+    // diceElement.item(0)?.
+
+    diceElement.item(0)!.click();
+    diceElement.item(1)!.click();
+          
+            console.log(currentDiceRoll);
+          
+
+  }
   
-    diceElement.item(0).click()
-  diceElement.item(1).click()
 }
+
+
+
 
