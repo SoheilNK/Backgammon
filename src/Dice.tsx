@@ -7,67 +7,58 @@ import "./index.css";
 import { forwardRef, useRef } from "react";
 
 interface Dice1Props {
-  currentDiceRoll: [DiceRoll, DiceRoll];
-  callback: Function;
+  diceRoll: DiceRoll;
   disabled: true | false;
 }
-export default function Dice1({ currentDiceRoll,  callback, disabled }: Dice1Props) {
+export default function Dice1({ diceRoll,  disabled }: Dice1Props) {
+  // let currentDiceRoll: [DiceRoll, DiceRoll];
   return (
     <div>
-      <button type="button" id="rollDice" onClick={rollDice}>
+      <button type="button" onClick={() => rollDice(diceRoll)}>
         Roll the dice
       </button>
 
       <Dice
-        // cheatValue={d1}
-        onRoll={(value) => {
-          console.log(value);
-          currentDiceRoll[0] = value;
-        }}
+        cheatValue={diceRoll[0]}
+        // onRoll={(value) => {
+        //   console.log(value);
+        //   currentDiceRoll[0] = value;
+        // }}
         size={80}
         sound="./dice-142528.mp3"
         disabled={disabled}
       />
       <Dice
-        // cheatValue={d2}
-        onRoll={(value) => {
-          console.log(value);
-          currentDiceRoll[1] = value;
-        }}
+        cheatValue={diceRoll[1]}
+        // onRoll={(value) => {
+        //   console.log(value);
+        //   currentDiceRoll[1] = value;
+        // }}
         size={80}
         sound="./dice-142528.mp3"
         disabled={disabled}
       />
-      {/* {console.log(currentDiceRoll)} */}
-    
     </div>
-    
-    );
-      
+  );
 
-  function rollDice() {
-    // let currentDiceRoll[0] =
-    let d1: DiceRoll = Math.round(Math.random() * 5 + 1) as DiceRoll;
-    let d2: DiceRoll = Math.round(Math.random() * 5 + 1) as DiceRoll;
-
-    console.log(d1, d2);
-    let diceElement: HTMLCollectionOf<HTMLElement> =
-      document.getElementsByClassName(
-        "_space3d six false"
-      ) as HTMLCollectionOf<HTMLElement>;
-    
-    // diceElement.item(0)?.
-
-    diceElement.item(0)!.click();
-    diceElement.item(1)!.click();
-          
-            console.log(currentDiceRoll);
-          
-
-  }
   
+  function rollDice(currentDiceRoll: DiceRoll) {
+    // console.log(d1, d2);
+    // let diceElement: HTMLCollectionOf<HTMLElement> =
+    //   document.getElementsByClassName(
+    //     "_space3d"
+    //   ) as HTMLCollectionOf<HTMLElement>;
+
+    currentDiceRoll = [
+      Math.floor(Math.random() * 5 + 1),
+      Math.floor(Math.random() * 5 + 1),
+    ] as DiceRoll;
+
+    // callback(currentDiceRoll);
+
+    // diceElement.item(0)!.click();
+    // diceElement.item(1)!.click();
+
+    // console.log(currentDiceRoll);
+  }
 }
-
-
-
-

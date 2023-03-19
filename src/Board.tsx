@@ -92,7 +92,7 @@ function Container({ points, start, end, drction }: ContainerProps) {
 type BoardProps = { currentState: Color[][] };
 export function Board({ currentState }: BoardProps) {
   const [points, setPoints] = useState(currentState);
-
+  
   return (
     <DndContext
       collisionDetection={closestCenter}
