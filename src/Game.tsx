@@ -8,14 +8,17 @@ export type TdiceRoll = [1 | 2 | 3 | 4 | 5 | 6, 1 | 2 | 3 | 4 | 5 | 6];
 
 interface GameProps {
   currentDiceRoll: TdiceRoll;
+
 }
 
 function Game({ currentDiceRoll }: GameProps) {
+  const [boardState, setBoardState] = useState();
+
   const [diceRoll, setDiceRoll] = useState(currentDiceRoll);
   console.log(diceRoll);
   return (
     <div>
-      <Board currentState={initialState} />
+      <Board boardState={setBoardState} />
       <Dice
         currentDiceRoll={diceRoll}
         callback={setDiceRoll}
@@ -29,29 +32,3 @@ function Game({ currentDiceRoll }: GameProps) {
 
 export default Game;
 
-let initialState: Color[][] = [
-  ["White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  ["Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White", "White"],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White"],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black"],
-];

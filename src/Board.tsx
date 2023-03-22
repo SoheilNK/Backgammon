@@ -89,16 +89,12 @@ function Container({ points, start, end, drction }: ContainerProps) {
   );
 }
 
-type BoardProps = { currentState: Color[][] };
-export function Board({ currentState }: BoardProps) {
-  const [points, setPoints] = useState(currentState);
-
+type BoardProps = { boardState: Function };
+export function Board({ boardState }: BoardProps) {
+  boardState(initialState);
+  let currentState = boardState;
   return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      
-    >
+    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <div className="board">
         <Container points={currentState} start={12} end={18} drction={"ltr"} />
         <Container points={currentState} start={18} end={24} drction={"ltr"} />
@@ -111,7 +107,7 @@ export function Board({ currentState }: BoardProps) {
   function handleDragEnd(e: DragEndEvent) {
     if (!e.over) return;
     const target = e.over.id as string;
-    if (typeof e.over.id !== "string") throw new Error("id is not string")
+    if (typeof e.over.id !== "string") throw new Error("id is not string");
     const title = e.active.data.current?.title ?? ""; //checker
     const index = e.active.data.current?.index ?? 0;
     const parent = e.active.data.current?.parent ?? "";
@@ -134,5 +130,32 @@ export function Board({ currentState }: BoardProps) {
     console.log(newState[newCol]);
     newState[oldCol].pop();
   }
-
 }
+
+let initialState: Color[][] = [
+  ["White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White", "White", "White"],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White"],
+  [],
+  ["White", "White", "White", "White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black"],
+];
+
