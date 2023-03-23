@@ -100,6 +100,7 @@ type BoardProps = { currentState: Color[][]; setBoardState: Function };
 export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <div className="board">
         <Container
           boardState={currentState}
@@ -133,6 +134,7 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
     if (!e.over) return;
     const target = e.over.id as string;
     if (typeof e.over.id !== "string") throw new Error("id is not string");
+    if (typeof e.over.id !== "string") throw new Error("id is not string");
     const title = e.active.data.current?.title ?? ""; //checker
     const index = e.active.data.current?.index ?? 0;
     const parent = e.active.data.current?.parent ?? "";
@@ -156,3 +158,31 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
     newState[oldCol].pop();
   }
 }
+
+let initialState: Color[][] = [
+  ["White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White", "White", "White"],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White"],
+  [],
+  ["White", "White", "White", "White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black"],
+];
+

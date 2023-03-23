@@ -1,3 +1,4 @@
+import { getInitialState } from "@dnd-kit/core/dist/store";
 import { useState } from "react";
 import { Board } from "./Board";
 import Dice from "./Dice";
@@ -23,7 +24,7 @@ function Game({ currentDiceRoll, currentBoardState, currentPlayer }: GameProps) 
 
   return (
     <div>
-      <Board currentState={initialState} setBoardState={setBoardState} />
+      <Board setBoardState={setBoardState} currentState={initialState} />
       <Dice
         setPlayer={setPlayer} //test
         currentDiceRoll={diceRoll}
@@ -62,3 +63,4 @@ let initialState: Color[][] = [
   [],
   ["Black", "Black"],
 ];
+
