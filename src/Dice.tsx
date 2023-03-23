@@ -1,14 +1,16 @@
-import { TdiceRoll } from "./Game";
+import { PlayerNames, TdiceRoll } from "./Game";
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   callback: Function;
   disabled: boolean;
+  setPlayer: Function;
 }
 
 export default function Dice({
     currentDiceRoll,
     callback,
     disabled,
+    setPlayer,
 }: DiceProps) {
     return (
         <div>
@@ -19,6 +21,7 @@ export default function Dice({
                   Math.floor(Math.random() * 5 + 1),
                 ] as TdiceRoll;
                 callback(currentDiceRoll)
+                setPlayer(PlayerNames.white) //test
                 // console.log(currentDiceRoll);
             }}>
                 Roll Dice
