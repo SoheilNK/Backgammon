@@ -100,7 +100,6 @@ type BoardProps = { currentState: Color[][]; setBoardState: Function };
 export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <div className="board">
         <Container
           boardState={currentState}
@@ -158,31 +157,4 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
     newState[oldCol].pop();
   }
 }
-
-let initialState: Color[][] = [
-  ["White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  ["Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White", "White"],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White"],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black"],
-];
 
