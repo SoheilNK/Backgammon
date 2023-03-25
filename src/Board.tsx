@@ -43,7 +43,17 @@ function Checker({ title, clr, parent }: CheckerProps) {
       src={imgUrl}
     />
   );
+  interface HandlePointerDownProps {
+    clr: Color;
+    parent: string;
+  }
+
+  function handlePointerDown({ clr, parent }: HandlePointerDownProps) {
+    console.log(clr + " checker from point " + parent);
+  }
+
 }
+
 
 interface PointProps {
   colName: string;
@@ -95,7 +105,7 @@ function Container({
     </div>
   );
 }
-
+      
 type BoardProps = { currentState: Color[][]; setBoardState: Function };
 export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
   return (
