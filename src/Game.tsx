@@ -17,7 +17,6 @@ export interface blackPlayer {
 interface GameProps {
   currentDiceRoll: TdiceRoll;
   currentBoardState: Color[][];
-  // currentPlayer: enum
   currentPlayer: PlayerNames;
   playerWon: boolean
 }

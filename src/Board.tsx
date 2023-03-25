@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Color } from "./Game";
 import { Direction } from "./Game";
 
-import { DragEndEvent, useDraggable } from "@dnd-kit/core";
+import { DragEndEvent, DragStartEvent, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useDroppable } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
@@ -43,14 +43,6 @@ function Checker({ title, clr, parent }: CheckerProps) {
       src={imgUrl}
     />
   );
-  interface HandlePointerDownProps {
-    clr: Color;
-    parent: string;
-  }
-
-  function handlePointerDown({ clr, parent }: HandlePointerDownProps) {
-    console.log(clr + " checker from point " + parent);
-  }
 
 }
 
@@ -109,7 +101,7 @@ function Container({
 type BoardProps = { currentState: Color[][]; setBoardState: Function };
 export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext onDragStart={handelDragStart} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <div className="board">
         <Container
           boardState={currentState}
@@ -138,6 +130,23 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
       </div>
     </DndContext>
   );
+
+    // interface HandlePointerDownProps {
+    //   clr: Color;
+    //   parent: string;
+    // }
+
+    function handelDragStart(e: DragStartEvent) {
+          const title = e.active.data.current?.title ?? ""; //checker
+          const index = e.active.data.current?.index ?? 0;
+          const parent = e.active.data.current?.parent ?? "";
+          console.log("--------Start Draging-------");
+
+          console.log("Checker ID = ", title);
+          console.log("Parent Point = ", parent);
+          console.log("Checker index = ", index);
+          console.log("--------END Draging-------");
+    }
 
   function handleDragEnd(e: DragEndEvent) {
     if (!e.over) return;
