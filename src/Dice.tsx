@@ -1,4 +1,6 @@
 import { PlayerNames, TdiceRoll } from "./Game";
+import React, { useState } from "react";
+import classNames from "classnames";
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   callback: Function;
@@ -14,10 +16,24 @@ export default function Dice({
   setPlayer, //test
   setPlayerWon, //test
 }: DiceProps) {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const btnClass = classNames({
+    btn: true,
+    "btn-pressed": isPressed,
+    "btn-over": !isPressed && isHovered,
+  });
+
   return (
     <div>
       <h2>{currentDiceRoll}</h2>
       <button
+        className={btnClass}
+        onMouseDown={() => setIsPressed(true)}
+        onMouseUp={() => setIsPressed(false)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         type="button"
         disabled={disabled}
         onClick={() => {

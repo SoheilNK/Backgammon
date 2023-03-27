@@ -42,7 +42,10 @@ img.checker:active  {
     flex-direction:column-reverse;
   direction: rtl;
 }
+.point-over {
+  background-color: aquamarine;
 
+}
 
 li {
   list-style-type: none;
@@ -56,6 +59,14 @@ li {
   padding: calc(var(--checkerSize)/2);
   column-gap: var(--checkerSize);
 
+}
+
+.btn-over {
+  background-color: aqua;
+}
+
+.btn-pressed {
+  background-color:#926f40;
 }
 
 

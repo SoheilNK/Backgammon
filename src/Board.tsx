@@ -1,4 +1,5 @@
 import { useState } from "react";
+import classNames from "classnames";
 import { Color } from "./Game";
 import { Direction } from "./Game";
 
@@ -56,8 +57,20 @@ function Point({ colName, items, drction }: PointProps) {
   const { setNodeRef } = useDroppable({
     id: colName,
   });
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const pointClass = classNames({
+    point: true,
+    "point-over": isHovered,
+  });
   return (
-    <div ref={setNodeRef} className={"point " + drction}>
+    <div
+      ref={setNodeRef}
+      className={"point " + drction + " " + pointClass}
+      // onMouseEnter={() => setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
+    >
       {items.map((checkerClr, key) => (
         <Checker
           key={key}
@@ -137,15 +150,21 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
     // }
 
     function handelDragStart(e: DragStartEvent) {
-          const title = e.active.data.current?.title ?? ""; //checker
-          const index = e.active.data.current?.index ?? 0;
-          const parent = e.active.data.current?.parent ?? "";
-          console.log("--------Start Draging-------");
+      const title = e.active.data.current?.title ?? ""; //checker
+      const index = e.active.data.current?.index ?? 0;
+      const parent = e.active.data.current?.parent ?? "";
+      console.log("--------Start Draging-------");
 
-          console.log("Checker ID = ", title);
-          console.log("Parent Point = ", parent);
-          console.log("Checker index = ", index);
-          console.log("--------END Draging-------");
+      console.log("Checker ID = ", title);
+      console.log("Parent Point = ", parent);
+      
+      // const parrentPoint = document.getElementById(parent);
+      // console.log("parrentPoint = " + parrentPoint)
+      // onMouseEnter={() => setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
+
+      console.log("Checker index = ", index);
+      console.log("--------END Draging-------");
     }
 
   function handleDragEnd(e: DragEndEvent) {
