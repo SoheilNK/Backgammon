@@ -46,6 +46,10 @@ img.checker:active  {
   background-color: aquamarine;
 
 }
+.point-picked {
+  background-color:chartreuse ;
+
+}
 
 li {
   list-style-type: none;

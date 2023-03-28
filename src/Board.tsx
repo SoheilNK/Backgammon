@@ -7,6 +7,7 @@ import { DragEndEvent, DragStartEvent, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useDroppable } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
+import { background } from "@chakra-ui/react";
 
 let imgUrl = "";
 
@@ -66,10 +67,11 @@ function Point({ colName, items, drction }: PointProps) {
   });
   return (
     <div
+      id= {colName}
       ref={setNodeRef}
-      className={"point " + drction + " " + pointClass}
-      // onMouseEnter={() => setIsHovered(true)}
-      // onMouseLeave={() => setIsHovered(false)}
+      className={drction + " " + pointClass}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {items.map((checkerClr, key) => (
         <Checker
@@ -152,14 +154,16 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
     function handelDragStart(e: DragStartEvent) {
       const title = e.active.data.current?.title ?? ""; //checker
       const index = e.active.data.current?.index ?? 0;
-      const parent = e.active.data.current?.parent ?? "";
+      const parent: string = e.active.data.current?.parent ?? "";
       console.log("--------Start Draging-------");
 
       console.log("Checker ID = ", title);
       console.log("Parent Point = ", parent);
-      
-      // const parrentPoint = document.getElementById(parent);
-      // console.log("parrentPoint = " + parrentPoint)
+      let allowedPoint = parent.slice(parent.length-2, parent.length) + 2 //change to number
+      const parrentPoint = document.getElementById(parent);
+
+      console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint); 
+      parrentPoint?.setAttribute('class', "point-picked"); //test...
       // onMouseEnter={() => setIsHovered(true)}
       // onMouseLeave={() => setIsHovered(false)}
 
