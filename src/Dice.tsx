@@ -1,20 +1,20 @@
-import { PlayerNames, TdiceRoll } from "./Game";
-import React, { useState } from "react";
+import { Color, PlayerNames, TdiceRoll } from "./Game";
+import React, { useEffect ,useState } from "react";
 import classNames from "classnames";
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
-  callback: Function;
+  setDiceRoll: Function;
   disabled: boolean;
-  setPlayer: Function; //test
-  setPlayerWon: Function;//test
+  currentBoardState: Color[][];
+  currentPlayer: PlayerNames;
 }
 
 export default function Dice({
   currentDiceRoll,
-  callback,
+  setDiceRoll: setDiceRoll,
   disabled,
-  setPlayer, //test
-  setPlayerWon, //test
+  currentBoardState,
+  currentPlayer,
 }: DiceProps) {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -24,6 +24,11 @@ export default function Dice({
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
   });
+  useEffect(() => {
+    console.log("useEffect " + currentDiceRoll);
+    calcAllowedColumns(currentPlayer, currentBoardState, currentDiceRoll)
+  })
+
 
   return (
     <div>
@@ -41,14 +46,21 @@ export default function Dice({
             Math.floor(Math.random() * 5 + 1),
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
-          callback(currentDiceRoll);
-          setPlayer(PlayerNames.black); //test
-          setPlayerWon(false); //test
-          // console.log(currentDiceRoll);
+          setDiceRoll(currentDiceRoll);
+          console.log(currentDiceRoll);
+
         }}
       >
         Roll Dice
       </button>
+      <h3>{currentPlayer}: It is your turn to move the checkers</h3>
     </div>
   );
 }
+function calcAllowedColumns(currentPlayer: PlayerNames, currentBoardState: Color[][], currentDiceRoll: TdiceRoll) {
+  
+  currentBoardState.forEach((point) => {
+    console.log("allowed columns= " + point[0])  
+  })
+}
+

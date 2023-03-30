@@ -1,6 +1,6 @@
 import { useState } from "react";
 import classNames from "classnames";
-import { Color } from "./Game";
+import { Color, PlayerNames, TdiceRoll } from "./Game";
 import { Direction } from "./Game";
 
 import { DragEndEvent, DragStartEvent, useDraggable } from "@dnd-kit/core";
@@ -112,64 +112,68 @@ function Container({
     </div>
   );
 }
+
+
+
+
       
-type BoardProps = { currentState: Color[][]; setBoardState: Function };
-export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
+type BoardProps = {
+  boardState: Color[][]
+  currentDiceRoll: TdiceRoll
+  currentPlayer: PlayerNames
+};
+export function Board({ boardState }: BoardProps) {
+  
   return (
-    <DndContext onDragStart={handelDragStart} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      onDragStart={handelDragStart}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <div className="board">
         <Container
-          boardState={currentState}
+          boardState={boardState}
           start={12}
           end={18}
           drction={"ltr"}
         />
         <Container
-          boardState={currentState}
+          boardState={boardState}
           start={18}
           end={24}
           drction={"ltr"}
         />
-        <Container
-          boardState={currentState}
-          start={6}
-          end={12}
-          drction={"rtl"}
-        />
-        <Container
-          boardState={currentState}
-          start={0}
-          end={6}
-          drction={"rtl"}
-        />
+        <Container boardState={boardState} start={6} end={12} drction={"rtl"} />
+        <Container boardState={boardState} start={0} end={6} drction={"rtl"} />
       </div>
     </DndContext>
   );
 
-    // interface HandlePointerDownProps {
-    //   clr: Color;
-    //   parent: string;
-    // }
+  // interface HandlePointerDownProps {
+  //   clr: Color;
+  //   parent: string;
+  // }
 
-    function handelDragStart(e: DragStartEvent) {
-      const title = e.active.data.current?.title ?? ""; //checker
-      const index = e.active.data.current?.index ?? 0;
-      const parent: string = e.active.data.current?.parent ?? "";
-      console.log("--------Start Draging-------");
+  function handelDragStart(e: DragStartEvent) {
+    const title = e.active.data.current?.title ?? ""; //checker
+    const index = e.active.data.current?.index ?? 0;
+    const parent: string = e.active.data.current?.parent ?? "";
+    console.log("--------Start Draging-------");
 
-      console.log("Checker ID = ", title);
-      console.log("Parent Point = ", parent);
-      let allowedPoint = parent.slice(parent.length-2, parent.length) + 2 //change to number
-      const parrentPoint = document.getElementById(parent);
+    console.log("Checker ID = ", title);
+    console.log("Parent Point = ", parent);
+    let currentPoint = +parent.slice(parent.length - 2, parent.length);
+    let allowedPoint = [currentPoint + 1];
+    const parrentPoint = document.getElementById(parent);
 
-      console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint); 
-      parrentPoint?.setAttribute('class', "point-picked"); //test...
-      // onMouseEnter={() => setIsHovered(true)}
-      // onMouseLeave={() => setIsHovered(false)}
+    console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint);
+    parrentPoint?.setAttribute("class", "point-picked"); //test...
+    // onMouseEnter={() => setIsHovered(true)}
+    // onMouseLeave={() => setIsHovered(false)}
 
-      console.log("Checker index = ", index);
-      console.log("--------END Draging-------");
-    }
+    console.log("Checker index = ", index);
+    console.log("--------END Draging-------");
+  }
 
   function handleDragEnd(e: DragEndEvent) {
     if (!e.over) return;
@@ -188,10 +192,10 @@ export function Board({ currentState, setBoardState: setPoints }: BoardProps) {
     const oldCol: number = +parent.slice(6, 8) - 10;
     const newCol: number = +target.slice(6, 8) - 10;
     console.log(oldCol + newCol);
-    const colorName = currentState[oldCol][index];
+    const colorName = boardState[oldCol][index];
     console.log("picked up checker is : " + colorName);
 
-    const newState = currentState;
+    const newState = boardState;
 
     console.log(newState[newCol]);
     newState[newCol].push(colorName);
