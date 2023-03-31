@@ -32,7 +32,7 @@ function Game({
   playerWon,
 }: GameProps) {
   const [diceRoll, setDiceRoll] = useState(currentDiceRoll);
-  const [boardState, setBoardState] = useState(currentBoardState);
+  const [boardState, setBoardState] = useState(initialState);
   const [player, setPlayer] = useState(currentPlayer);
   const [won, setPlayerWon] = useState(playerWon);
   console.log(diceRoll);
@@ -48,7 +48,7 @@ function Game({
         currentDiceRoll={diceRoll}
         setDiceRoll={setDiceRoll}
         disabled={false}
-        currentBoardState={currentBoardState}
+        currentBoardState={boardState}
         currentPlayer={currentPlayer}
       />
     </div>

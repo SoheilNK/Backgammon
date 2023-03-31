@@ -1,6 +1,10 @@
 import { Color, PlayerNames, TdiceRoll } from "./Game";
-import React, { useEffect ,useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
+
+let allowedChecker: Color;
+export let allowedColumns: number[][] = [];
+
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   setDiceRoll: Function;
@@ -15,7 +19,7 @@ export default function Dice({
   disabled,
   currentBoardState,
   currentPlayer,
-}: DiceProps) {
+}: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -25,10 +29,12 @@ export default function Dice({
     "btn-over": !isPressed && isHovered,
   });
   useEffect(() => {
-    console.log("useEffect " + currentDiceRoll);
-    calcAllowedColumns(currentPlayer, currentBoardState, currentDiceRoll)
-  })
+    // console.log("useEffect " + currentDiceRoll);
+    // console.log(currentBoardState);
+    setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
+  }, [currentBoardState, currentDiceRoll]);
 
+ 
 
   return (
     <div>
@@ -48,7 +54,6 @@ export default function Dice({
           ] as TdiceRoll;
           setDiceRoll(currentDiceRoll);
           console.log(currentDiceRoll);
-
         }}
       >
         Roll Dice
@@ -57,10 +62,30 @@ export default function Dice({
     </div>
   );
 }
-function calcAllowedColumns(currentPlayer: PlayerNames, currentBoardState: Color[][], currentDiceRoll: TdiceRoll) {
-  
-  currentBoardState.forEach((point) => {
-    console.log("allowed columns= " + point[0])  
-  })
-}
 
+function setAllowedColumns(
+  currentBoardState: Color[][],
+  currentDiceRoll: TdiceRoll,
+  currentPlayer: PlayerNames
+) {
+  if (PlayerNames.white == currentPlayer) {
+    allowedChecker = "White";
+  } else {
+    allowedChecker = "Black";
+  }
+
+  // console.log(allowedChecker, currentPlayer);
+  currentBoardState.forEach((point, i) => {
+    if (point[0] == allowedChecker) {
+      allowedColumns[i] = [
+        i + 10 + currentDiceRoll[0],
+        i + 10 + currentDiceRoll[1]
+      ];
+
+    } else {
+      allowedColumns[i] = [0, 0];
+    }
+  });
+  // console.log(allowedColumns);
+  return allowedColumns
+}

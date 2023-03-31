@@ -7,8 +7,7 @@ import { DragEndEvent, DragStartEvent, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useDroppable } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { background } from "@chakra-ui/react";
-
+import { allowedColumns } from "./Dice";
 let imgUrl = "";
 
 interface CheckerProps {
@@ -165,14 +164,20 @@ export function Board({ boardState }: BoardProps) {
     let currentPoint = +parent.slice(parent.length - 2, parent.length);
     let allowedPoint = [currentPoint + 1];
     const parrentPoint = document.getElementById(parent);
-
+// ******************************** choose allowed points from allowedColumns *************
+  //  * 
+  //  * 
+  //  * 
+  //   *
     console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint);
     parrentPoint?.setAttribute("class", "point-picked"); //test...
     // onMouseEnter={() => setIsHovered(true)}
     // onMouseLeave={() => setIsHovered(false)}
 
     console.log("Checker index = ", index);
+
     console.log("--------END Draging-------");
+
   }
 
   function handleDragEnd(e: DragEndEvent) {
