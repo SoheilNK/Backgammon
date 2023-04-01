@@ -158,17 +158,18 @@ export function Board({ boardState }: BoardProps) {
     const index = e.active.data.current?.index ?? 0;
     const parent: string = e.active.data.current?.parent ?? "";
     console.log("--------Start Draging-------");
+    console.log(allowedColumns);
 
     console.log("Checker ID = ", title);
     console.log("Parent Point = ", parent);
     let currentPoint = +parent.slice(parent.length - 2, parent.length);
-    let allowedPoint = [currentPoint + 1];
+    let allowedPoint = allowedColumns[currentPoint - 10];
     const parrentPoint = document.getElementById(parent);
-// ******************************** choose allowed points from allowedColumns *************
-  //  * 
-  //  * 
-  //  * 
-  //   *
+    // ******************************** choose allowed points from allowedColumns *************
+    //  *
+    //  *
+    //  *
+    //   *
     console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint);
     parrentPoint?.setAttribute("class", "point-picked"); //test...
     // onMouseEnter={() => setIsHovered(true)}
@@ -177,7 +178,6 @@ export function Board({ boardState }: BoardProps) {
     console.log("Checker index = ", index);
 
     console.log("--------END Draging-------");
-
   }
 
   function handleDragEnd(e: DragEndEvent) {

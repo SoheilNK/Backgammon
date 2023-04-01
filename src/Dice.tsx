@@ -2,7 +2,8 @@ import { Color, PlayerNames, TdiceRoll } from "./Game";
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 
-let allowedChecker: Color;
+let currentChecker: Color;
+let opponentChecker: Color;
 export let allowedColumns: number[][] = [];
 
 interface DiceProps {
@@ -29,12 +30,8 @@ export default function Dice({
     "btn-over": !isPressed && isHovered,
   });
   useEffect(() => {
-    // console.log("useEffect " + currentDiceRoll);
-    // console.log(currentBoardState);
     setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
   }, [currentBoardState, currentDiceRoll]);
-
- 
 
   return (
     <div>
@@ -69,23 +66,48 @@ function setAllowedColumns(
   currentPlayer: PlayerNames
 ) {
   if (PlayerNames.white == currentPlayer) {
-    allowedChecker = "White";
+    currentChecker = "White";
+    opponentChecker = "Black";
   } else {
-    allowedChecker = "Black";
+    currentChecker = "Black";
+    opponentChecker = "White";
   }
-
+  console.log(currentChecker, " vs", opponentChecker);
   // console.log(allowedChecker, currentPlayer);
   currentBoardState.forEach((point, i) => {
-    if (point[0] == allowedChecker) {
-      allowedColumns[i] = [
-        i + 10 + currentDiceRoll[0],
-        i + 10 + currentDiceRoll[1]
-      ];
+    if (point[0] == currentChecker) {
+      let target1 = i + currentDiceRoll[0];
+      let target2 = i + currentDiceRoll[1];
+      //rule#1
+      //check if the target is less that 23 and same color or not double opponent checker 
+      if (target1 > 23) {
+        target1 = -1;
+      } else {
+        let target1Length = currentBoardState[target1].length;
+        let target1Color = currentBoardState[target1][0];
+        if (target1Length >= 2 && target1Color == opponentChecker) {
+          console.log("can't move");
+          target1 = 0;
+        } else {
+          target1 = target1 + 10;
+        }
+      }
 
-    } else {
-      allowedColumns[i] = [0, 0];
+      if (target2 > 23) {
+        target2 = 0;
+      } else {
+        let target2Length = currentBoardState[target2].length;
+        let target2Color = currentBoardState[target2][0];
+        if (target2Length >= 2 && target2Color == opponentChecker) {
+          target2 = 0;
+        } else {
+          target2 = target2 + 10;
+        }
+
+      }
+      allowedColumns.push([i, target1, target2]);
     }
   });
   // console.log(allowedColumns);
-  return allowedColumns
+  return allowedColumns;
 }
