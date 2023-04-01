@@ -42,14 +42,14 @@ img.checker:active  {
     flex-direction:column-reverse;
   direction: rtl;
 }
-.point-over {
-  background-color: aquamarine;
+.point-allowed {
+  background-color: rgb(138, 255, 127);
 
 }
-.point-picked {
-  background-color:chartreuse ;
-
+.point-allowed:hover {
+  background-color: aqua;
 }
+
 
 li {
   list-style-type: none;

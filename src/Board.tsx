@@ -58,19 +58,17 @@ function Point({ colName, items, drction }: PointProps) {
     id: colName,
   });
 
-  const [isHovered, setIsHovered] = useState(false);
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const pointClass = classNames({
     point: true,
-    "point-over": isHovered,
+    "point-allowed": isAllowed,
   });
   return (
     <div
       id= {colName}
       ref={setNodeRef}
       className={drction + " " + pointClass}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {items.map((checkerClr, key) => (
         <Checker
@@ -148,32 +146,38 @@ export function Board({ boardState }: BoardProps) {
     </DndContext>
   );
 
-  // interface HandlePointerDownProps {
-  //   clr: Color;
-  //   parent: string;
-  // }
+ 
 
   function handelDragStart(e: DragStartEvent) {
     const title = e.active.data.current?.title ?? ""; //checker
     const index = e.active.data.current?.index ?? 0;
     const parent: string = e.active.data.current?.parent ?? "";
     console.log("--------Start Draging-------");
-    console.log(allowedColumns);
-
     console.log("Checker ID = ", title);
     console.log("Parent Point = ", parent);
+    console.log(allowedColumns);
     let currentPoint = +parent.slice(parent.length - 2, parent.length);
-    let allowedPoint = allowedColumns[currentPoint - 10];
+
+    let allowedPoint1 = allowedColumns[currentPoint - 10][0];
+    let allowedPoint2 = allowedColumns[currentPoint - 10][1];
+    let allowedPoint1ID = "Point-" + (allowedPoint1);
+    let allowedPoint2ID = "Point-" + (allowedPoint2);
+    console.log("allowedPoint1 = ", allowedPoint1, allowedPoint1ID);
+    console.log("allowedPoint2 = ", allowedPoint2, allowedPoint2ID );
+    //change the color of the allowed points
+    const allowedPoint1Element = document.getElementById(allowedPoint1ID);
+    const allowedPoint2Element = document.getElementById(allowedPoint2ID);
+    allowedPoint1Element?.classList.add("point-allowed");
+    allowedPoint2Element?.classList.add("point-allowed");
+    
+allowedPoint1Element?.setAttribute("aria-dropeffect", "move");
+    
+
+
+    
+
     const parrentPoint = document.getElementById(parent);
-    // ******************************** choose allowed points from allowedColumns *************
-    //  *
-    //  *
-    //  *
-    //   *
-    console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint);
-    parrentPoint?.setAttribute("class", "point-picked"); //test...
-    // onMouseEnter={() => setIsHovered(true)}
-    // onMouseLeave={() => setIsHovered(false)}
+    console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint1);
 
     console.log("Checker index = ", index);
 

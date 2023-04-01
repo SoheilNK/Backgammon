@@ -65,6 +65,7 @@ function setAllowedColumns(
   currentDiceRoll: TdiceRoll,
   currentPlayer: PlayerNames
 ) {
+  allowedColumns = [];
   if (PlayerNames.white == currentPlayer) {
     currentChecker = "White";
     opponentChecker = "Black";
@@ -105,9 +106,9 @@ function setAllowedColumns(
         }
 
       }
-      allowedColumns.push([i, target1, target2]);
+      allowedColumns[i]=[target1, target2];
     }
   });
-  // console.log(allowedColumns);
+  console.log(allowedColumns);
   return allowedColumns;
 }
