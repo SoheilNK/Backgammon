@@ -156,7 +156,7 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
     console.log("--------Start Draging-------");
     console.log("Checker ID = ", title);
     console.log("Parent Point = ", parent);
-    console.log(allowedColumns);
+    console.log("allowed columns handelDragStart" + allowedColumns);
     let currentPoint = +parent.slice(parent.length - 2, parent.length);
 
     let allowedPoint1 = allowedColumns[currentPoint - 10][0];
@@ -166,10 +166,15 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
     console.log("allowedPoint1 = ", allowedPoint1, allowedPoint1ID);
     console.log("allowedPoint2 = ", allowedPoint2, allowedPoint2ID);
     //change the color of the allowed points
-    const allowedPoint1Element = document.getElementById(allowedPoint1ID);
-    const allowedPoint2Element = document.getElementById(allowedPoint2ID);
-    if (currentDiceRoll[0] != 0) { allowedPoint1Element?.classList.add("point-allowed") };
-    if (currentDiceRoll[1] != 0) { allowedPoint2Element?.classList.add("point-allowed") };
+    let allowedPoint1Element = document.getElementById(allowedPoint1ID);
+    let allowedPoint2Element = document.getElementById(allowedPoint2ID);
+    console.log("currentDiceRoll = ", currentDiceRoll);
+    if (currentDiceRoll[0] != 0) {
+      allowedPoint1Element?.classList.add("point-allowed");
+    }
+    if (currentDiceRoll[1] != 0) {
+      allowedPoint2Element?.classList.add("point-allowed");
+    }
 
     const parrentPoint = document.getElementById(parent);
     console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint1);
@@ -193,7 +198,7 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
     console.log("Parent Point = ", parent);
     console.log("Target Point = ", target);
     console.log("Checker index = ", index);
-    const oldCol: number = +parent.slice(6, 8) - 10;
+    const oldCol: number = parent.slice(6, 8) - 10;
     const newCol: number = +target.slice(6, 8) - 10;
     console.log(oldCol + newCol);
     const colorName = boardState[oldCol][index];
@@ -238,8 +243,19 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
     console.log("newDiceRoll = ", newDiceRoll)
     console.log("currentPlayer = ", currentPlayer);
 
+    //check if player can move again
+    if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
+      console.log("player can't move again");
+      if (currentPlayer == PlayerNames.white) {
+        currentPlayer = PlayerNames.black;
+      } else {
+        currentPlayer = PlayerNames.white;
+      }
 
-
+    }
+    console.log("---------------");
+    console.log("newState = ", newState);
+    console.log("newDiceRoll = ", newDiceRoll)
     console.log("currentPlayer = ", currentPlayer);
     
     setAllowedColumns(newState, newDiceRoll, currentPlayer);

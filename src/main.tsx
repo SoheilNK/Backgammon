@@ -6,9 +6,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Game
-      currentDiceRoll={[2, 4]}
+      diceRoll={[0, 0]}
       currentBoardState={[]}
-      currentPlayer={PlayerNames.black}
+      currentPlayer={PlayerNames.white}
       playerWon={false}
     />
   </React.StrictMode>

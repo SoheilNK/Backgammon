@@ -8,7 +8,8 @@ export let allowedColumns: number[][] = [];
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
-  setDiceRoll: Function;
+  // setDiceRoll: Function;
+  callback: (roll: TdiceRoll) => void;
   disabled: boolean;
   currentBoardState: Color[][];
   currentPlayer: PlayerNames;
@@ -16,27 +17,32 @@ interface DiceProps {
 
 export default function Dice({
   currentDiceRoll,
-  setDiceRoll: setDiceRoll,
+  // setDiceRoll: setDiceRoll,
+  callback,
   disabled,
   currentBoardState,
   currentPlayer,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
+  const [nextMove, setNextMove] = useState("Player One roll the dice");
   const btnClass = classNames({
     btn: true,
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
   });
-  useEffect(() => {
-    setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
-  }, [currentBoardState, currentDiceRoll]);
-
+  
+useEffect(() => {
+  setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
+  // console.log("allowed columns after dice roll" + allowedColumns);
+}, [currentBoardState, currentDiceRoll]);
+  
+  
   return (
     <div>
       <h2>{currentDiceRoll}</h2>
       <button
+        id="rollBtn"
         className={btnClass}
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
@@ -49,15 +55,23 @@ export default function Dice({
             Math.floor(Math.random() * 5 + 1),
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
-          setDiceRoll(currentDiceRoll);
+          // setDiceRoll(currentDiceRoll);
+          callback(currentDiceRoll);
           console.log(currentDiceRoll);
+          setNextMove(currentPlayer  + " : Select a checker");
+          // disable button id="roolBtn"
+        
+          document.getElementById("rollBtn").disabled = true;
         }}
       >
         Roll Dice
       </button>
-      <h3>{currentPlayer}: It is your turn to move the checkers</h3>
+      <h3 id="alert">{nextMove}</h3>
     </div>
   );
+  
+
+
 }
 
 export function setAllowedColumns(
