@@ -251,7 +251,17 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
       } else {
         currentPlayer = PlayerNames.white;
       }
-
+      //make roll button active
+      const rollButton = document.getElementById("roll");
+      if (rollButton) {
+        rollButton.disabled = false;
+      }
+      //show alert in id="alert"
+      document.getElementById("alert").innerHTML = currentPlayer + " roll the dice";
+      //setcurre
+    
+      
+      
     }
     console.log("---------------");
     console.log("newState = ", newState);

@@ -46,7 +46,9 @@ img.checker:active  {
   background-color: rgb(138, 255, 127);
 
 }
-
+.hidden {
+  display: none;
+}
 
 li {
   list-style-type: none;

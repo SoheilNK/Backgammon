@@ -9,7 +9,7 @@ export let allowedColumns: number[][] = [];
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   // setDiceRoll: Function;
-  callback: (roll: TdiceRoll) => void;
+  onRoll: (roll: TdiceRoll) => void;
   disabled: boolean;
   currentBoardState: Color[][];
   currentPlayer: PlayerNames;
@@ -18,31 +18,30 @@ interface DiceProps {
 export default function Dice({
   currentDiceRoll,
   // setDiceRoll: setDiceRoll,
-  callback,
+  onRoll,
   disabled,
   currentBoardState,
   currentPlayer,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [nextMove, setNextMove] = useState("Player One roll the dice");
+  const [nextMove, setNextMove] = useState("Player1 roll the dice");
   const btnClass = classNames({
     btn: true,
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
   });
-  
-useEffect(() => {
-  setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
-  // console.log("allowed columns after dice roll" + allowedColumns);
-}, [currentBoardState, currentDiceRoll]);
-  
-  
+
+  useEffect(() => {
+    setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
+    // console.log("allowed columns after dice roll" + allowedColumns);
+  }, [currentBoardState, currentDiceRoll]);
+
   return (
     <div>
       <h2>{currentDiceRoll}</h2>
       <button
-        id="rollBtn"
+        id="roll"
         className={btnClass}
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
@@ -56,12 +55,12 @@ useEffect(() => {
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
           // setDiceRoll(currentDiceRoll);
-          callback(currentDiceRoll);
+          onRoll(currentDiceRoll);
           console.log(currentDiceRoll);
-          setNextMove(currentPlayer  + " : Select a checker");
+          setNextMove(currentPlayer + " : Select a checker");
           // disable button id="roolBtn"
-        
-          document.getElementById("rollBtn").disabled = true;
+
+          document.getElementById("roll").disabled = true;
         }}
       >
         Roll Dice
@@ -69,9 +68,6 @@ useEffect(() => {
       <h3 id="alert">{nextMove}</h3>
     </div>
   );
-  
-
-
 }
 
 export function setAllowedColumns(
@@ -94,7 +90,7 @@ export function setAllowedColumns(
       let target1 = i + currentDiceRoll[0];
       let target2 = i + currentDiceRoll[1];
       //rule#1
-      //check if the target is less that 23 and same color or not double opponent checker 
+      //check if the target is less that 23 and same color or not double opponent checker
       if (target1 > 23) {
         target1 = -1;
       } else {
@@ -118,9 +114,8 @@ export function setAllowedColumns(
         } else {
           target2 = target2 + 10;
         }
-
       }
-      allowedColumns[i]=[target1, target2];
+      allowedColumns[i] = [target1, target2];
     }
   });
   console.log(allowedColumns);

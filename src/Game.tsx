@@ -43,8 +43,7 @@ function Game({
   //player 2 rolls the dice
   //player 2 selects a checker
   //player 2 selects a column to move the checker to
-  
-  
+
   return (
     <div>
       <Board
@@ -55,16 +54,13 @@ function Game({
       <Dice
         currentDiceRoll={currentDiceRoll}
         // setDiceRoll={setDiceRoll}
-        callback={(roll: TdiceRoll) => setDiceRoll(roll)}
+        onRoll={(roll: TdiceRoll) => setDiceRoll(roll)}
         disabled={false}
         currentBoardState={boardState}
         currentPlayer={currentPlayer}
       />
     </div>
   );
-
- 
-
 }
 
 export default Game;
