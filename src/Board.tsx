@@ -168,8 +168,8 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
     //change the color of the allowed points
     const allowedPoint1Element = document.getElementById(allowedPoint1ID);
     const allowedPoint2Element = document.getElementById(allowedPoint2ID);
-    allowedPoint1Element?.classList.add("point-allowed");
-    allowedPoint2Element?.classList.add("point-allowed");
+    if (currentDiceRoll[0] != 0) { allowedPoint1Element?.classList.add("point-allowed") };
+    if (currentDiceRoll[1] != 0) { allowedPoint2Element?.classList.add("point-allowed") };
 
     const parrentPoint = document.getElementById(parent);
     console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint1);
@@ -235,7 +235,11 @@ export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps
     allowedPoint2Element?.classList.remove("point-allowed");
     console.log("---------------");
     console.log("newState = ", newState);
-    console.log("newDiceRoll = ", newDiceRoll);
+    console.log("newDiceRoll = ", newDiceRoll)
+    console.log("currentPlayer = ", currentPlayer);
+
+
+
     console.log("currentPlayer = ", currentPlayer);
     
     setAllowedColumns(newState, newDiceRoll, currentPlayer);
