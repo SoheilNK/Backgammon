@@ -60,7 +60,7 @@ export default function Dice({
   );
 }
 
-function setAllowedColumns(
+export function setAllowedColumns(
   currentBoardState: Color[][],
   currentDiceRoll: TdiceRoll,
   currentPlayer: PlayerNames

@@ -3,11 +3,11 @@ import classNames from "classnames";
 import { Color, PlayerNames, TdiceRoll } from "./Game";
 import { Direction } from "./Game";
 
-import { DragEndEvent, DragStartEvent, useDraggable } from "@dnd-kit/core";
+import { DragEndEvent, DragStartEvent, UseDroppableArguments, useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useDroppable } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { allowedColumns } from "./Dice";
+import { allowedColumns, setAllowedColumns } from "./Dice";
 let imgUrl = "";
 
 interface CheckerProps {
@@ -54,15 +54,17 @@ interface PointProps {
   drction: Direction;
 }
 function Point({ colName, items, drction }: PointProps) {
+
   const { setNodeRef } = useDroppable({
     id: colName,
-  });
+      
+  });   
 
-  const [isAllowed, setIsAllowed] = useState(false);
+
+
 
   const pointClass = classNames({
     point: true,
-    "point-allowed": isAllowed,
   });
   return (
     <div
@@ -119,13 +121,14 @@ type BoardProps = {
   currentDiceRoll: TdiceRoll
   currentPlayer: PlayerNames
 };
-export function Board({ boardState }: BoardProps) {
-  
+export function Board({ boardState, currentDiceRoll, currentPlayer }: BoardProps) {
   return (
     <DndContext
       onDragStart={handelDragStart}
       collisionDetection={closestCenter}
+      
       onDragEnd={handleDragEnd}
+
     >
       <div className="board">
         <Container
@@ -146,8 +149,6 @@ export function Board({ boardState }: BoardProps) {
     </DndContext>
   );
 
- 
-
   function handelDragStart(e: DragStartEvent) {
     const title = e.active.data.current?.title ?? ""; //checker
     const index = e.active.data.current?.index ?? 0;
@@ -160,21 +161,15 @@ export function Board({ boardState }: BoardProps) {
 
     let allowedPoint1 = allowedColumns[currentPoint - 10][0];
     let allowedPoint2 = allowedColumns[currentPoint - 10][1];
-    let allowedPoint1ID = "Point-" + (allowedPoint1);
-    let allowedPoint2ID = "Point-" + (allowedPoint2);
+    let allowedPoint1ID = "Point-" + allowedPoint1;
+    let allowedPoint2ID = "Point-" + allowedPoint2;
     console.log("allowedPoint1 = ", allowedPoint1, allowedPoint1ID);
-    console.log("allowedPoint2 = ", allowedPoint2, allowedPoint2ID );
+    console.log("allowedPoint2 = ", allowedPoint2, allowedPoint2ID);
     //change the color of the allowed points
     const allowedPoint1Element = document.getElementById(allowedPoint1ID);
     const allowedPoint2Element = document.getElementById(allowedPoint2ID);
     allowedPoint1Element?.classList.add("point-allowed");
     allowedPoint2Element?.classList.add("point-allowed");
-    
-allowedPoint1Element?.setAttribute("aria-dropeffect", "move");
-    
-
-
-    
 
     const parrentPoint = document.getElementById(parent);
     console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint1);
@@ -203,13 +198,47 @@ allowedPoint1Element?.setAttribute("aria-dropeffect", "move");
     console.log(oldCol + newCol);
     const colorName = boardState[oldCol][index];
     console.log("picked up checker is : " + colorName);
-
+    //update states
     const newState = boardState;
+    const newDiceRoll = currentDiceRoll;
 
-    console.log(newState[newCol]);
-    newState[newCol].push(colorName);
-    console.log(newState[newCol]);
-    newState[oldCol].pop();
+    if (newCol + 10 == allowedColumns[oldCol][0]) {
+      console.log(newState[newCol]);
+      newState[newCol].push(colorName);
+      console.log(newState[newCol]);
+      newState[oldCol].pop();
+      newDiceRoll[0] = 0;
+      console.log("newDiceRoll=", newDiceRoll);
+    }
+    if (newCol + 10 == allowedColumns[oldCol][1]) {
+      console.log(newState[newCol]);
+      newState[newCol].push(colorName);
+      console.log(newState[newCol]);
+      newState[oldCol].pop();
+      newDiceRoll[1] = 0;
+      console.log("newDiceRoll=", newDiceRoll);
+    }
+    if (
+      newCol + 10 != allowedColumns[oldCol][0] &&
+      newCol + 10 != allowedColumns[oldCol][1]
+    ) {
+      console.log("not allowed");
+    }
+    //reset the color of the allowed points
+    const allowedPoint1Element = document.getElementById(
+      "Point-" + allowedColumns[oldCol][0]
+    );
+    const allowedPoint2Element = document.getElementById(
+      "Point-" + allowedColumns[oldCol][1]
+    );
+    allowedPoint1Element?.classList.remove("point-allowed");
+    allowedPoint2Element?.classList.remove("point-allowed");
+    console.log("---------------");
+    console.log("newState = ", newState);
+    console.log("newDiceRoll = ", newDiceRoll);
+    console.log("currentPlayer = ", currentPlayer);
+    
+    setAllowedColumns(newState, newDiceRoll, currentPlayer);
   }
 }
 

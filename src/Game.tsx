@@ -5,7 +5,7 @@ import Dice from "./Dice";
 
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
-export type TdiceRoll = [1 | 2 | 3 | 4 | 5 | 6, 1 | 2 | 3 | 4 | 5 | 6];
+export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
 export enum PlayerNames {
   white = "Player1",
   black = "Player2",
