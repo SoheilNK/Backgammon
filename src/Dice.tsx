@@ -18,8 +18,7 @@ export default function Dice({
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [nextMove, setNextMove] = useState("Player1 roll the dice");
-  const btnClass = classNames({
-    btn: true,
+  const btnClass = classNames("btn",{
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
   });

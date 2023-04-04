@@ -1,5 +1,4 @@
 import { useState } from "react";
-import classNames from "classnames";
 import { Board } from "./Board";
 import Dice from "./Dice";
 
