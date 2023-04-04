@@ -48,7 +48,7 @@ export default function Dice({
           ] as TdiceRoll;
           // setDiceRoll(currentDiceRoll);
           onRoll(currentDiceRoll);
-          console.log(currentDiceRoll);
+          console.log("from Dice.tsx>>>" + currentDiceRoll);
           setNextMove(currentPlayer + " : Select a checker");
           // disable button id="roolBtn"
 

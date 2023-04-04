@@ -7,16 +7,25 @@ import { useEffect, useState } from "react";
 
 type BoardProps = {
   currentBoardState: Color[][];
+  // setCurrentBoardState: Function;
+  onMove: (boardState: Color[][]) => void;
   currentDiceRoll: TdiceRoll;
   currentPlayer: PlayerNames;
 };
 export function Board({
   currentBoardState,
+  onMove,
   currentDiceRoll,
   currentPlayer,
 }: BoardProps) {
-    let allowedColumns = setAllowedColumns(currentBoardState, currentDiceRoll, currentPlayer);
+    let allowedColumns = setAllowedColumns(
+      currentBoardState,
+      currentDiceRoll,
+      currentPlayer
+    );
     console.log("allowed columns for current state>>>" + allowedColumns);
+
+    
 
   return (
     <DndContext
@@ -50,7 +59,9 @@ export function Board({
           drction={"rtl"}
         />
       </div>
+      
     </DndContext>
+    
   );
 
   function setAllowedColumns(
@@ -113,10 +124,10 @@ export function Board({
     const index = e.active.data.current?.index ?? 0;
     const parent: string = e.active.data.current?.parent ?? "";
     console.log("--------Start Draging-------");
-    console.log("Checker ID = ", title);
-    console.log("Parent Point = ", parent);
+    // console.log("Checker ID = ", title);
+    // console.log("Parent Point = ", parent);
     // console.log("allowed columns handelDragStart" + allowedColumns);
-    let currentPoint = +parent.slice(parent.length - 2, parent.length);
+    // let currentPoint = +parent.slice(parent.length - 2, parent.length);
 
     // let allowedPoint1 = allowedColumns[currentPoint - 10][0];
     // let allowedPoint2 = allowedColumns[currentPoint - 10][1];
@@ -135,12 +146,12 @@ export function Board({
     //   allowedPoint2Element?.classList.add("point-allowed");
     // }
 
-    const parrentPoint = document.getElementById(parent);
+    // const parrentPoint = document.getElementById(parent);
     // console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint1);
 
-    console.log("Checker index = ", index);
+    // console.log("Checker index = ", index);
 
-    console.log("--------END Draging-------");
+    // console.log("--------END Draging-------");
   }
 
   function handleDragEnd(e: DragEndEvent) {
@@ -151,26 +162,43 @@ export function Board({
     const title = e.active.data.current?.title ?? ""; //checker
     const index = e.active.data.current?.index ?? 0;
     const parent = e.active.data.current?.parent ?? "";
-    console.log("---------------");
+    console.log("-----drag end----------");
 
-    console.log("Checker ID = ", title);
-    console.log("Parent Point = ", parent);
-    console.log("Target Point = ", target);
-    console.log("Checker index = ", index);
+    // console.log("Checker ID = ", title);
+    // console.log("Parent Point = ", parent);
+    // console.log("Target Point = ", target);
+    // console.log("Checker index = ", index);
     const oldCol: number = parent.slice(6, 8) - 10;
     const newCol: number = +target.slice(6, 8) - 10;
-    console.log(oldCol + newCol);
+    // console.log(oldCol + newCol);
     const colorName = currentBoardState[oldCol][index];
-    console.log("picked up checker is : " + colorName);
+    // console.log("picked up checker is : " + colorName);
     //update states
-    const newState = currentBoardState;
+    const newBoardState = currentBoardState;
     const newDiceRoll = currentDiceRoll;
 
     // if (newCol + 10 == allowedColumns[oldCol][0]) {
     //   console.log(newState[newCol]);
-      newState[newCol].push(colorName);
+      newBoardState[newCol].push(colorName);
     //   console.log(newState[newCol]);
-      newState[oldCol].pop();
+    newBoardState[oldCol].pop();
+    onMove(newBoardState);
+         allowedColumns = setAllowedColumns(
+          currentBoardState,
+          currentDiceRoll,
+          currentPlayer
+        );
+        // console.log("allowed columns for current state>>>> After dragEnd" + allowedColumns);
+
+    // console.log("newState=", newState);
+    console.log("currentBoardState after onMove in dragEnd=", currentBoardState);
+    console.log(
+      "Allowed columns after onMove in dragEnd=",
+      allowedColumns
+    );
+
+    //***************************888888888888888
+
     //   newDiceRoll[0] = 0;
     //   console.log("newDiceRoll=", newDiceRoll);
     // }
@@ -219,10 +247,10 @@ export function Board({
       // document.getElementById("alert").innerHTML = currentPlayer + " roll the dice";
       //setcurre
     }
-    console.log("---------------");
-    console.log("newState = ", newState);
-    console.log("newDiceRoll = ", newDiceRoll);
-    console.log("currentPlayer = ", currentPlayer);
+    // console.log("---------------");
+    // console.log("newState = ", newBoardState);
+    // console.log("newDiceRoll = ", newDiceRoll);
+    // console.log("currentPlayer = ", currentPlayer);
 
     // setAllowedColumns(newState, newDiceRoll, currentPlayer);
   }

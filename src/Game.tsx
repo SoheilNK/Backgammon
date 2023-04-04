@@ -21,18 +21,20 @@ export interface blackPlayer {
 interface GameProps {
   currentPlayer: PlayerNames;
   diceRoll: TdiceRoll;
-  currentBoardState: Color[][];
+  boardState: Color[][];
   playerWon: boolean;
 }
 
 function Game({
   currentPlayer,
   diceRoll,
-  currentBoardState,
+  boardState,
   playerWon,
 }: GameProps) {
   const [currentDiceRoll, setDiceRoll] = useState(diceRoll );
-  const [boardState, setBoardState] = useState(initialState);
+  // const [currentBoardState, setBoardState] = useState(initialState);
+
+
   const [player, setPlayer] = useState(currentPlayer);
   const [won, setPlayerWon] = useState(playerWon);
   //add state for allowed columns from board.tsx
@@ -53,9 +55,9 @@ function Game({
   // );
   // const [currentChecker, setCurrentChecker] = useState<Color>("White");
   // const [currentDiceRoll, setCurrentDiceRoll] = useState<TdiceRoll>([0, 0]);
-  // const [currentBoardState, setCurrentBoardState] = useState<Color[][]>(
-  //   initialState
-  // );
+  const [currentBoardState, setCurrentBoardState] = useState<Color[][]>(
+    initialState
+  );
   // const [playerWon, setPlayerWon] = useState<boolean>(false);
   // const [diceRoll, setDiceRoll] = useState<TdiceRoll>([0, 0]);
   // const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
@@ -74,6 +76,8 @@ function Game({
     <div>
       <Board
         currentBoardState={initialState}
+        // setCurrentBoardState={setCurrentBoardState}
+        onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}
         currentPlayer={currentPlayer}
       />
