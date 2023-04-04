@@ -1,22 +1,18 @@
 import { Color, PlayerNames, TdiceRoll } from "./Game";
-import React, { useEffect, useState } from "react";
+import {  useState } from "react";
 import classNames from "classnames";
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
-  // setDiceRoll: Function;
   onRoll: (roll: TdiceRoll) => void;
   disabled: boolean;
-  currentBoardState: Color[][];
   currentPlayer: PlayerNames;
 }
 
 export default function Dice({
   currentDiceRoll,
-  // setDiceRoll: setDiceRoll,
   onRoll,
   disabled,
-  currentBoardState,
   currentPlayer,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
@@ -48,11 +44,12 @@ export default function Dice({
           ] as TdiceRoll;
           // setDiceRoll(currentDiceRoll);
           onRoll(currentDiceRoll);
-          console.log("from Dice.tsx>>>" + currentDiceRoll);
           setNextMove(currentPlayer + " : Select a checker");
           // disable button id="roolBtn"
+          // setDiceDisabled(true);
+          // setAllowedChecker(1);
+          
 
-          // document.getElementById("roll").disabled = true;
         }}
       >
         Roll Dice

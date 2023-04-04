@@ -42,7 +42,7 @@ img.checker:active  {
     flex-direction:column-reverse;
   direction: rtl;
 }
-.point-allowed {
+.pointAllowed {
   background-color: rgb(138, 255, 127);
 
 }

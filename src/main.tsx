@@ -7,7 +7,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Game
       diceRoll={[0, 0]}
-      currentBoardState={[]}
+      boardState={[]}
       currentPlayer={PlayerNames.white}
       playerWon={false}
     />

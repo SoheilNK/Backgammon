@@ -11,21 +11,24 @@ type BoardProps = {
   onMove: (boardState: Color[][]) => void;
   currentDiceRoll: TdiceRoll;
   currentPlayer: PlayerNames;
+  selectedColumn: number;
+  onColumnSelect: (column: number) => void;
 };
 export function Board({
   currentBoardState,
   onMove,
   currentDiceRoll,
   currentPlayer,
+  selectedColumn,
+  onColumnSelect,
 }: BoardProps) {
-    let allowedColumns = setAllowedColumns(
-      currentBoardState,
-      currentDiceRoll,
-      currentPlayer
-    );
-    console.log("allowed columns for current state>>>" + allowedColumns);
-
-    
+  let allowedColumns = setAllowedColumns(
+    currentBoardState,
+    currentDiceRoll,
+    currentPlayer,
+    selectedColumn
+  );
+  console.log("allowed columns for current state>>>" + allowedColumns);
 
   return (
     <DndContext
@@ -39,37 +42,40 @@ export function Board({
           start={12}
           end={18}
           drction={"ltr"}
+          allowedColumns={allowedColumns}
         />
         <Container
           boardState={currentBoardState}
           start={18}
           end={24}
           drction={"ltr"}
+          allowedColumns={allowedColumns}
         />
         <Container
           boardState={currentBoardState}
           start={6}
           end={12}
           drction={"rtl"}
+          allowedColumns={allowedColumns}
         />
         <Container
           boardState={currentBoardState}
           start={0}
           end={6}
           drction={"rtl"}
+          allowedColumns={allowedColumns}
         />
       </div>
-      
     </DndContext>
-    
   );
 
   function setAllowedColumns(
     currentBoardState: Color[][],
     currentDiceRoll: TdiceRoll,
-    currentPlayer: PlayerNames
+    currentPlayer: PlayerNames,
+    selectedColumn: number
   ) {
-    let allowedColumns: number[][] = [];
+    let allowedColumns: number[] = [];
     let currentChecker: string;
     let opponentChecker: string;
 
@@ -82,76 +88,46 @@ export function Board({
     }
     // console.log(currentChecker, " vs", opponentChecker);
     // console.log(allowedChecker, currentPlayer);
-    currentBoardState.forEach((point, i) => {
-      if (point[0] == currentChecker) {
-        let target1 = i + currentDiceRoll[0];
-        let target2 = i + currentDiceRoll[1];
-        //rule#1
-        //check if the target is less that 23 and same color or not double opponent checker
-        if (target1 > 23) {
-          target1 = -1;
-        } else {
-          let target1Length = currentBoardState[target1].length;
-          let target1Color = currentBoardState[target1][0];
-          if (target1Length >= 2 && target1Color == opponentChecker) {
-            // console.log("can't move");
-            target1 = 0;
-          } else {
-            target1 = target1 + 10;
-          }
-        }
 
-        if (target2 > 23) {
-          target2 = 0;
-        } else {
-          let target2Length = currentBoardState[target2].length;
-          let target2Color = currentBoardState[target2][0];
-          if (target2Length >= 2 && target2Color == opponentChecker) {
-            target2 = 0;
-          } else {
-            target2 = target2 + 10;
-          }
-        }
-        allowedColumns[i] = [target1, target2];
+    //find allowed columns from selected column
+    let target1 = selectedColumn + currentDiceRoll[0];
+    let target2 = selectedColumn + currentDiceRoll[1];
+
+
+    //rule#1
+    //check if the target is less that 23 and same color or not double opponent checker
+    if (target1 > 23) {
+      target1 = -1;
+    } else {
+      let target1Length = currentBoardState[target1].length;
+      let target1Color = currentBoardState[target1][0];
+      if (target1Length >= 2 && target1Color == opponentChecker) {
+        // console.log("can't move");
+        target1 = 0;
+      } else {
+        target1 = target1 + 10;
       }
-    });
-    // console.log(allowedColumns);
-    return allowedColumns;
+    }
+
+    if (target2 > 23) {
+      target2 = 0;
+    } else {
+      let target2Length = currentBoardState[target2].length;
+      let target2Color = currentBoardState[target2][0];
+      if (target2Length >= 2 && target2Color == opponentChecker) {
+        target2 = 0;
+      } else {
+        target2 = target2 + 10;
+      }
+    }
+    // allowedColumns = [target1, target2];
+    return (allowedColumns = [target1, target2]);
   }
 
   function handelDragStart(e: DragStartEvent) {
-    const title = e.active.data.current?.title ?? ""; //checker
-    const index = e.active.data.current?.index ?? 0;
     const parent: string = e.active.data.current?.parent ?? "";
-    console.log("--------Start Draging-------");
-    // console.log("Checker ID = ", title);
-    // console.log("Parent Point = ", parent);
-    // console.log("allowed columns handelDragStart" + allowedColumns);
-    // let currentPoint = +parent.slice(parent.length - 2, parent.length);
-
-    // let allowedPoint1 = allowedColumns[currentPoint - 10][0];
-    // let allowedPoint2 = allowedColumns[currentPoint - 10][1];
-    // let allowedPoint1ID = "Point-" + allowedPoint1;
-    // let allowedPoint2ID = "Point-" + allowedPoint2;
-    // console.log("allowedPoint1 = ", allowedPoint1, allowedPoint1ID);
-    // console.log("allowedPoint2 = ", allowedPoint2, allowedPoint2ID);
-    //change the color of the allowed points
-    // let allowedPoint1Element = document.getElementById(allowedPoint1ID);
-    // let allowedPoint2Element = document.getElementById(allowedPoint2ID);
-    // console.log("currentDiceRoll = ", currentDiceRoll);
-    // if (currentDiceRoll[0] != 0) {
-    //   allowedPoint1Element?.classList.add("point-allowed");
-    // }
-    // if (currentDiceRoll[1] != 0) {
-    //   allowedPoint2Element?.classList.add("point-allowed");
-    // }
-
-    // const parrentPoint = document.getElementById(parent);
-    // console.log("parrentPoint = " + parrentPoint + "---" + allowedPoint1);
-
-    // console.log("Checker index = ", index);
-
-    // console.log("--------END Draging-------");
+    let currentPoint = +parent.slice(parent.length - 2, parent.length) - 10;
+    onColumnSelect(currentPoint);
   }
 
   function handleDragEnd(e: DragEndEvent) {
@@ -159,76 +135,30 @@ export function Board({
     const target = e.over.id as string;
     if (typeof e.over.id !== "string") throw new Error("id is not string");
     if (typeof e.over.id !== "string") throw new Error("id is not string");
-    const title = e.active.data.current?.title ?? ""; //checker
     const index = e.active.data.current?.index ?? 0;
     const parent = e.active.data.current?.parent ?? "";
     console.log("-----drag end----------");
-
-    // console.log("Checker ID = ", title);
-    // console.log("Parent Point = ", parent);
-    // console.log("Target Point = ", target);
-    // console.log("Checker index = ", index);
     const oldCol: number = parent.slice(6, 8) - 10;
     const newCol: number = +target.slice(6, 8) - 10;
-    // console.log(oldCol + newCol);
     const colorName = currentBoardState[oldCol][index];
-    // console.log("picked up checker is : " + colorName);
     //update states
     const newBoardState = currentBoardState;
     const newDiceRoll = currentDiceRoll;
 
-    // if (newCol + 10 == allowedColumns[oldCol][0]) {
-    //   console.log(newState[newCol]);
+    if (newCol + 10 != allowedColumns[0] && newCol + 10 != allowedColumns[1]) {
+      alert("This move is not not allowed");
+    } else {
       newBoardState[newCol].push(colorName);
-    //   console.log(newState[newCol]);
-    newBoardState[oldCol].pop();
-    onMove(newBoardState);
-         allowedColumns = setAllowedColumns(
-          currentBoardState,
-          currentDiceRoll,
-          currentPlayer
-        );
-        // console.log("allowed columns for current state>>>> After dragEnd" + allowedColumns);
-
-    // console.log("newState=", newState);
-    console.log("currentBoardState after onMove in dragEnd=", currentBoardState);
-    console.log(
-      "Allowed columns after onMove in dragEnd=",
-      allowedColumns
-    );
-
-    //***************************888888888888888
-
-    //   newDiceRoll[0] = 0;
-    //   console.log("newDiceRoll=", newDiceRoll);
-    // }
-    // if (newCol + 10 == allowedColumns[oldCol][1]) {
-    //   console.log(newState[newCol]);
-    //   newState[newCol].push(colorName);
-    //   console.log(newState[newCol]);
-    //   newState[oldCol].pop();
-    //   newDiceRoll[1] = 0;
-    //   console.log("newDiceRoll=", newDiceRoll);
-    // }
-    // if (
-    //   newCol + 10 != allowedColumns[oldCol][0] &&
-    //   newCol + 10 != allowedColumns[oldCol][1]
-    // ) {
-    //   console.log("not allowed");
-    // }
-    //reset the color of the allowed points
-    // // const allowedPoint1Element = document.getElementById(
-    // //   "Point-" + allowedColumns[oldCol][0]
-    // // );
-    // // const allowedPoint2Element = document.getElementById(
-    // //   "Point-" + allowedColumns[oldCol][1]
-    // // );
-    // allowedPoint1Element?.classList.remove("point-allowed");
-    // allowedPoint2Element?.classList.remove("point-allowed");
-    // console.log("---------------");
-    // console.log("newState = ", newState);
-    // console.log("newDiceRoll = ", newDiceRoll)
-    // console.log("currentPlayer = ", currentPlayer);
+      newBoardState[oldCol].pop();
+      onMove(newBoardState);
+      if (newCol + 10 == allowedColumns[0]) {
+        newDiceRoll[0] = 0;
+      }
+      if (newCol + 10 == allowedColumns[1]) {
+        newDiceRoll[1] = 0;
+      }
+    }
+    onColumnSelect(23); //reset the color of the allowed points
 
     //check if player can move again
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
@@ -254,5 +184,5 @@ export function Board({
 
     // setAllowedColumns(newState, newDiceRoll, currentPlayer);
   }
-}
+  }
 

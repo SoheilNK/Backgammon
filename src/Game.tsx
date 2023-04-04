@@ -40,7 +40,7 @@ function Game({
   //add state for allowed columns from board.tsx
   
   // const [selectedChecker, setSelectedChecker] = useState<number>(0);
-  // const [selectedColumn, setSelectedColumn] = useState<number>(0);
+  const [selectedColumn, setSelectedColumn] = useState(23);
   // const [nextMove, setNextMove] = useState("Player1 roll the dice");
   // const [player1, setPlayer1] = useState<whitePlayer>({
   //   name: PlayerNames.white,
@@ -76,17 +76,16 @@ function Game({
     <div>
       <Board
         currentBoardState={initialState}
-        // setCurrentBoardState={setCurrentBoardState}
         onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}
         currentPlayer={currentPlayer}
+        selectedColumn={selectedColumn}
+        onColumnSelect={(column: number) => setSelectedColumn(column)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
-        // setDiceRoll={setDiceRoll}
         onRoll={(roll: TdiceRoll) => setDiceRoll(roll)}
         disabled={false}
-        currentBoardState={boardState}
         currentPlayer={currentPlayer}
       />
     </div>
