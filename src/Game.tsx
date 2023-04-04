@@ -19,9 +19,9 @@ export interface blackPlayer {
   won: boolean;
 }
 interface GameProps {
+  currentPlayer: PlayerNames;
   diceRoll: TdiceRoll;
   currentBoardState: Color[][];
-  currentPlayer: PlayerNames;
   playerWon: boolean;
 }
 
@@ -31,10 +31,36 @@ function Game({
   currentBoardState,
   playerWon,
 }: GameProps) {
-  const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
+  const [currentDiceRoll, setDiceRoll] = useState(diceRoll );
   const [boardState, setBoardState] = useState(initialState);
   const [player, setPlayer] = useState(currentPlayer);
   const [won, setPlayerWon] = useState(playerWon);
+  //add state for allowed columns from board.tsx
+  
+  // const [selectedChecker, setSelectedChecker] = useState<number>(0);
+  // const [selectedColumn, setSelectedColumn] = useState<number>(0);
+  // const [nextMove, setNextMove] = useState("Player1 roll the dice");
+  // const [player1, setPlayer1] = useState<whitePlayer>({
+  //   name: PlayerNames.white,
+  //   won: false,
+  // });
+  // const [player2, setPlayer2] = useState<blackPlayer>({
+  //   name: PlayerNames.black,
+  //   won: false,
+  // });
+  // const [currentPlayer, setCurrentPlayer] = useState<PlayerNames>(
+  //   PlayerNames.white
+  // );
+  // const [currentChecker, setCurrentChecker] = useState<Color>("White");
+  // const [currentDiceRoll, setCurrentDiceRoll] = useState<TdiceRoll>([0, 0]);
+  // const [currentBoardState, setCurrentBoardState] = useState<Color[][]>(
+  //   initialState
+  // );
+  // const [playerWon, setPlayerWon] = useState<boolean>(false);
+  // const [diceRoll, setDiceRoll] = useState<TdiceRoll>([0, 0]);
+  // const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
+  // const [allowedChecker, setAllowedChecker] = useState<number>(0);
+  
   console.log(currentDiceRoll);
   //player 1 starts the game
   //player 1 rolls the dice
@@ -47,7 +73,7 @@ function Game({
   return (
     <div>
       <Board
-        boardState={initialState}
+        currentBoardState={initialState}
         currentDiceRoll={currentDiceRoll}
         currentPlayer={currentPlayer}
       />
