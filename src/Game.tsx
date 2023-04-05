@@ -18,14 +18,14 @@ export interface blackPlayer {
   won: boolean;
 }
 interface GameProps {
-  currentPlayer: PlayerNames;
+  // currentPlayer: PlayerNames;
   diceRoll: TdiceRoll;
   boardState: Color[][];
   playerWon: boolean;
 }
 
 function Game({
-  currentPlayer,
+  // currentPlayer,
   diceRoll,
   boardState,
   playerWon,
@@ -33,10 +33,15 @@ function Game({
   const [currentDiceRoll, setDiceRoll] = useState(diceRoll );
   // const [currentBoardState, setBoardState] = useState(initialState);
   const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
+  const [currentPlayer, setCurrentPlayer] = useState<PlayerNames>(
+    PlayerNames.white
+  );
+    const [message, setMessage] = useState(currentPlayer + " roll the dice") ;
 
 
-  const [player, setPlayer] = useState(currentPlayer);
-  const [won, setPlayerWon] = useState(playerWon);
+
+  // const [player, setPlayer] = useState(currentPlayer);
+  // const [won, setPlayerWon] = useState(playerWon);
   //add state for allowed columns from board.tsx
   
   // const [selectedChecker, setSelectedChecker] = useState<number>(0);
@@ -50,9 +55,6 @@ function Game({
   //   name: PlayerNames.black,
   //   won: false,
   // });
-  // const [currentPlayer, setCurrentPlayer] = useState<PlayerNames>(
-  //   PlayerNames.white
-  // );
   // const [currentChecker, setCurrentChecker] = useState<Color>("White");
   // const [currentDiceRoll, setCurrentDiceRoll] = useState<TdiceRoll>([0, 0]);
   const [currentBoardState, setCurrentBoardState] = useState<Color[][]>(
@@ -78,6 +80,7 @@ function Game({
         onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}
         currentPlayer={currentPlayer}
+        onPlayerChange={(player: PlayerNames) => setCurrentPlayer(player)}
         selectedColumn={selectedColumn}
         onColumnSelect={(column: number) => setSelectedColumn(column)}
         onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
@@ -88,6 +91,8 @@ function Game({
         currentPlayer={currentPlayer}
         onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
         diceDisabled={diceDisabled}
+        message={message}
+        onMessage={(message: string) => setMessage(message)}
       />
     </div>
   );

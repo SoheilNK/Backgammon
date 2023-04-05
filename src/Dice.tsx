@@ -1,5 +1,5 @@
 import { Color, PlayerNames, TdiceRoll } from "./Game";
-import {  useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 
 interface DiceProps {
@@ -8,6 +8,8 @@ interface DiceProps {
   currentPlayer: PlayerNames;
   onDiceDisabled: (disabled: boolean) => void;
   diceDisabled: boolean;
+  message: string;
+  onMessage: (message: string) => void;
 }
 
 export default function Dice({
@@ -16,15 +18,18 @@ export default function Dice({
   currentPlayer,
   onDiceDisabled,
   diceDisabled,
+  message,
+  onMessage,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [nextMove, setNextMove] = useState("Player1 roll the dice");
-  const btnClass = classNames("btn",{
+
+  onMessage(currentPlayer + " roll the dice");
+
+  const btnClass = classNames("btn", {
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
   });
-
 
   return (
     <div>
@@ -45,15 +50,14 @@ export default function Dice({
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
           onRoll(currentDiceRoll);
-          setNextMove(currentPlayer + " : Move a checker");
-
+          onMessage(currentPlayer + " move a checker");
+          //*****************************show message after doce roll***************************
           // setAllowedChecker(1);
         }}
       >
         Roll Dice
       </button>
-      <h3 id="alert">{nextMove}</h3>
+      <h3 id="alert">{message}</h3>
     </div>
   );
 }
-

@@ -1,16 +1,16 @@
 import { Color, PlayerNames, TdiceRoll } from "./Game";
 
-import { DragEndEvent, DragStartEvent} from "@dnd-kit/core";
+import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Container } from "./Points";
 import { useEffect, useState } from "react";
 
 type BoardProps = {
   currentBoardState: Color[][];
-  // setCurrentBoardState: Function;
   onMove: (boardState: Color[][]) => void;
   currentDiceRoll: TdiceRoll;
   currentPlayer: PlayerNames;
+  onPlayerChange: (player: PlayerNames) => void;
   selectedColumn: number;
   onColumnSelect: (column: number) => void;
   onDiceDisabled: (disabled: boolean) => void;
@@ -20,6 +20,7 @@ export function Board({
   onMove,
   currentDiceRoll,
   currentPlayer,
+  onPlayerChange,
   selectedColumn,
   onColumnSelect,
   onDiceDisabled,
@@ -95,10 +96,9 @@ export function Board({
     let target1 = selectedColumn + currentDiceRoll[0];
     let target2 = selectedColumn + currentDiceRoll[1];
 
-
     //rule#1
     //check if the target is less that 23 and same color or not double opponent checker
-    if (target1 > 23 || target1 == 0) {
+    if (target1 > 23) {
       target1 = -1;
     } else {
       let target1Length = currentBoardState[target1].length;
@@ -111,8 +111,8 @@ export function Board({
       }
     }
 
-    if (target2 > 23 || target1 == 0) {
-      target2 = -1;
+    if (target2 > 23) {
+      target2 = 0;
     } else {
       let target2Length = currentBoardState[target2].length;
       let target2Color = currentBoardState[target2][0];
@@ -160,17 +160,19 @@ export function Board({
         newDiceRoll[1] = 0;
       }
     }
-    
-    onColumnSelect(23); //reset the color of the allowed points
+    onColumnSelect(50); //reset the color of the allowed points
 
     //check if player can move again
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
-      alert("Change player");
+      //change player
+
       if (currentPlayer == PlayerNames.white) {
         currentPlayer = PlayerNames.black;
       } else {
         currentPlayer = PlayerNames.white;
       }
+      onPlayerChange(currentPlayer);
+
       //make roll button active
       onDiceDisabled(false);
     }

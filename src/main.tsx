@@ -1,6 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import Game, { PlayerNames } from './Game'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Game, { PlayerNames } from "./Game";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -8,9 +8,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Game
       diceRoll={[0, 0]}
       boardState={[]}
-      currentPlayer={PlayerNames.white}
       playerWon={false}
     />
   </React.StrictMode>
 );
-
