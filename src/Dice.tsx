@@ -5,15 +5,17 @@ import classNames from "classnames";
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   onRoll: (roll: TdiceRoll) => void;
-  disabled: boolean;
   currentPlayer: PlayerNames;
+  onDiceDisabled: (disabled: boolean) => void;
+  diceDisabled: boolean;
 }
 
 export default function Dice({
   currentDiceRoll,
   onRoll,
-  disabled,
   currentPlayer,
+  onDiceDisabled,
+  diceDisabled,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -35,20 +37,17 @@ export default function Dice({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         type="button"
-        disabled={disabled}
+        disabled={diceDisabled}
         onClick={() => {
+          onDiceDisabled(true);
           currentDiceRoll = [
             Math.floor(Math.random() * 5 + 1),
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
-          // setDiceRoll(currentDiceRoll);
           onRoll(currentDiceRoll);
-          setNextMove(currentPlayer + " : Select a checker");
-          // disable button id="roolBtn"
-          // setDiceDisabled(true);
-          // setAllowedChecker(1);
-          
+          setNextMove(currentPlayer + " : Move a checker");
 
+          // setAllowedChecker(1);
         }}
       >
         Roll Dice

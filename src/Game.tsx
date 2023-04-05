@@ -32,6 +32,7 @@ function Game({
 }: GameProps) {
   const [currentDiceRoll, setDiceRoll] = useState(diceRoll );
   // const [currentBoardState, setBoardState] = useState(initialState);
+  const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
 
 
   const [player, setPlayer] = useState(currentPlayer);
@@ -59,7 +60,6 @@ function Game({
   );
   // const [playerWon, setPlayerWon] = useState<boolean>(false);
   // const [diceRoll, setDiceRoll] = useState<TdiceRoll>([0, 0]);
-  // const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
   // const [allowedChecker, setAllowedChecker] = useState<number>(0);
   
   console.log(currentDiceRoll);
@@ -80,12 +80,14 @@ function Game({
         currentPlayer={currentPlayer}
         selectedColumn={selectedColumn}
         onColumnSelect={(column: number) => setSelectedColumn(column)}
+        onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
         onRoll={(roll: TdiceRoll) => setDiceRoll(roll)}
-        disabled={false}
         currentPlayer={currentPlayer}
+        onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
+        diceDisabled={diceDisabled}
       />
     </div>
   );
