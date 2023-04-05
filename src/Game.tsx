@@ -30,20 +30,21 @@ function Game({
   boardState,
   playerWon,
 }: GameProps) {
-  const [currentDiceRoll, setDiceRoll] = useState(diceRoll );
+  //Define if the player can move the checker
+  const [moveAllowed, setMoveAllowed] = useState<boolean>(false);
+
+  const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
   // const [currentBoardState, setBoardState] = useState(initialState);
   const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
   const [currentPlayer, setCurrentPlayer] = useState<PlayerNames>(
     PlayerNames.white
   );
-    const [message, setMessage] = useState(currentPlayer + " roll the dice") ;
-
-
+  const [message, setMessage] = useState(currentPlayer + " roll the dice");
 
   // const [player, setPlayer] = useState(currentPlayer);
   // const [won, setPlayerWon] = useState(playerWon);
   //add state for allowed columns from board.tsx
-  
+
   // const [selectedChecker, setSelectedChecker] = useState<number>(0);
   const [selectedColumn, setSelectedColumn] = useState(23);
   // const [nextMove, setNextMove] = useState("Player1 roll the dice");
@@ -57,13 +58,12 @@ function Game({
   // });
   // const [currentChecker, setCurrentChecker] = useState<Color>("White");
   // const [currentDiceRoll, setCurrentDiceRoll] = useState<TdiceRoll>([0, 0]);
-  const [currentBoardState, setCurrentBoardState] = useState<Color[][]>(
-    initialState
-  );
+  const [currentBoardState, setCurrentBoardState] =
+    useState<Color[][]>(initialState);
   // const [playerWon, setPlayerWon] = useState<boolean>(false);
   // const [diceRoll, setDiceRoll] = useState<TdiceRoll>([0, 0]);
   // const [allowedChecker, setAllowedChecker] = useState<number>(0);
-  
+
   console.log(currentDiceRoll);
   //player 1 starts the game
   //player 1 rolls the dice
@@ -84,6 +84,9 @@ function Game({
         selectedColumn={selectedColumn}
         onColumnSelect={(column: number) => setSelectedColumn(column)}
         onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
+        onMessage={(message: string) => setMessage(message)}
+        onMoveAllowed={(allowed: boolean) => setMoveAllowed(allowed)}
+        moveAllowed={moveAllowed}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}

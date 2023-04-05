@@ -24,7 +24,6 @@ export default function Dice({
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  onMessage(currentPlayer + " roll the dice");
 
   const btnClass = classNames("btn", {
     "btn-pressed": isPressed,
@@ -51,6 +50,7 @@ export default function Dice({
           ] as TdiceRoll;
           onRoll(currentDiceRoll);
           onMessage(currentPlayer + " move a checker");
+          
           //*****************************show message after doce roll***************************
           // setAllowedChecker(1);
         }}

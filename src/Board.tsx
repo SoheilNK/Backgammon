@@ -3,7 +3,7 @@ import { Color, PlayerNames, TdiceRoll } from "./Game";
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Container } from "./Points";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -14,6 +14,9 @@ type BoardProps = {
   selectedColumn: number;
   onColumnSelect: (column: number) => void;
   onDiceDisabled: (disabled: boolean) => void;
+  onMessage: (message: string) => void;
+  onMoveAllowed: (allowed: boolean) => void;
+  moveAllowed: boolean;
 };
 export function Board({
   currentBoardState,
@@ -24,7 +27,12 @@ export function Board({
   selectedColumn,
   onColumnSelect,
   onDiceDisabled,
+  onMessage,
+  onMoveAllowed,
+  moveAllowed,
 }: BoardProps) {
+
+
   let allowedColumns = setAllowedColumns(
     currentBoardState,
     currentDiceRoll,
@@ -46,6 +54,8 @@ export function Board({
           end={18}
           drction={"ltr"}
           allowedColumns={allowedColumns}
+          currentPlayer={currentPlayer}
+          moveAllowed={moveAllowed}
         />
         <Container
           boardState={currentBoardState}
@@ -53,6 +63,8 @@ export function Board({
           end={24}
           drction={"ltr"}
           allowedColumns={allowedColumns}
+          currentPlayer={currentPlayer}
+          moveAllowed={moveAllowed}
         />
         <Container
           boardState={currentBoardState}
@@ -60,6 +72,8 @@ export function Board({
           end={12}
           drction={"rtl"}
           allowedColumns={allowedColumns}
+          currentPlayer={currentPlayer}
+          moveAllowed={moveAllowed}
         />
         <Container
           boardState={currentBoardState}
@@ -67,6 +81,8 @@ export function Board({
           end={6}
           drction={"rtl"}
           allowedColumns={allowedColumns}
+          currentPlayer={currentPlayer}
+          moveAllowed={moveAllowed}
         />
       </div>
     </DndContext>
@@ -79,18 +95,17 @@ export function Board({
     selectedColumn: number
   ) {
     let allowedColumns: number[] = [];
-    let currentChecker: string;
-    let opponentChecker: string;
+    let allowedChecker: string;
+    let blockedChecker: string;
 
     if (PlayerNames.white == currentPlayer) {
-      currentChecker = "White";
-      opponentChecker = "Black";
+      allowedChecker = "White";
+      blockedChecker = "Black";
     } else {
-      currentChecker = "Black";
-      opponentChecker = "White";
+      allowedChecker = "Black";
+      blockedChecker = "White";
     }
-    // console.log(currentChecker, " vs", opponentChecker);
-    // console.log(allowedChecker, currentPlayer);
+
 
     //find allowed columns from selected column
     let target1 = selectedColumn + currentDiceRoll[0];
@@ -103,7 +118,7 @@ export function Board({
     } else {
       let target1Length = currentBoardState[target1].length;
       let target1Color = currentBoardState[target1][0];
-      if (target1Length >= 2 && target1Color == opponentChecker) {
+      if (target1Length >= 2 && target1Color == blockedChecker) {
         // console.log("can't move");
         target1 = 0;
       } else {
@@ -116,15 +131,34 @@ export function Board({
     } else {
       let target2Length = currentBoardState[target2].length;
       let target2Color = currentBoardState[target2][0];
-      if (target2Length >= 2 && target2Color == opponentChecker) {
+      if (target2Length >= 2 && target2Color == blockedChecker) {
         target2 = 0;
       } else {
         target2 = target2 + 10;
       }
     }
+    //*************************************check for moveAllowed**** */
+    if (target1 == 0 && target2 == 0) {
+      onMoveAllowed(false);
+      // onMessage("No move available");
+    } else {
+      onMoveAllowed(true);
+      // onMessage("");
+    }
+
+    // if (target1 == 0 && target2 == 0) {
+    //   onDiceDisabled(true);
+    //   onMessage("No move available");
+    // } else {
+    //   onDiceDisabled(false);
+    //   onMessage("");
+    // }
+
     // allowedColumns = [target1, target2];
     return (allowedColumns = [target1, target2]);
   }
+
+
 
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
@@ -162,10 +196,8 @@ export function Board({
     }
     onColumnSelect(50); //reset the color of the allowed points
 
-    //check if player can move again
+    ////change player
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
-      //change player
-
       if (currentPlayer == PlayerNames.white) {
         currentPlayer = PlayerNames.black;
       } else {
@@ -175,6 +207,7 @@ export function Board({
 
       //make roll button active
       onDiceDisabled(false);
+      onMessage(currentPlayer + " roll the dice");
     }
   }
 }

@@ -2,7 +2,7 @@ import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
 import classNames from "classnames";
-import { Color, Direction } from "./Game";
+import { Color, Direction, PlayerNames } from "./Game";
 
 let imgUrl = "";
 
@@ -10,10 +10,12 @@ interface CheckerProps {
   title: string;
   clr: Color;
   parent: string;
+  disabled: boolean;
 }
-function Checker({ title, clr, parent }: CheckerProps) {
+function Checker({ title, clr, parent, disabled }: CheckerProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: title,
+    disabled: disabled,
     data: {
       title,
       parent,
@@ -47,12 +49,16 @@ interface PointProps {
   items: Array<Color>;
   drction: Direction;
   isAllowed: boolean;
+  currentPlayer: PlayerNames;
+  moveAllowed: boolean;
 }
 function Point({
   colName,
   items,
   drction,
   isAllowed,
+  currentPlayer,
+  moveAllowed,
 }: PointProps) {
   const { setNodeRef } = useDroppable({
     id: colName,
@@ -62,10 +68,33 @@ function Point({
     pointAllowed: isAllowed,
   });
 
+
+  //check allowed player
+    let allowedClr: Color;
+  if (PlayerNames.white == currentPlayer) {
+    allowedClr = "White";
+  } else {
+    allowedClr = "Black";
+  }
+  // console.log("selected column>>>" + selectedColumn);
+  // let currentChecker = currentBoardState[selectedColumn][0];
+
+  //check if the checker is allowed to move
+  // console.log("current checker>>>" + allowedChecker + " allowed checker>>>" + currentChecker);
+  // if (allowedChecker != currentChecker) {
+  //   console.log("This checker is not allowed to move");
+  //   return allowedColumns;
+
+  // }
+
+  // console.log(currentChecker, " vs", opponentChecker);
+  // console.log(allowedChecker, currentPlayer);
+
   return (
     <div id={colName} ref={setNodeRef} className={drction + " " + pointClass}>
       {items.map((checkerClr, key) => (
         <Checker
+          disabled={(checkerClr != allowedClr) || (!moveAllowed)}
           key={key}
           parent={colName}
           clr={checkerClr}
@@ -82,6 +111,8 @@ type ContainerProps = {
   end: number;
   drction: Direction;
   allowedColumns: number[];
+  currentPlayer: PlayerNames;
+  moveAllowed: boolean;
 };
 export function Container({
   boardState: points,
@@ -89,6 +120,8 @@ export function Container({
   end,
   drction,
   allowedColumns,
+  currentPlayer,
+  moveAllowed,
 }: ContainerProps) {
   return (
     <div className={"grid-container " + drction}>
@@ -103,6 +136,8 @@ export function Container({
               allowedColumns[0] == start + i + 10 ||
               allowedColumns[1] == start + i + 10
             }
+            currentPlayer={currentPlayer}
+            moveAllowed={moveAllowed}
           />{" "}
           {/* added 10 to make it 2 digits*/}
         </div>
