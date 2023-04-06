@@ -31,6 +31,9 @@ function Game({
   playerWon,
 }: GameProps) {
   //Define if the player can move the checker
+
+  const [isDouble, setIsDouble] = useState<boolean>(false);
+  const [doubleLeft, setDoubleLeft] = useState<number>(0);
   const [moveAllowed, setMoveAllowed] = useState<boolean>(false);
 
   const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
@@ -87,6 +90,9 @@ function Game({
         onMessage={(message: string) => setMessage(message)}
         onMoveAllowed={(allowed: boolean) => setMoveAllowed(allowed)}
         moveAllowed={moveAllowed}
+        isDouble={isDouble}
+        onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
+        doubleLeft={doubleLeft}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
@@ -96,6 +102,8 @@ function Game({
         diceDisabled={diceDisabled}
         message={message}
         onMessage={(message: string) => setMessage(message)}
+        onDouble={(isDouble: boolean) => setIsDouble(isDouble)}
+        onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
       />
     </div>
   );

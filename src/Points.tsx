@@ -68,9 +68,8 @@ function Point({
     pointAllowed: isAllowed,
   });
 
-
   //check allowed player
-    let allowedClr: Color;
+  let allowedClr: Color;
   if (PlayerNames.white == currentPlayer) {
     allowedClr = "White";
   } else {
@@ -94,7 +93,7 @@ function Point({
     <div id={colName} ref={setNodeRef} className={drction + " " + pointClass}>
       {items.map((checkerClr, key) => (
         <Checker
-          disabled={(checkerClr != allowedClr) || (!moveAllowed)}
+          disabled={checkerClr != allowedClr || !moveAllowed}
           key={key}
           parent={colName}
           clr={checkerClr}
@@ -105,7 +104,7 @@ function Point({
   );
 }
 
-type ContainerProps = {
+type QuadrantProps = {
   boardState: Color[][];
   start: number;
   end: number;
@@ -114,7 +113,7 @@ type ContainerProps = {
   currentPlayer: PlayerNames;
   moveAllowed: boolean;
 };
-export function Container({
+export function Quadrant({
   boardState: points,
   start,
   end,
@@ -122,7 +121,7 @@ export function Container({
   allowedColumns,
   currentPlayer,
   moveAllowed,
-}: ContainerProps) {
+}: QuadrantProps) {
   return (
     <div className={"grid-container " + drction}>
       {points.slice(start, end).map((point, i) => (

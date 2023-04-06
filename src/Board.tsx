@@ -2,7 +2,7 @@ import { Color, PlayerNames, TdiceRoll } from "./Game";
 
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { Container } from "./Points";
+import { Quadrant } from "./Points";
 import { useState } from "react";
 
 type BoardProps = {
@@ -17,6 +17,9 @@ type BoardProps = {
   onMessage: (message: string) => void;
   onMoveAllowed: (allowed: boolean) => void;
   moveAllowed: boolean;
+  isDouble: boolean;
+  onDoubleLeft: (counter: number) => void;
+  doubleLeft: number;
 };
 export function Board({
   currentBoardState,
@@ -30,9 +33,10 @@ export function Board({
   onMessage,
   onMoveAllowed,
   moveAllowed,
+  isDouble,
+  onDoubleLeft,
+  doubleLeft,
 }: BoardProps) {
-
-
   let allowedColumns = setAllowedColumns(
     currentBoardState,
     currentDiceRoll,
@@ -48,7 +52,7 @@ export function Board({
       onDragEnd={handleDragEnd}
     >
       <div className="board">
-        <Container
+        <Quadrant
           boardState={currentBoardState}
           start={12}
           end={18}
@@ -57,7 +61,7 @@ export function Board({
           currentPlayer={currentPlayer}
           moveAllowed={moveAllowed}
         />
-        <Container
+        <Quadrant
           boardState={currentBoardState}
           start={18}
           end={24}
@@ -66,7 +70,7 @@ export function Board({
           currentPlayer={currentPlayer}
           moveAllowed={moveAllowed}
         />
-        <Container
+        <Quadrant
           boardState={currentBoardState}
           start={6}
           end={12}
@@ -75,7 +79,7 @@ export function Board({
           currentPlayer={currentPlayer}
           moveAllowed={moveAllowed}
         />
-        <Container
+        <Quadrant
           boardState={currentBoardState}
           start={0}
           end={6}
@@ -105,7 +109,6 @@ export function Board({
       allowedChecker = "Black";
       blockedChecker = "White";
     }
-
 
     //find allowed columns from selected column
     let target1 = selectedColumn + currentDiceRoll[0];
@@ -158,8 +161,6 @@ export function Board({
     return (allowedColumns = [target1, target2]);
   }
 
-
-
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
     let currentPoint = +parent.slice(parent.length - 2, parent.length) - 10;
@@ -182,19 +183,43 @@ export function Board({
     const newDiceRoll = currentDiceRoll;
 
     if (newCol + 10 != allowedColumns[0] && newCol + 10 != allowedColumns[1]) {
-      alert("This move is not not allowed");
+      // alert("This move is not not allowed");
     } else {
       newBoardState[newCol].push(colorName);
       newBoardState[oldCol].pop();
       onMove(newBoardState);
-      if (newCol + 10 == allowedColumns[0]) {
-        newDiceRoll[0] = 0;
-      }
-      if (newCol + 10 == allowedColumns[1]) {
-        newDiceRoll[1] = 0;
+
+      //update dice roll
+      if (isDouble) {
+        doubleLeft = doubleLeft - 1;
+        onDoubleLeft(doubleLeft);
+        onMessage(currentPlayer + " rolled a double, you have " + doubleLeft + " moves left");
+        if (doubleLeft == 0) {
+          isDouble = false;
+          // onIsDouble(isDouble);
+          if (currentPlayer == PlayerNames.white) {
+            currentPlayer = PlayerNames.black;
+          } else {
+            currentPlayer = PlayerNames.white;
+          }
+          onPlayerChange(currentPlayer);
+          onDiceDisabled(false);
+          onMessage(currentPlayer + " roll the dice");
+        }
+      } else {
+
+        if (newCol + 10 == allowedColumns[0]) {
+          newDiceRoll[0] = 0;
+        }
+        if (newCol + 10 == allowedColumns[1]) {
+          newDiceRoll[1] = 0;
+        }
       }
     }
     onColumnSelect(50); //reset the color of the allowed points
+    //check for isDouble
+
+      
 
     ////change player
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {

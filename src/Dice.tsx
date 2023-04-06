@@ -10,6 +10,8 @@ interface DiceProps {
   diceDisabled: boolean;
   message: string;
   onMessage: (message: string) => void;
+  onDouble: (double: boolean) => void;
+  onDoubleLeft: (doubleLeft: number) => void;
 }
 
 export default function Dice({
@@ -20,10 +22,11 @@ export default function Dice({
   diceDisabled,
   message,
   onMessage,
+  onDouble,
+  onDoubleLeft,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
 
   const btnClass = classNames("btn", {
     "btn-pressed": isPressed,
@@ -43,16 +46,25 @@ export default function Dice({
         type="button"
         disabled={diceDisabled}
         onClick={() => {
+
           onDiceDisabled(true);
           currentDiceRoll = [
             Math.floor(Math.random() * 5 + 1),
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
+          /************************************************************ */
+          // currentDiceRoll = [2, 2] as TdiceRoll; //for testing double
           onRoll(currentDiceRoll);
           onMessage(currentPlayer + " move a checker");
-          
-          //*****************************show message after doce roll***************************
-          // setAllowedChecker(1);
+
+          if (currentDiceRoll[0] === currentDiceRoll[1]) {
+            //if the dice roll is a double, the player can move twice
+            onDouble(true);
+            onDoubleLeft(4);
+            onMessage(
+              currentPlayer + " rolled a double, you have four moves left"
+            );
+          }
         }}
       >
         Roll Dice
