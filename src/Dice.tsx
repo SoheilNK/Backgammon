@@ -46,7 +46,7 @@ export default function Dice({
         type="button"
         disabled={diceDisabled}
         onClick={() => {
-
+          onDouble(false);
           onDiceDisabled(true);
           currentDiceRoll = [
             Math.floor(Math.random() * 5 + 1),

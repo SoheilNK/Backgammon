@@ -101,22 +101,24 @@ export function Board({
     let allowedColumns: number[] = [];
     let allowedChecker: string;
     let blockedChecker: string;
-
+    let direction: number = +1 || -1 ;
     if (PlayerNames.white == currentPlayer) {
       allowedChecker = "White";
       blockedChecker = "Black";
+      direction = +1;
     } else {
       allowedChecker = "Black";
       blockedChecker = "White";
+      direction = -1;
     }
 
     //find allowed columns from selected column
-    let target1 = selectedColumn + currentDiceRoll[0];
-    let target2 = selectedColumn + currentDiceRoll[1];
+    let target1 = selectedColumn + currentDiceRoll[0]*direction;
+    let target2 = selectedColumn + currentDiceRoll[1]*direction;
 
     //rule#1
     //check if the target is less that 23 and same color or not double opponent checker
-    if (target1 > 23) {
+    if (target1 > 23 || target1 < 0) {
       target1 = -1;
     } else {
       let target1Length = currentBoardState[target1].length;
@@ -129,8 +131,8 @@ export function Board({
       }
     }
 
-    if (target2 > 23) {
-      target2 = 0;
+    if (target2 > 23 || target2 < 0) {
+      target2 = -1;
     } else {
       let target2Length = currentBoardState[target2].length;
       let target2Color = currentBoardState[target2][0];
