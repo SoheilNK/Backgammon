@@ -15,7 +15,7 @@ interface DiceProps {
 }
 
 export default function Dice({
-  currentDiceRoll,
+  currentDiceRoll: newDiceRoll,
   onRoll,
   currentPlayer,
   onDiceDisabled,
@@ -35,7 +35,7 @@ export default function Dice({
 
   return (
     <div>
-      <h2>{currentDiceRoll}</h2>
+      <h2>{newDiceRoll}</h2>
       <button
         id="roll"
         className={btnClass}
@@ -48,16 +48,16 @@ export default function Dice({
         onClick={() => {
           onDouble(false);
           onDiceDisabled(true);
-          currentDiceRoll = [
+          newDiceRoll = [
             Math.floor(Math.random() * 5 + 1),
             Math.floor(Math.random() * 5 + 1),
           ] as TdiceRoll;
           /************************************************************ */
           // currentDiceRoll = [2, 2] as TdiceRoll; //for testing double
-          onRoll(currentDiceRoll);
+          onRoll(newDiceRoll);
           onMessage(currentPlayer + " move a checker");
 
-          if (currentDiceRoll[0] === currentDiceRoll[1]) {
+          if (newDiceRoll[0] === newDiceRoll[1]) {
             //if the dice roll is a double, the player can move twice
             onDouble(true);
             onDoubleLeft(4);

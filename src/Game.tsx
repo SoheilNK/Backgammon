@@ -44,42 +44,14 @@ function Game({
   );
   const [message, setMessage] = useState(currentPlayer + " roll the dice");
 
-  // const [player, setPlayer] = useState(currentPlayer);
-  // const [won, setPlayerWon] = useState(playerWon);
-  //add state for allowed columns from board.tsx
-
-  // const [selectedChecker, setSelectedChecker] = useState<number>(0);
   const [selectedColumn, setSelectedColumn] = useState(23);
-  // const [nextMove, setNextMove] = useState("Player1 roll the dice");
-  // const [player1, setPlayer1] = useState<whitePlayer>({
-  //   name: PlayerNames.white,
-  //   won: false,
-  // });
-  // const [player2, setPlayer2] = useState<blackPlayer>({
-  //   name: PlayerNames.black,
-  //   won: false,
-  // });
-  // const [currentChecker, setCurrentChecker] = useState<Color>("White");
-  // const [currentDiceRoll, setCurrentDiceRoll] = useState<TdiceRoll>([0, 0]);
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState);
-  // const [playerWon, setPlayerWon] = useState<boolean>(false);
-  // const [diceRoll, setDiceRoll] = useState<TdiceRoll>([0, 0]);
-  // const [allowedChecker, setAllowedChecker] = useState<number>(0);
-
   console.log(currentDiceRoll);
-  //player 1 starts the game
-  //player 1 rolls the dice
-  //player 1 selects a checker
-  //player 1 selects a column to move the checker to
-  //player 2 rolls the dice
-  //player 2 selects a checker
-  //player 2 selects a column to move the checker to
-
   return (
     <div>
       <Board
-        currentBoardState={initialState}
+        currentBoardState={currentBoardState}
         onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}
         currentPlayer={currentPlayer}
@@ -89,7 +61,7 @@ function Game({
         onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
         onMessage={(message: string) => setMessage(message)}
         onMoveAllowed={(allowed: boolean) => setMoveAllowed(allowed)}
-        moveAllowed={moveAllowed}
+        // moveAllowed={moveAllowed}
         isDouble={isDouble}
         onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
         doubleLeft={doubleLeft}

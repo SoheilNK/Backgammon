@@ -3,7 +3,7 @@ import { Color, PlayerNames, TdiceRoll } from "./Game";
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
-import { useState } from "react";
+import { useEffect } from "react";
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -16,7 +16,7 @@ type BoardProps = {
   onDiceDisabled: (disabled: boolean) => void;
   onMessage: (message: string) => void;
   onMoveAllowed: (allowed: boolean) => void;
-  moveAllowed: boolean;
+  // moveAllowed: boolean;
   isDouble: boolean;
   onDoubleLeft: (counter: number) => void;
   doubleLeft: number;
@@ -32,18 +32,30 @@ export function Board({
   onDiceDisabled,
   onMessage,
   onMoveAllowed,
-  moveAllowed,
+  // moveAllowed,
   isDouble,
   onDoubleLeft,
   doubleLeft,
 }: BoardProps) {
+  //******test*** */
+  // let newMoveAllowed = anyMoveAvailable(currentBoardState, currentPlayer, currentDiceRoll);
+  let newMoveAllowed = true;
+  //******test*** */
+  
+  useEffect(() => {
+    onMoveAllowed(newMoveAllowed);
+  }, [newMoveAllowed]);
+  
+
+  // console.log("anyMoveAvailable >>> " + newMoveAllowed);
+
   let allowedColumns = setAllowedColumns(
     currentBoardState,
     currentDiceRoll,
     currentPlayer,
     selectedColumn
   );
-  console.log("allowed columns for current state>>>" + allowedColumns);
+  // console.log("setAllowedColumns >>> allowed columns for current state>>>" + allowedColumns);
 
   return (
     <DndContext
@@ -59,7 +71,7 @@ export function Board({
           drction={"ltr"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={moveAllowed}
+          moveAllowed={newMoveAllowed}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -68,7 +80,7 @@ export function Board({
           drction={"ltr"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={moveAllowed}
+          moveAllowed={newMoveAllowed}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -77,7 +89,7 @@ export function Board({
           drction={"rtl"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={moveAllowed}
+          moveAllowed={newMoveAllowed}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -86,11 +98,83 @@ export function Board({
           drction={"rtl"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={moveAllowed}
+          moveAllowed={newMoveAllowed}
         />
       </div>
     </DndContext>
   );
+  //define a function to return a boolean value if any move is available or not
+  // function anyMoveAvailable(
+  //   currentBoardState: Color[][],
+  //   currentPlayer: PlayerNames,
+  //   currentDiceRoll: TdiceRoll
+  // ) {
+  //   let allowedChecker: string;
+  //   let blockedChecker: string;
+  //   let direction: number = +1 || -1;
+  //   let target1: number = 0;
+  //   let target2: number = 0;
+
+  //   if (PlayerNames.white == currentPlayer) {
+  //     allowedChecker = "White";
+  //     blockedChecker = "Black";
+  //     direction = +1;
+  //   } else {
+  //     allowedChecker = "Black";
+  //     blockedChecker = "White";
+  //     direction = -1;
+  //   }
+  //   let moveAvailable: boolean = false;
+  //   if (currentDiceRoll[0] == 0 && currentDiceRoll[1] == 0) {
+  //     moveAvailable = false;
+  //   } else {
+  //       for (let index = 0; index < currentBoardState.length; index++) {
+  //         let col = currentBoardState[index];
+
+  //         if (col.length > 0 && col[0] == allowedChecker) {
+  //           //if the column has checkers and the first checker is allowed checker
+  //           selectedColumn = index;
+  //           //find allowed columns from selected column
+  //           target1 = selectedColumn + currentDiceRoll[0] * direction;
+  //           target2 = selectedColumn + currentDiceRoll[1] * direction;
+
+  //           //rule#1
+  //           //check if the target is less that 23 and same color or not double opponent checker
+  //           if (target1 > 23 || target1 < 0) {
+  //             moveAvailable = false;
+  //           } else {
+  //             let target1Length = currentBoardState[target1].length;
+  //             let target1Color = currentBoardState[target1][0];
+  //             if (target1Length >= 2 && target1Color == blockedChecker) {
+  //               // console.log("can't move");
+  //               moveAvailable = false;
+  //             } else {
+  //               moveAvailable = true;
+  //               break;
+  //             }
+  //           }
+
+  //           if (target2 > 23 || target2 < 0) {
+  //             moveAvailable = false;
+  //           } else {
+  //             let target2Length = currentBoardState[target2].length;
+  //             let target2Color = currentBoardState[target2][0];
+  //             if (target2Length >= 2 && target2Color == blockedChecker) {
+  //               moveAvailable = false;
+  //             } else {
+  //               moveAvailable = true;
+  //               break;
+  //             }
+  //           }
+  //         } else {
+  //           moveAvailable = false;
+  //         }
+  //     }
+  //   }
+  //   console.log(" anyMovesAvailable >>>" + moveAvailable + "<<<");
+  //   onMoveAllowed(moveAvailable);
+  //   return moveAvailable;
+  // }
 
   function setAllowedColumns(
     currentBoardState: Color[][],
@@ -101,7 +185,7 @@ export function Board({
     let allowedColumns: number[] = [];
     let allowedChecker: string;
     let blockedChecker: string;
-    let direction: number = +1 || -1 ;
+    let direction: number = +1 || -1;
     if (PlayerNames.white == currentPlayer) {
       allowedChecker = "White";
       blockedChecker = "Black";
@@ -113,13 +197,13 @@ export function Board({
     }
 
     //find allowed columns from selected column
-    let target1 = selectedColumn + currentDiceRoll[0]*direction;
-    let target2 = selectedColumn + currentDiceRoll[1]*direction;
+    let target1 = selectedColumn + currentDiceRoll[0] * direction;
+    let target2 = selectedColumn + currentDiceRoll[1] * direction;
 
     //rule#1
     //check if the target is less that 23 and same color or not double opponent checker
     if (target1 > 23 || target1 < 0) {
-      target1 = -1;
+      target1 = 0;
     } else {
       let target1Length = currentBoardState[target1].length;
       let target1Color = currentBoardState[target1][0];
@@ -132,7 +216,7 @@ export function Board({
     }
 
     if (target2 > 23 || target2 < 0) {
-      target2 = -1;
+      target2 = 0;
     } else {
       let target2Length = currentBoardState[target2].length;
       let target2Color = currentBoardState[target2][0];
@@ -142,24 +226,11 @@ export function Board({
         target2 = target2 + 10;
       }
     }
-    //*************************************check for moveAllowed**** */
-    if (target1 == 0 && target2 == 0) {
-      onMoveAllowed(false);
-      // onMessage("No move available");
-    } else {
-      onMoveAllowed(true);
-      // onMessage("");
-    }
+    console.log("target1>>>" + target1);
+    console.log("target2>>>" + target2);
+    console.log("doubleLeft>>>" + doubleLeft);
+    
 
-    // if (target1 == 0 && target2 == 0) {
-    //   onDiceDisabled(true);
-    //   onMessage("No move available");
-    // } else {
-    //   onDiceDisabled(false);
-    //   onMessage("");
-    // }
-
-    // allowedColumns = [target1, target2];
     return (allowedColumns = [target1, target2]);
   }
 
@@ -195,7 +266,12 @@ export function Board({
       if (isDouble) {
         doubleLeft = doubleLeft - 1;
         onDoubleLeft(doubleLeft);
-        onMessage(currentPlayer + " rolled a double, you have " + doubleLeft + " moves left");
+        onMessage(
+          currentPlayer +
+            " rolled a double, you have " +
+            doubleLeft +
+            " moves left"
+        );
         if (doubleLeft == 0) {
           isDouble = false;
           // onIsDouble(isDouble);
@@ -206,10 +282,10 @@ export function Board({
           }
           onPlayerChange(currentPlayer);
           onDiceDisabled(false);
+          // onMoveAllowed(false);
           onMessage(currentPlayer + " roll the dice");
         }
       } else {
-
         if (newCol + 10 == allowedColumns[0]) {
           newDiceRoll[0] = 0;
         }
@@ -220,8 +296,6 @@ export function Board({
     }
     onColumnSelect(50); //reset the color of the allowed points
     //check for isDouble
-
-      
 
     ////change player
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
