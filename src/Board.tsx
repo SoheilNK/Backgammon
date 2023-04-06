@@ -9,8 +9,8 @@ type BoardProps = {
   currentBoardState: Color[][];
   onMove: (boardState: Color[][]) => void;
   currentDiceRoll: TdiceRoll;
-  currentPlayer: PlayerNames;
-  onPlayerChange: (player: PlayerNames) => void;
+  currentPlayer: string;
+  onPlayerChange: (player: string) => void;
   selectedColumn: number;
   onColumnSelect: (column: number) => void;
   onDiceDisabled: (disabled: boolean) => void;
@@ -105,7 +105,7 @@ export function Board({
   //define a function to return a boolean value if any move is available or not
   function anyMoveAvailable(
     currentBoardState: Color[][],
-    currentPlayer: PlayerNames,
+    currentPlayer: string,
     currentDiceRoll: TdiceRoll
   ) {
     let allowedChecker: string;
@@ -114,7 +114,7 @@ export function Board({
     let move1: number = 0;
     let move2: number = 0;
 
-    if (PlayerNames.white == currentPlayer) {
+    if (PlayerNames.white[0] == currentPlayer) {
       allowedChecker = "White";
       blockedChecker = "Black";
       direction = +1;
@@ -141,7 +141,7 @@ export function Board({
             //rule#1
             //check if the target is less that 23 and free or same color and no double opponent checker
 
-            if (move1 > 23 || move1 < 0) {
+            if (move1 > 23 || move1 < 0 || currentDiceRoll[0] == 0) {
               moveAvailable = false;
             } else {
               let move1Length = currentBoardState[move1].length;
@@ -155,7 +155,7 @@ export function Board({
               }
             }
 
-            if (move2 > 23 || move2 < 0) {
+            if (move2 > 23 || move2 < 0 || currentDiceRoll[1] == 0) {
               moveAvailable = false;
             } else {
               let target2Length = currentBoardState[move2].length;
@@ -179,14 +179,14 @@ export function Board({
   function setAllowedColumns(
     currentBoardState: Color[][],
     currentDiceRoll: TdiceRoll,
-    currentPlayer: PlayerNames,
+    currentPlayer: string,
     selectedColumn: number
   ) {
     let allowedColumns: number[] = [];
     let allowedChecker: string;
     let blockedChecker: string;
     let direction: number = +1 || -1;
-    if (PlayerNames.white == currentPlayer) {
+    if (PlayerNames.white[0] == currentPlayer) {
       allowedChecker = "White";
       blockedChecker = "Black";
       direction = +1;
@@ -275,10 +275,10 @@ export function Board({
         if (doubleLeft == 0) {
           isDouble = false;
           // onIsDouble(isDouble);
-          if (currentPlayer == PlayerNames.white) {
-            currentPlayer = PlayerNames.black;
+          if (currentPlayer == PlayerNames.white[0]) {
+            currentPlayer = PlayerNames.black[0];
           } else {
-            currentPlayer = PlayerNames.white;
+            currentPlayer = PlayerNames.white[0];
           }
           onPlayerChange(currentPlayer);
           onDiceDisabled(false);
@@ -299,10 +299,10 @@ export function Board({
 
     ////change player
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
-      if (currentPlayer == PlayerNames.white) {
-        currentPlayer = PlayerNames.black;
+      if (currentPlayer == PlayerNames.white[0]) {
+        currentPlayer = PlayerNames.black[0];
       } else {
-        currentPlayer = PlayerNames.white;
+        currentPlayer = PlayerNames.white[0];
       }
       onPlayerChange(currentPlayer);
 

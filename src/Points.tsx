@@ -49,7 +49,7 @@ interface PointProps {
   items: Array<Color>;
   drction: Direction;
   isAllowed: boolean;
-  currentPlayer: PlayerNames;
+  currentPlayer: string;
   moveAllowed: boolean;
 }
 function Point({
@@ -70,7 +70,7 @@ function Point({
 
   //check allowed player
   let allowedClr: Color;
-  if (PlayerNames.white == currentPlayer) {
+  if (PlayerNames.white[0] == currentPlayer) {
     allowedClr = "White";
   } else {
     allowedClr = "Black";
@@ -110,7 +110,7 @@ type QuadrantProps = {
   end: number;
   drction: Direction;
   allowedColumns: number[];
-  currentPlayer: PlayerNames;
+  currentPlayer: string;
   moveAllowed: boolean;
 };
 export function Quadrant({
@@ -137,7 +137,7 @@ export function Quadrant({
             }
             currentPlayer={currentPlayer}
             moveAllowed={moveAllowed}
-          />{" "}
+          />
           {/* added 10 to make it 2 digits*/}
         </div>
       ))}

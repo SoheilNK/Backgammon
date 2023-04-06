@@ -5,7 +5,7 @@ import classNames from "classnames";
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   onRoll: (roll: TdiceRoll) => void;
-  currentPlayer: PlayerNames;
+  currentPlayer: string;
   onDiceDisabled: (disabled: boolean) => void;
   diceDisabled: boolean;
   message: string;
@@ -34,11 +34,11 @@ export default function Dice({
   });
 
   return (
-    <div>
-      <h2>{newDiceRoll}</h2>
+    <div className="players">
+      <h2 className="player">{newDiceRoll}</h2>
       <button
         id="roll"
-        className={btnClass}
+        className={"player " + btnClass} 
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onMouseEnter={() => setIsHovered(true)}
@@ -49,8 +49,8 @@ export default function Dice({
           onDouble(false);
           onDiceDisabled(true);
           newDiceRoll = [
-            Math.floor(Math.random() * 5 + 1),
-            Math.floor(Math.random() * 5 + 1),
+            Math.round(Math.random() * 5 + 1),
+            Math.round(Math.random() * 5 + 1),
           ] as TdiceRoll;
           /************************************************************ */
           // currentDiceRoll = [2, 2] as TdiceRoll; //for testing double
@@ -69,7 +69,9 @@ export default function Dice({
       >
         Roll Dice
       </button>
-      <h3 id="alert">{message}</h3>
+      <h3 id="alert" className="player">
+        {message}
+      </h3>
     </div>
   );
 }
