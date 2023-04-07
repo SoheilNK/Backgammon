@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { PlayerNames } from "./Game";
 import { useState, useEffect } from "react";
+import { Checker } from "./Points";
 
 //define a players component
 interface PlayersProps {
@@ -32,15 +33,16 @@ export default function Players({
         }
     }, [currentPlayer]);
     
-  const player1Class = classNames("player", {
+  const player1Class = classNames("player1", {
     'playerActive': isActive1,
   });
-  const player2Class = classNames("player", {
+  const player2Class = classNames("player1", {
     'playerActive': isActive2,
   });
 
   return (
     <div className="players">
+      <Checker title={""} clr={"White"} parent={""} disabled={false} />
       <div className={player1Class}>
         <div className="player-name     ">
           <span>{PlayerNames.white[0]}</span>
@@ -49,8 +51,10 @@ export default function Players({
           <span>White Checkers</span>
         </div>
       </div>
-      <div className="player">
-        <span>Current Player is {currentPlayer}</span>
+      <div className="card">
+        <span>
+          <strong>Backgammon</strong>
+        </span>
       </div>
       <div className={player2Class}>
         <div className="player-name">
@@ -60,6 +64,7 @@ export default function Players({
           <span>Black Checkers</span>
         </div>
       </div>
+      <Checker title={""} clr={"Black"} parent={""} disabled={false} />
     </div>
   );
 }

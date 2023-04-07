@@ -35,12 +35,12 @@ export default function Dice({
 
   return (
     <div className="actionPanel">
-      <h3 id="alert" className="player">
+      <span id="alert" className="card">
         {message}
-      </h3>
+      </span>
 
       <div className="players">
-        <h2 className="dice">{newDiceRoll}</h2>
+        <span className="dice">{newDiceRoll}</span>
         <button
           id="roll"
           className="dice" //btnClass

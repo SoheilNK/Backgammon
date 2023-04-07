@@ -48,8 +48,8 @@ function Game({
   console.log(currentDiceRoll);
   return (
     <div className="game">
-        <Players currentPlayer={currentPlayer} anyMoveAvailable={false} />
-        <Board
+      <Players currentPlayer={currentPlayer} anyMoveAvailable={false} />
+      <Board
         currentBoardState={currentBoardState}
         onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}

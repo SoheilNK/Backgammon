@@ -12,7 +12,7 @@ interface CheckerProps {
   parent: string;
   disabled: boolean;
 }
-function Checker({ title, clr, parent, disabled }: CheckerProps) {
+export function Checker({ title, clr, parent, disabled }: CheckerProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: title,
     disabled: disabled,
