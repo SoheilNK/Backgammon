@@ -132,8 +132,9 @@ export function Quadrant({
             drction={drction}
             //set isAllowed to true if the point is in the allowed columns
             isAllowed={
-              allowedColumns[0] == start + i + 10 ||
-              allowedColumns[1] == start + i + 10
+              (allowedColumns[0] == start + i + 10 ||
+                allowedColumns[1] == start + i + 10) &&
+              moveAllowed
             }
             currentPlayer={currentPlayer}
             moveAllowed={moveAllowed}

@@ -27,7 +27,7 @@ export function Board({
   currentDiceRoll,
   currentPlayer,
   onPlayerChange,
-  selectedColumn: index,
+  selectedColumn,
   onColumnSelect,
   onDiceDisabled,
   onMessage,
@@ -52,7 +52,7 @@ export function Board({
     currentBoardState,
     currentDiceRoll,
     currentPlayer,
-    index
+    selectedColumn
   );
   // console.log("setAllowedColumns >>> allowed columns for current state>>>" + allowedColumns);
 
@@ -241,6 +241,7 @@ export function Board({
   }
 
   function handleDragEnd(e: DragEndEvent) {
+    let newPlayer: string;
     if (!e.over) return;
     const target = e.over.id as string;
     if (typeof e.over.id !== "string") throw new Error("id is not string");
@@ -276,11 +277,11 @@ export function Board({
           isDouble = false;
           // onIsDouble(isDouble);
           if (currentPlayer == PlayerNames.white[0]) {
-            currentPlayer = PlayerNames.black[0];
+            newPlayer = PlayerNames.black[0];
           } else {
-            currentPlayer = PlayerNames.white[0];
+            newPlayer = PlayerNames.white[0];
           }
-          onPlayerChange(currentPlayer);
+          onPlayerChange(newPlayer);
           onDiceDisabled(false);
           // onMoveAllowed(false);
           onMessage(currentPlayer + " roll the dice");
@@ -300,15 +301,15 @@ export function Board({
     ////change player
     if (newDiceRoll[0] == 0 && newDiceRoll[1] == 0) {
       if (currentPlayer == PlayerNames.white[0]) {
-        currentPlayer = PlayerNames.black[0];
+        newPlayer = PlayerNames.black[0];
       } else {
-        currentPlayer = PlayerNames.white[0];
+        newPlayer = PlayerNames.white[0];
       }
-      onPlayerChange(currentPlayer);
+      onPlayerChange(newPlayer);
 
       //make roll button active
       onDiceDisabled(false);
-      onMessage(currentPlayer + " roll the dice");
+      onMessage(newPlayer + " roll the dice");
     }
   }
 }

@@ -28,7 +28,7 @@ export default function Dice({
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const btnClass = classNames("btn", {
+  const btnClass = classNames("dice", {
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
   });
@@ -43,7 +43,7 @@ export default function Dice({
         <span className="dice">{newDiceRoll}</span>
         <button
           id="roll"
-          className="dice" //btnClass
+          className={btnClass} //btnClass
           onMouseDown={() => setIsPressed(true)}
           onMouseUp={() => setIsPressed(false)}
           onMouseEnter={() => setIsHovered(true)}

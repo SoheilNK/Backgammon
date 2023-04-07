@@ -9,16 +9,12 @@ interface PlayersProps {
   anyMoveAvailable: boolean;
 }
 export default function Players({
-  currentPlayer,
+    currentPlayer,
   anyMoveAvailable,
 }: PlayersProps): JSX.Element {
-  //set the player names
-  PlayerNames.white[0] = "Player 1";
-  PlayerNames.black[0] = "Player 2";
 
   //extract the player names from the enum
   const player1 = PlayerNames.white[0];
-  const player2 = PlayerNames.black[0];
 
   //change the background color of the player who is playing
     const [isActive1, setIsActive1] = useState(false);
@@ -42,13 +38,10 @@ export default function Players({
 
   return (
     <div className="players">
-      <Checker title={""} clr={"White"} parent={""} disabled={false} />
       <div className={player1Class}>
-        <div className="player-name     ">
+        <Checker title={""} clr={"White"} parent={""} disabled={false} />
+        <div>
           <span>{PlayerNames.white[0]}</span>
-        </div>
-        <div className="player-checkers ">
-          <span>White Checkers</span>
         </div>
       </div>
       <div className="card">
@@ -57,14 +50,12 @@ export default function Players({
         </span>
       </div>
       <div className={player2Class}>
+        <Checker title={""} clr={"Black"} parent={""} disabled={false} />
+
         <div className="player-name">
           <span>{PlayerNames.black[0]}</span>
         </div>
-        <div className="player-checkers">
-          <span>Black Checkers</span>
-        </div>
       </div>
-      <Checker title={""} clr={"Black"} parent={""} disabled={false} />
     </div>
   );
 }

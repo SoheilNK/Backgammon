@@ -42,13 +42,16 @@ function Game({
   // );
   const [message, setMessage] = useState(currentPlayer + " roll the dice");
 
-  const [selectedColumn, setSelectedColumn] = useState(23);
+  const [selectedColumn, setSelectedColumn] = useState(30);
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState);
   console.log(currentDiceRoll);
   return (
     <div className="game">
-      <Players currentPlayer={currentPlayer} anyMoveAvailable={false} />
+      <Players
+        currentPlayer={currentPlayer}
+        anyMoveAvailable={false}
+      />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
