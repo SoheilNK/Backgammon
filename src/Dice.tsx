@@ -31,6 +31,7 @@ export default function Dice({
   const btnClass = classNames("dice", {
     "btn-pressed": isPressed,
     "btn-over": !isPressed && isHovered,
+    "btn-disabled": diceDisabled,
   });
 
   return (

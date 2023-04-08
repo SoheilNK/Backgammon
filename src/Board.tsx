@@ -4,6 +4,7 @@ import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
 import { useEffect } from "react";
+import Bar from "./Bar";
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -130,6 +131,10 @@ export function Board({
           moveAllowed={newMoveAllowed}
         />
       </div>
+      <Bar
+        whiteBar={(whiteBar = 2)} //test =2
+        blackBar={(blackBar = 2)} //test =2
+      />
     </DndContext>
   );
   //define a function to return a boolean value if any move is available or not
