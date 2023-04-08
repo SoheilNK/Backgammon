@@ -58,7 +58,7 @@ export default function Dice({
               Math.round(Math.random() * 5 + 1),
             ] as TdiceRoll;
             /************************************************************ */
-            // currentDiceRoll = [2, 2] as TdiceRoll; //for testing double
+            newDiceRoll = [4, 2] as TdiceRoll; //for testing hit and block
             onRoll(newDiceRoll);
             onMessage(currentPlayer + " move a checker");
 
@@ -67,7 +67,7 @@ export default function Dice({
               onDouble(true);
               onDoubleLeft(4);
               onMessage(
-                currentPlayer + " rolled a double, you have four moves left"
+                currentPlayer + " rolled a double, you have 4 moves left"
               );
             }
           }}

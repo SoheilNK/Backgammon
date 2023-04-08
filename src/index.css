@@ -1,7 +1,7 @@
 :root {
   /* Color Theme Swatches in RGBA */
   --color2: #f25c05;
-  --color1: rgba(3, 191, 191, 1);
+  --color1: #d18457;
   --color4: rgba(1, 89, 89, 1);
   --color5: rgb(41, 243, 23);
   --color51: rgb(41, 243, 23, 0.5);
@@ -123,9 +123,9 @@
 
 }
 
-.btn-pressed {
+/* .btn-pressed {
   background-color: var(--color2);
-}
+} */
 
 .board {
   display: inline-grid;

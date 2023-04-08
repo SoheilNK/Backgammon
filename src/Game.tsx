@@ -24,34 +24,28 @@ function Game({
   boardState,
   playerWon,
 }: GameProps) {
+    const [currentBoardState, setCurrentBoardState] =
+      useState<Color[][]>(initialState);
+  const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
   const [currentPlayer, setCurrentPlayer] = useState<string>(PlayerNames.white[0]);
-
-
   const [isDouble, setIsDouble] = useState<boolean>(false);
   const [doubleLeft, setDoubleLeft] = useState<number>(0);
   const [moveAllowed, setMoveAllowed] = useState<boolean>(false);
-
-  const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
-  // const [currentBoardState, setBoardState] = useState(initialState);
   const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
-  
-
-
-  // const [currentPlayer, setCurrentPlayer] = useState<PlayerNames>(
-  //   PlayerNames.white
-  // );
   const [message, setMessage] = useState(currentPlayer + " roll the dice");
-
   const [selectedColumn, setSelectedColumn] = useState(30);
-  const [currentBoardState, setCurrentBoardState] =
-    useState<Color[][]>(initialState);
-  console.log(currentDiceRoll);
+  const [whiteBar, setWhiteBar] = useState(0);
+  const [blackBar, setBlackBar] = useState(0);
+  const [whiteOut, setWhiteOut] = useState(0);
+  const [blackOut, setBlackOut] = useState(0);
+  const [whiteWon, setWhiteWon] = useState(false);
+  const [blackWon, setBlackWon] = useState(false);
+  const [winner, setWinner] = useState("");
+
+
   return (
     <div className="game">
-      <Players
-        currentPlayer={currentPlayer}
-        anyMoveAvailable={false}
-      />
+      <Players currentPlayer={currentPlayer} anyMoveAvailable={false} />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
@@ -67,6 +61,20 @@ function Game({
         isDouble={isDouble}
         onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
         doubleLeft={doubleLeft}
+        whiteBar={whiteBar}
+        onWhiteBar={(counter: number) => setWhiteBar(counter)}
+        blackBar={blackBar}
+        onBlackBar={(counter: number) => setBlackBar(counter)}
+        whiteOut={whiteOut}
+        onWhiteOut={(counter: number) => setWhiteOut(counter)}
+        blackOut={blackOut}
+        onBlackOut={(counter: number) => setBlackOut(counter)}
+        whiteWon={whiteWon}
+        onWhiteWon={(won: boolean) => setWhiteWon(won)}
+        blackWon={blackWon}
+        onBlackWon={(won: boolean) => setBlackWon(won)}
+        winner={winner}
+        onWinner={(winner: string) => setWinner(winner)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
@@ -85,13 +93,14 @@ function Game({
 
 export default Game;
 
+//*************test state for hit********************* */
 let initialState: Color[][] = [
   ["White", "White"],
   [],
   [],
   [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
+  ["Black"],
+  ["Black", "Black", "Black", "Black"],
   [],
   ["Black", "Black", "Black"],
   [],

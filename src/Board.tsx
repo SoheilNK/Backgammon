@@ -20,6 +20,21 @@ type BoardProps = {
   isDouble: boolean;
   onDoubleLeft: (counter: number) => void;
   doubleLeft: number;
+  whiteBar: number;
+  onWhiteBar: (counter: number) => void;
+  blackBar: number;
+  onBlackBar: (counter: number) => void;
+  whiteOut: number;
+  onWhiteOut: (counter: number) => void;
+  blackOut: number;
+  onBlackOut: (counter: number) => void;
+  whiteWon: boolean;
+  onWhiteWon: (won: boolean) => void;
+  blackWon: boolean;
+  onBlackWon: (won: boolean) => void;
+  winner: string;
+  onWinner: (winner: string) => void;
+
 };
 export function Board({
   currentBoardState,
@@ -36,6 +51,21 @@ export function Board({
   isDouble,
   onDoubleLeft,
   doubleLeft,
+  whiteBar,
+  onWhiteBar,
+  blackBar,
+  onBlackBar,
+  whiteOut,
+  onWhiteOut,
+  blackOut,
+  onBlackOut,
+  whiteWon,
+  onWhiteWon,
+  blackWon,
+  onBlackWon,
+  winner,
+  onWinner,
+
 }: BoardProps) {
   //******test*** */
   let newMoveAllowed = anyMoveAvailable(currentBoardState, currentPlayer, currentDiceRoll);
@@ -130,7 +160,7 @@ export function Board({
     } else {
         for (let index = 0; index < currentBoardState.length; index++) {
           let col = currentBoardState[index];
-
+          
           if (col.length > 0 && col[0] == allowedChecker) {
             //if the column has checkers and the first checker is allowed checker
             //find allowed moves for corrent column
@@ -251,7 +281,9 @@ export function Board({
     console.log("-----drag end----------");
     const oldCol: number = parent.slice(6, 8) - 10;
     const newCol: number = +target.slice(6, 8) - 10;
-    const colorName = currentBoardState[oldCol][index];
+    const oldColColor = currentBoardState[oldCol][index];
+    const newColColor = currentBoardState[newCol][0];
+
     //update states
     const newBoardState = currentBoardState;
     const newDiceRoll = currentDiceRoll;
@@ -259,11 +291,24 @@ export function Board({
     if (newCol + 10 != allowedColumns[0] && newCol + 10 != allowedColumns[1]) {
       // alert("This move is not not allowed");
     } else {
-      newBoardState[newCol].push(colorName);
+      //rule#3--if the move is a hit
+      if (
+        newBoardState[newCol].length == 1 && //if the target column has one checker it is a blot
+        newBoardState[newCol][0] != oldColColor //if the checker is not the same color as the moving checker
+      ) {
+        if (newBoardState[newCol][0] == "White") {
+          onWhiteBar(whiteBar + 1);
+        } else {
+          onBlackBar(blackBar + 1);
+        }
+        newBoardState[newCol].pop();
+      }
+            
+      newBoardState[newCol].push(oldColColor);
       newBoardState[oldCol].pop();
       onMove(newBoardState);
 
-      //update dice roll
+      //rull#2--if the move is a double
       if (isDouble) {
         doubleLeft = doubleLeft - 1;
         onDoubleLeft(doubleLeft);
