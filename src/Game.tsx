@@ -41,6 +41,7 @@ function Game({
   const [whiteWon, setWhiteWon] = useState(false);
   const [blackWon, setBlackWon] = useState(false);
   const [winner, setWinner] = useState("");
+  const [isFromBar, setIsFromBar] = useState(false);
 
 
   return (
@@ -75,6 +76,8 @@ function Game({
         onBlackWon={(won: boolean) => setBlackWon(won)}
         winner={winner}
         onWinner={(winner: string) => setWinner(winner)}
+        isFromBar={isFromBar}
+        onIsFromBar={(isFromBar: boolean) => setIsFromBar(isFromBar)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}

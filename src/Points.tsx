@@ -75,19 +75,6 @@ function Point({
   } else {
     allowedClr = "Black";
   }
-  // console.log("selected column>>>" + selectedColumn);
-  // let currentChecker = currentBoardState[selectedColumn][0];
-
-  //check if the checker is allowed to move
-  // console.log("current checker>>>" + allowedChecker + " allowed checker>>>" + currentChecker);
-  // if (allowedChecker != currentChecker) {
-  //   console.log("This checker is not allowed to move");
-  //   return allowedColumns;
-
-  // }
-
-  // console.log(currentChecker, " vs", opponentChecker);
-  // console.log(allowedChecker, currentPlayer);
 
   return (
     <div id={colName} ref={setNodeRef} className={drction + " " + pointClass}>
@@ -112,6 +99,7 @@ type QuadrantProps = {
   allowedColumns: number[];
   currentPlayer: string;
   moveAllowed: boolean;
+  bar?: number;
 };
 export function Quadrant({
   boardState: points,
@@ -121,7 +109,14 @@ export function Quadrant({
   allowedColumns,
   currentPlayer,
   moveAllowed,
+  bar,
 }: QuadrantProps) {
+  let isAllowed = false;
+  if (bar == undefined) {
+    bar = 0;
+  }
+            
+
   return (
     <div className={"grid-container " + drction}>
       {points.slice(start, end).map((point, i) => (
@@ -134,7 +129,7 @@ export function Quadrant({
             isAllowed={
               (allowedColumns[0] == start + i + 10 ||
                 allowedColumns[1] == start + i + 10) &&
-              moveAllowed
+              (moveAllowed || bar != 0)
             }
             currentPlayer={currentPlayer}
             moveAllowed={moveAllowed}

@@ -35,7 +35,8 @@ type BoardProps = {
   onBlackWon: (won: boolean) => void;
   winner: string;
   onWinner: (winner: string) => void;
-
+  isFromBar: boolean;
+  onIsFromBar: (isFromBar: boolean) => void;
 };
 export function Board({
   currentBoardState,
@@ -66,16 +67,20 @@ export function Board({
   onBlackWon,
   winner,
   onWinner,
-
+  isFromBar,
+  onIsFromBar,
 }: BoardProps) {
   //******test*** */
-  let newMoveAllowed = anyMoveAvailable(currentBoardState, currentPlayer, currentDiceRoll);
+  let newMoveAllowed = anyMoveAvailable(
+    currentBoardState,
+    currentPlayer,
+    currentDiceRoll
+  );
   // let newMoveAllowed = true;
   //******test*** */
   useEffect(() => {
     onMoveAllowed(newMoveAllowed);
   }, [newMoveAllowed]);
-  
 
   // console.log("anyMoveAvailable >>> " + newMoveAllowed);
 
@@ -83,7 +88,7 @@ export function Board({
     currentBoardState,
     currentDiceRoll,
     currentPlayer,
-    selectedColumn
+    selectedColumn,
   );
   // console.log("setAllowedColumns >>> allowed columns for current state>>>" + allowedColumns);
 
@@ -111,6 +116,7 @@ export function Board({
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
           moveAllowed={newMoveAllowed}
+          bar={blackBar}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -129,11 +135,13 @@ export function Board({
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
           moveAllowed={newMoveAllowed}
+          bar={whiteBar}
         />
       </div>
       <Bar
-        whiteBar={(whiteBar = 2)} //test =2
-        blackBar={(blackBar = 2)} //test =2
+        whiteBar={whiteBar} //test =2
+        blackBar={blackBar} //test =2
+        currentPlayer={currentPlayer}
       />
     </DndContext>
   );
@@ -141,70 +149,78 @@ export function Board({
   function anyMoveAvailable(
     currentBoardState: Color[][],
     currentPlayer: string,
-    currentDiceRoll: TdiceRoll
+    currentDiceRoll: TdiceRoll,
   ) {
     let allowedChecker: string;
     let blockedChecker: string;
     let direction: number = +1 || -1;
     let move1: number = 0;
     let move2: number = 0;
+    let barCounter: number = 0;
 
     if (PlayerNames.white[0] == currentPlayer) {
       allowedChecker = "White";
       blockedChecker = "Black";
       direction = +1;
+      barCounter = whiteBar;
+
     } else {
       allowedChecker = "Black";
       blockedChecker = "White";
       direction = -1;
+      barCounter = blackBar;
     }
+    
 
     let moveAvailable: boolean = false;
-    if (currentDiceRoll[0] == 0 && currentDiceRoll[1] == 0) {
+    if (
+      (currentDiceRoll[0] == 0 && currentDiceRoll[1] == 0) ||
+      barCounter !== 0
+    ) {
       moveAvailable = false;
     } else {
-        for (let index = 0; index < currentBoardState.length; index++) {
-          let col = currentBoardState[index];
-          
-          if (col.length > 0 && col[0] == allowedChecker) {
-            //if the column has checkers and the first checker is allowed checker
-            //find allowed moves for corrent column
+      for (let index = 0; index < currentBoardState.length; index++) {
+        let col = currentBoardState[index];
 
-            move1 = index + currentDiceRoll[0] * direction;
-            move2 = index + currentDiceRoll[1] * direction;
+        if (col.length > 0 && col[0] == allowedChecker) {
+          //if the column has checkers and the first checker is allowed checker
+          //find allowed moves for corrent column
 
-            //rule#1
-            //check if the target is less that 23 and free or same color and no double opponent checker
+          move1 = index + currentDiceRoll[0] * direction;
+          move2 = index + currentDiceRoll[1] * direction;
 
-            if (move1 > 23 || move1 < 0 || currentDiceRoll[0] == 0) {
-              moveAvailable = false;
-            } else {
-              let move1Length = currentBoardState[move1].length;
-              let move1Color = currentBoardState[move1][0];
-              if (move1Length >= 2 && move1Color == blockedChecker) {
-                // console.log("can't move");
-                moveAvailable = false;
-              } else {
-                moveAvailable = true;
-                break;
-              }
-            }
+          //rule#1
+          //check if the target is less that 23 and free or same color and no double opponent checker
 
-            if (move2 > 23 || move2 < 0 || currentDiceRoll[1] == 0) {
-              moveAvailable = false;
-            } else {
-              let target2Length = currentBoardState[move2].length;
-              let target2Color = currentBoardState[move2][0];
-              if (target2Length >= 2 && target2Color == blockedChecker) {
-                moveAvailable = false;
-              } else {
-                moveAvailable = true;
-                break;
-              }
-            }
-          } else {
+          if (move1 > 23 || move1 < 0 || currentDiceRoll[0] == 0) {
             moveAvailable = false;
+          } else {
+            let move1Length = currentBoardState[move1].length;
+            let move1Color = currentBoardState[move1][0];
+            if (move1Length >= 2 && move1Color == blockedChecker) {
+              // console.log("can't move");
+              moveAvailable = false;
+            } else {
+              moveAvailable = true;
+              break;
+            }
           }
+
+          if (move2 > 23 || move2 < 0 || currentDiceRoll[1] == 0) {
+            moveAvailable = false;
+          } else {
+            let target2Length = currentBoardState[move2].length;
+            let target2Color = currentBoardState[move2][0];
+            if (target2Length >= 2 && target2Color == blockedChecker) {
+              moveAvailable = false;
+            } else {
+              moveAvailable = true;
+              break;
+            }
+          }
+        } else {
+          moveAvailable = false;
+        }
       }
     }
     console.log(" anyMovesAvailable >>>" + moveAvailable + "<<<");
@@ -232,6 +248,8 @@ export function Board({
     }
 
     //find allowed columns from selected column
+    //check if the selected checker is from bar or not
+
     let target1 = selectedColumn + currentDiceRoll[0] * direction;
     let target2 = selectedColumn + currentDiceRoll[1] * direction;
 
@@ -264,14 +282,33 @@ export function Board({
     console.log("target1>>>" + target1);
     console.log("target2>>>" + target2);
     console.log("doubleLeft>>>" + doubleLeft);
-    
 
     return (allowedColumns = [target1, target2]);
   }
 
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
-    let currentPoint = +parent.slice(parent.length - 2, parent.length) - 10;
+    let allowedColumns: number[] = [];
+    let allowedChecker: string;
+    if ((PlayerNames.white[0] == currentPlayer)) {
+      allowedChecker = "White";
+    } else {
+      allowedChecker = "Black";
+    }
+
+    let currentPoint = 0;
+
+    if (parent == "Bar") {
+      console.log("drag from bar");
+
+      if (allowedChecker == "White") {
+        currentPoint = -1;
+      } else {
+        currentPoint = 24;
+      }
+    } else {
+      currentPoint = +parent.slice(parent.length - 2, parent.length) - 10;
+    }
     onColumnSelect(currentPoint);
   }
 
@@ -284,17 +321,28 @@ export function Board({
     const index = e.active.data.current?.index ?? 0;
     const parent = e.active.data.current?.parent ?? "";
     console.log("-----drag end----------");
-    const oldCol: number = parent.slice(6, 8) - 10;
     const newCol: number = +target.slice(6, 8) - 10;
-    const oldColColor = currentBoardState[oldCol][index];
     const newColColor = currentBoardState[newCol][0];
+    let oldCol: number = 0;
+    let oldColColor: Color = "White";
+
+    //check if checker is from bar or not
+    if (parent == "Bar") {
+      console.log("drag from bar");
+      if (currentPlayer == PlayerNames.black[0]) {
+        oldColColor = "Black";
+      }
+    } else {
+      oldCol = parent.slice(6, 8) - 10;
+      oldColColor = currentBoardState[oldCol][index];
+    }
 
     //update states
     const newBoardState = currentBoardState;
     const newDiceRoll = currentDiceRoll;
 
     if (newCol + 10 != allowedColumns[0] && newCol + 10 != allowedColumns[1]) {
-      // alert("This move is not not allowed");
+      console.log("This move is not not allowed");
     } else {
       //rule#3--if the move is a hit
       if (
@@ -308,9 +356,18 @@ export function Board({
         }
         newBoardState[newCol].pop();
       }
-            
+
       newBoardState[newCol].push(oldColColor);
-      newBoardState[oldCol].pop();
+      if (parent == "Bar") {
+        if (currentPlayer == PlayerNames.black[0]) {
+          onBlackBar(blackBar - 1);
+        } else {
+          onWhiteBar(whiteBar - 1);
+        }
+      } else {
+        newBoardState[oldCol].pop(); 
+      }
+
       onMove(newBoardState);
 
       //rull#2--if the move is a double
