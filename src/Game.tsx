@@ -26,8 +26,8 @@ function Game({
 }: GameProps) {
     const [currentBoardState, setCurrentBoardState] =
       useState<Color[][]>(initialState);
-  const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
-  const [currentPlayer, setCurrentPlayer] = useState<string>(PlayerNames.white[0]);
+  const [currentDiceRoll, setDiceRoll] = useState([6, 6] as TdiceRoll);
+  const [currentPlayer, setCurrentPlayer] = useState<string>(PlayerNames.black[0]); //test
   const [isDouble, setIsDouble] = useState<boolean>(false);
   const [doubleLeft, setDoubleLeft] = useState<number>(0);
   const [moveAllowed, setMoveAllowed] = useState<boolean>(false);
@@ -35,13 +35,14 @@ function Game({
   const [message, setMessage] = useState(currentPlayer + " roll the dice");
   const [selectedColumn, setSelectedColumn] = useState(30);
   const [whiteBar, setWhiteBar] = useState(0);
-  const [blackBar, setBlackBar] = useState(0);
+  const [blackBar, setBlackBar] = useState(1);  //test value
   const [whiteOut, setWhiteOut] = useState(0);
   const [blackOut, setBlackOut] = useState(0);
   const [whiteWon, setWhiteWon] = useState(false);
   const [blackWon, setBlackWon] = useState(false);
   const [winner, setWinner] = useState("");
   const [isFromBar, setIsFromBar] = useState(false);
+  const [moveLeft, setMoveLeft] = useState<number[]>([]);
 
 
   return (
@@ -58,7 +59,7 @@ function Game({
         onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
         onMessage={(message: string) => setMessage(message)}
         onMoveAllowed={(allowed: boolean) => setMoveAllowed(allowed)}
-        // moveAllowed={moveAllowed}
+        moveAllowed={moveAllowed}
         isDouble={isDouble}
         onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
         doubleLeft={doubleLeft}
@@ -78,6 +79,7 @@ function Game({
         onWinner={(winner: string) => setWinner(winner)}
         isFromBar={isFromBar}
         onIsFromBar={(isFromBar: boolean) => setIsFromBar(isFromBar)}
+        moveLeft={moveLeft}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
@@ -89,6 +91,7 @@ function Game({
         onMessage={(message: string) => setMessage(message)}
         onDouble={(isDouble: boolean) => setIsDouble(isDouble)}
         onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
+        onMoveLeft={(moveLeft: number[]) => setMoveLeft(moveLeft)}
       />
     </div>
   );
@@ -96,29 +99,57 @@ function Game({
 
 export default Game;
 
+// let initialState: Color[][] = [
+//   ["White", "White"],
+//   [],
+//   [],
+//   [],
+//   [],
+//   ["Black", "Black", "Black", "Black", "Black"],
+//   [],
+//   ["Black", "Black", "Black"],
+//   [],
+//   [],
+//   [],
+//   ["White", "White", "White", "White", "White"],
+//   ["Black", "Black", "Black", "Black", "Black"],
+//   [],
+//   [],
+//   [],
+//   ["White", "White", "White"],
+//   [],
+//   ["White", "White", "White", "White", "White"],
+//   [],
+//   [],
+//   [],
+//   [],
+//   ["Black", "Black"],
+// ];
+
+//****************test for no move available ***********/
 let initialState: Color[][] = [
-  ["White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
   [],
   ["Black", "Black", "Black"],
   [],
+  ["Black", "Black"],
   [],
+  ["Black", "Black"],
+  ["White", "White"],
+  ["Black", "Black"],
+  ["Black", "Black"],
   [],
-  ["White", "White", "White", "White", "White"],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White"],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
+  ["Black"],
+  ["White"],
   [],
   [],
   [],
   ["Black", "Black"],
+  ["White"],
+  [],
+  ["White", "White", "White", "White"],
+  [],
+  ["White", "White"],
+  ["White", "White"],
+  ["White", "White"],
+  ["White"],
 ];

@@ -18,3 +18,26 @@
 .Game-Design-3-hsla { color: hsla(28, 35, 61, 1); }
 .Game-Design-4-hsla { color: hsla(22, 62, 39, 1); }
 .Game-Design-5-hsla { color: hsla(0, 87, 59, 1); }
+
+
+/* Color Theme Swatches in Hex */
+.Travel-1-hex { color: #04ADBF; }
+.Travel-2-hex { color: #04BFBF; }
+.Travel-3-hex { color: #025959; }
+.Travel-4-hex { color: #A0A603; }
+.Travel-5-hex { color: #F2E0C9; }
+
+/* Color Theme Swatches in RGBA */
+.Travel-1-rgba { color: rgba(3, 172, 191, 1); }
+.Travel-2-rgba { color: rgba(3, 191, 191, 1); }
+.Travel-3-rgba { color: rgba(1, 89, 89, 1); }
+.Travel-4-rgba { color: rgba(160, 165, 3, 1); }
+.Travel-5-rgba { color: rgba(242, 223, 201, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Travel-1-hsla { color: hsla(185, 96, 38, 1); }
+.Travel-2-hsla { color: hsla(180, 96, 38, 1); }
+.Travel-3-hsla { color: hsla(180, 96, 17, 1); }
+.Travel-4-hsla { color: hsla(61, 96, 33, 1); }
+.Travel-5-hsla { color: hsla(33, 61, 86, 1); }
+

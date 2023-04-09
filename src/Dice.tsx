@@ -12,6 +12,7 @@ interface DiceProps {
   onMessage: (message: string) => void;
   onDouble: (double: boolean) => void;
   onDoubleLeft: (doubleLeft: number) => void;
+  onMoveLeft: (moveLeft: number[]) => void;
 }
 
 export default function Dice({
@@ -24,6 +25,7 @@ export default function Dice({
   onMessage,
   onDouble,
   onDoubleLeft,
+  onMoveLeft,
 }: DiceProps): JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -58,13 +60,15 @@ export default function Dice({
               Math.round(Math.random() * 5 + 1),
               Math.round(Math.random() * 5 + 1),
             ] as TdiceRoll;
+            newDiceRoll = [2, 3] //test value
             onRoll(newDiceRoll);
             onMessage(currentPlayer + " move a checker");
-
+            onMoveLeft([1, 1]);
             if (newDiceRoll[0] === newDiceRoll[1]) {
               //if the dice roll is a double, the player can move twice
               onDouble(true);
               onDoubleLeft(4);
+              onMoveLeft([1, 1]);
               onMessage(
                 currentPlayer + " rolled a double, you have 4 moves left"
               );

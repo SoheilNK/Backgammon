@@ -128,8 +128,8 @@ export function Quadrant({
             //set isAllowed to true if the point is in the allowed columns
             isAllowed={
               (allowedColumns[0] == start + i + 10 ||
-                allowedColumns[1] == start + i + 10) &&
-              (moveAllowed || bar != 0)
+                allowedColumns[1] == start + i + 10) 
+              // && (moveAllowed || bar != 0)
             }
             currentPlayer={currentPlayer}
             moveAllowed={moveAllowed}
