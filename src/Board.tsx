@@ -70,14 +70,12 @@ export function Board({
   isFromBar,
   onIsFromBar,
 }: BoardProps) {
-  //******test*** */
   let newMoveAllowed = anyMoveAvailable(
     currentBoardState,
     currentPlayer,
     currentDiceRoll
   );
-  // let newMoveAllowed = true;
-  //******test*** */
+
   useEffect(() => {
     onMoveAllowed(newMoveAllowed);
   }, [newMoveAllowed]);
@@ -139,8 +137,8 @@ export function Board({
         />
       </div>
       <Bar
-        whiteBar={whiteBar} //test =2
-        blackBar={blackBar} //test =2
+        whiteBar={whiteBar} 
+        blackBar={blackBar} 
         currentPlayer={currentPlayer}
       />
     </DndContext>

@@ -58,8 +58,6 @@ export default function Dice({
               Math.round(Math.random() * 5 + 1),
               Math.round(Math.random() * 5 + 1),
             ] as TdiceRoll;
-            /************************************************************ */
-            newDiceRoll = [4, 2] as TdiceRoll; //for testing hit and block
             onRoll(newDiceRoll);
             onMessage(currentPlayer + " move a checker");
 

@@ -96,14 +96,13 @@ function Game({
 
 export default Game;
 
-//*************test state for hit********************* */
 let initialState: Color[][] = [
   ["White", "White"],
   [],
   [],
   [],
-  ["Black"],
-  ["Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
   [],
   ["Black", "Black", "Black"],
   [],
