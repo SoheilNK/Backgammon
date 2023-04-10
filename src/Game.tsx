@@ -6,10 +6,10 @@ import Players from "./Players";
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
 export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
-export const PlayerNames: { [key: string]: [string, boolean] } = { 
+export const PlayerNames: { [key: string]: [string] } = { 
   //boolean is for if the player has won or not
-  'white': ["Player1", false],
-  'black': ["Player2", false],
+  'white': ["Player1"],
+  'black': ["Player2"],
 };
 // export type PlayerNames = keyof typeof PlayerNames;
 interface GameProps {
@@ -49,46 +49,46 @@ function Game({
       <Players currentPlayer={currentPlayer} anyMoveAvailable={false} />
       <Board
         currentBoardState={currentBoardState}
-        onMove={(boardState: Color[][]) => setCurrentBoardState(boardState)}
+        onMove={(boardState) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}
         currentPlayer={currentPlayer}
-        onPlayerChange={(player: string) => setCurrentPlayer(player)}
+        onPlayerChange={(player) => setCurrentPlayer(player)}
         selectedColumn={selectedColumn}
-        onColumnSelect={(column: number) => setSelectedColumn(column)}
-        onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
-        onMessage={(message: string) => setMessage(message)}
-        onMoveAllowed={(allowed: boolean) => setMoveAllowed(allowed)}
+        onColumnSelect={(column) => setSelectedColumn(column)}
+        onDiceDisabled={(disabled) => setDiceDisabled(disabled)}
+        onMessage={(message) => setMessage(message)}
+        onMoveAllowed={(allowed) => setMoveAllowed(allowed)}
         // moveAllowed={moveAllowed}
         isDouble={isDouble}
-        onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
+        onDoubleLeft={(counter) => setDoubleLeft(counter)}
         doubleLeft={doubleLeft}
         whiteBar={whiteBar}
-        onWhiteBar={(counter: number) => setWhiteBar(counter)}
+        onWhiteBar={(counter) => setWhiteBar(counter)}
         blackBar={blackBar}
-        onBlackBar={(counter: number) => setBlackBar(counter)}
+        onBlackBar={(counter) => setBlackBar(counter)}
         whiteOut={whiteOut}
-        onWhiteOut={(counter: number) => setWhiteOut(counter)}
+        onWhiteOut={(counter) => setWhiteOut(counter)}
         blackOut={blackOut}
-        onBlackOut={(counter: number) => setBlackOut(counter)}
+        onBlackOut={(counter) => setBlackOut(counter)}
         whiteWon={whiteWon}
-        onWhiteWon={(won: boolean) => setWhiteWon(won)}
+        onWhiteWon={(won) => setWhiteWon(won)}
         blackWon={blackWon}
-        onBlackWon={(won: boolean) => setBlackWon(won)}
+        onBlackWon={(won) => setBlackWon(won)}
         winner={winner}
-        onWinner={(winner: string) => setWinner(winner)}
+        onWinner={(winner) => setWinner(winner)}
         isFromBar={isFromBar}
-        onIsFromBar={(isFromBar: boolean) => setIsFromBar(isFromBar)}
+        onIsFromBar={(isFromBar) => setIsFromBar(isFromBar)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
-        onRoll={(roll: TdiceRoll) => setDiceRoll(roll)}
+        onRoll={(roll) => setDiceRoll(roll)}
         currentPlayer={currentPlayer}
-        onDiceDisabled={(disabled: boolean) => setDiceDisabled(disabled)}
+        onDiceDisabled={(disabled) => setDiceDisabled(disabled)}
         diceDisabled={diceDisabled}
         message={message}
-        onMessage={(message: string) => setMessage(message)}
-        onDouble={(isDouble: boolean) => setIsDouble(isDouble)}
-        onDoubleLeft={(counter: number) => setDoubleLeft(counter)}
+        onMessage={(message) => setMessage(message)}
+        onDouble={(isDouble) => setIsDouble(isDouble)}
+        onDoubleLeft={(counter) => setDoubleLeft(counter)}
       />
     </div>
   );
