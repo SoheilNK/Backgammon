@@ -6,32 +6,24 @@ interface DiceProps {
   currentDiceRoll: TdiceRoll;
   onRoll: (roll: TdiceRoll) => void;
   currentPlayer: string;
-  onDiceDisabled: (disabled: boolean) => void;
-  diceDisabled: boolean;
+  moveLeft: number;
+  onMoveLeft: (allowed: number) => void;
   message: string;
   onMessage: (message: string) => void;
-  onDouble: (double: boolean) => void;
-  onDoubleLeft: (doubleLeft: number) => void;
 }
 
 export default function Dice({
   currentDiceRoll: newDiceRoll,
   onRoll,
   currentPlayer,
-  onDiceDisabled,
-  diceDisabled,
+  moveLeft,
+  onMoveLeft,
   message,
   onMessage,
-  onDouble,
-  onDoubleLeft,
 }: DiceProps): JSX.Element {
-  const [isPressed, setIsPressed] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   const btnClass = classNames("dice", {
-    "btn-pressed": isPressed,
-    "btn-over": !isPressed && isHovered,
-    "btn-disabled": diceDisabled,
+    "btn:disabled": moveLeft > 0,
   });
 
   return (
@@ -45,30 +37,29 @@ export default function Dice({
         <button
           id="roll"
           className={btnClass} //btnClass
-          onMouseDown={() => setIsPressed(true)}
-          onMouseUp={() => setIsPressed(false)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
           type="button"
-          disabled={diceDisabled}
+          disabled={moveLeft > 0}
           onClick={() => {
-            onDouble(false);
-            onDiceDisabled(true);
             newDiceRoll = [
               Math.round(Math.random() * 5 + 1),
               Math.round(Math.random() * 5 + 1),
             ] as TdiceRoll;
+            // newDiceRoll = [2, 3]; //for testing
             onRoll(newDiceRoll);
             onMessage(currentPlayer + " move a checker");
-
+            let newMoveLeft = 2;
             if (newDiceRoll[0] === newDiceRoll[1]) {
               //if the dice roll is a double, the player can move twice
-              onDouble(true);
-              onDoubleLeft(4);
-              onMessage(
-                currentPlayer + " rolled a double, you have 4 moves left"
-              );
+              newMoveLeft = newMoveLeft + 2;
             }
+            onMoveLeft(newMoveLeft);
+              onMessage(
+                currentPlayer +
+                  " you have " +
+                  newMoveLeft +
+                  " moves left"
+              );
+            
           }}
         >
           <span>Roll Dice</span>

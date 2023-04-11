@@ -6,43 +6,33 @@ import Players from "./Players";
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
 export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
-export const PlayerNames: { [key: string]: [string] } = { 
+export const PlayerNames: { [key: string]: [string] } = {
   //boolean is for if the player has won or not
-  'white': ["Player1"],
-  'black': ["Player2"],
+  white: ["Player1"],
+  black: ["Player2"],
 };
 // export type PlayerNames = keyof typeof PlayerNames;
 interface GameProps {
-    diceRoll: TdiceRoll;
+  diceRoll: TdiceRoll;
   boardState: Color[][];
   playerWon: boolean;
 }
 
-function Game({
-  
-  diceRoll,
-  boardState,
-  playerWon,
-}: GameProps) {
-    const [currentBoardState, setCurrentBoardState] =
-      useState<Color[][]>(initialState);
+function Game({ diceRoll, boardState }: GameProps) {
+  const [currentBoardState, setCurrentBoardState] =
+    useState<Color[][]>(initialState);
   const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
-  const [currentPlayer, setCurrentPlayer] = useState<string>(PlayerNames.white[0]);
-  const [isDouble, setIsDouble] = useState<boolean>(false);
-  const [doubleLeft, setDoubleLeft] = useState<number>(0);
-  const [moveAllowed, setMoveAllowed] = useState<boolean>(false);
-  const [diceDisabled, setDiceDisabled] = useState<boolean>(false);
+  const [currentPlayer, setCurrentPlayer] = useState<string>(
+    PlayerNames.white[0]
+  );
+  const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [message, setMessage] = useState(currentPlayer + " roll the dice");
   const [selectedColumn, setSelectedColumn] = useState(30);
   const [whiteBar, setWhiteBar] = useState(0);
   const [blackBar, setBlackBar] = useState(0);
   const [whiteOut, setWhiteOut] = useState(0);
   const [blackOut, setBlackOut] = useState(0);
-  const [whiteWon, setWhiteWon] = useState(false);
-  const [blackWon, setBlackWon] = useState(false);
   const [winner, setWinner] = useState("");
-  const [isFromBar, setIsFromBar] = useState(false);
-
 
   return (
     <div className="game">
@@ -55,13 +45,9 @@ function Game({
         onPlayerChange={(player) => setCurrentPlayer(player)}
         selectedColumn={selectedColumn}
         onColumnSelect={(column) => setSelectedColumn(column)}
-        onDiceDisabled={(disabled) => setDiceDisabled(disabled)}
         onMessage={(message) => setMessage(message)}
-        onMoveAllowed={(allowed) => setMoveAllowed(allowed)}
-        // moveAllowed={moveAllowed}
-        isDouble={isDouble}
-        onDoubleLeft={(counter) => setDoubleLeft(counter)}
-        doubleLeft={doubleLeft}
+        moveLeft={moveLeft}
+        onMoveLeft={(allowed) => setMoveLeft(allowed)}
         whiteBar={whiteBar}
         onWhiteBar={(counter) => setWhiteBar(counter)}
         blackBar={blackBar}
@@ -70,25 +56,17 @@ function Game({
         onWhiteOut={(counter) => setWhiteOut(counter)}
         blackOut={blackOut}
         onBlackOut={(counter) => setBlackOut(counter)}
-        whiteWon={whiteWon}
-        onWhiteWon={(won) => setWhiteWon(won)}
-        blackWon={blackWon}
-        onBlackWon={(won) => setBlackWon(won)}
         winner={winner}
         onWinner={(winner) => setWinner(winner)}
-        isFromBar={isFromBar}
-        onIsFromBar={(isFromBar) => setIsFromBar(isFromBar)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
         onRoll={(roll) => setDiceRoll(roll)}
         currentPlayer={currentPlayer}
-        onDiceDisabled={(disabled) => setDiceDisabled(disabled)}
-        diceDisabled={diceDisabled}
+        moveLeft={moveLeft}
+        onMoveLeft={(allowed) => setMoveLeft(allowed)}
         message={message}
         onMessage={(message) => setMessage(message)}
-        onDouble={(isDouble) => setIsDouble(isDouble)}
-        onDoubleLeft={(counter) => setDoubleLeft(counter)}
       />
     </div>
   );
@@ -100,9 +78,9 @@ let initialState: Color[][] = [
   ["White", "White"],
   [],
   [],
+  ["Black"],
   [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
+  ["Black", "Black", "Black", "Black"],
   [],
   ["Black", "Black", "Black"],
   [],
