@@ -55,8 +55,12 @@ export function Board({
     currentPlayer,
     currentDiceRoll
   );
-
- 
+  //******************to be checked for no move available */
+  if (anyMoveLeft == 0) {
+    onMoveLeft(0);
+    // alert("No move available");
+    // togglePlayer(currentPlayer, onPlayerChange, onMessage);
+  }
 
   // console.log("anyMoveAvailable >>> " + newMoveAllowed);
 
@@ -66,8 +70,8 @@ export function Board({
     currentPlayer,
     selectedColumn
   );
-  // console.log("setAllowedColumns >>> allowed columns for current state>>>" + allowedColumns);
-
+//check if the move is allowed for the current player's checkers on the board
+  let boardMoveAllowed = (anyMoveLeft > 0 );
   return (
     <DndContext
       onDragStart={handelDragStart}
@@ -82,7 +86,7 @@ export function Board({
           drction={"ltr"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveLeft={anyMoveLeft}
+          moveAllowed={(anyMoveLeft)}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -91,7 +95,7 @@ export function Board({
           drction={"ltr"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveLeft={anyMoveLeft}
+          moveAllowed={anyMoveLeft}
           bar={blackBar}
         />
         <Quadrant
@@ -101,7 +105,7 @@ export function Board({
           drction={"rtl"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveLeft={anyMoveLeft}
+          moveAllowed={anyMoveLeft}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -110,7 +114,7 @@ export function Board({
           drction={"rtl"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveLeft={anyMoveLeft}
+          moveAllowed={anyMoveLeft}
           bar={whiteBar}
         />
       </div>
@@ -133,67 +137,92 @@ export function Board({
     let move1: number = 0;
     let move2: number = 0;
     let barCounter: number = 0;
+    let enteryPoint: number = 0;
 
     if (PlayerNames.white[0] == currentPlayer) {
       allowedChecker = "White";
       blockedChecker = "Black";
       direction = +1;
       barCounter = whiteBar;
+      enteryPoint = -1; //white checkers can enter from 0 to 5
     } else {
       allowedChecker = "Black";
       blockedChecker = "White";
       direction = -1;
       barCounter = blackBar;
+      enteryPoint = 24; //black checkers can enter from 18 to 23
     }
 
     let moveAvailable = 0;
     if (
-      (currentDiceRoll[0] == 0 && currentDiceRoll[1] == 0) ||
-      barCounter !== 0
+      currentDiceRoll[0] == 0 &&
+      currentDiceRoll[1] == 0 //check if any move is available from the board
     ) {
       moveAvailable = 0;
     } else {
-      for (let index = 0; index < currentBoardState.length; index++) {
-        let col = currentBoardState[index];
+      if (barCounter > 0) {
+        //check if any move is available from the bar
+        let target1 = enteryPoint + currentDiceRoll[0] * direction;
+        let target2 = enteryPoint + currentDiceRoll[1] * direction;
+        let target1Length = currentBoardState[target1].length;
+        let target1Color = currentBoardState[target1][0];
+        let target2Length = currentBoardState[target2].length;
+        let target2Color = currentBoardState[target2][0];
 
-        if (col.length > 0 && col[0] == allowedChecker) {
-          //if the column has checkers and the first checker is allowed checker
-          //find allowed moves for corrent column
-
-          move1 = index + currentDiceRoll[0] * direction;
-          move2 = index + currentDiceRoll[1] * direction;
-
-          //rule#1
-          //check if the target is less that 23 and free or same color and no double opponent checker
-
-          if (move1 > 23 || move1 < 0 || currentDiceRoll[0] == 0) {
-            moveAvailable = 0;
-          } else {
-            let move1Length = currentBoardState[move1].length;
-            let move1Color = currentBoardState[move1][0];
-            if (move1Length >= 2 && move1Color == blockedChecker) {
-              // console.log("can't move");
-              moveAvailable = 0;
-            } else {
-              moveAvailable = 1;
-              break;
-            }
-          }
-
-          if (move2 > 23 || move2 < 0 || currentDiceRoll[1] == 0) {
-            moveAvailable = 0;
-          } else {
-            let target2Length = currentBoardState[move2].length;
-            let target2Color = currentBoardState[move2][0];
-            if (target2Length >= 2 && target2Color == blockedChecker) {
-              moveAvailable = 0;
-            } else {
-              moveAvailable = 1;
-              break;
-            }
-          }
-        } else {
+        if (
+          target1Length >= 2 &&
+          target1Color == blockedChecker &&
+          target2Length >= 2 &&
+          target2Color == blockedChecker
+        ) {
           moveAvailable = 0;
+        } else {
+          moveAvailable = 1;
+        }
+      } else {
+        //check if any move is available from the board
+        for (let index = 0; index < currentBoardState.length; index++) {
+          let col = currentBoardState[index];
+
+          if (col.length > 0 && col[0] == allowedChecker) {
+            //if the column has checkers and the first checker is allowed checker
+            //find allowed moves for corrent column
+
+            move1 = index + currentDiceRoll[0] * direction;
+            move2 = index + currentDiceRoll[1] * direction;
+
+            //rule#1
+            //check if the target is less that 23 and free or same color and no double opponent checker
+
+            if (move1 > 23 || move1 < 0 || currentDiceRoll[0] == 0) {
+              moveAvailable = 0;
+            } else {
+              let move1Length = currentBoardState[move1].length;
+              let move1Color = currentBoardState[move1][0];
+              if (move1Length >= 2 && move1Color == blockedChecker) {
+                // console.log("can't move");
+                moveAvailable = 0;
+              } else {
+                moveAvailable = 1;
+                break;
+              }
+            }
+
+            if (move2 > 23 || move2 < 0 || currentDiceRoll[1] == 0) {
+              moveAvailable = 0;
+            } else {
+              let target2Length = currentBoardState[move2].length;
+              let target2Color = currentBoardState[move2][0];
+              if (target2Length >= 2 && target2Color == blockedChecker) {
+                moveAvailable = 0;
+              } else {
+                moveAvailable = 1;
+                break;
+              }
+            }
+          } else {
+            moveAvailable = 0;
+          }
         }
       }
     }
@@ -351,28 +380,30 @@ export function Board({
           newDiceRoll[1] = 0;
         }
       }
-        let newMoveLeft = moveLeft - 1;
-        onMoveLeft(newMoveLeft);
-        onMessage(
-          currentPlayer +
-            " you have " +
-            newMoveLeft +
-            " moves left"
-        );
-        if (newMoveLeft == 0) { //change player
-          if (currentPlayer == PlayerNames.white[0]) {
-            newPlayer = PlayerNames.black[0];
-          } else {
-            newPlayer = PlayerNames.white[0];
-          }
-          onPlayerChange(newPlayer);
-          onMessage(newPlayer + " roll the dice");
-        }
-      
-
+      let newMoveLeft = moveLeft - 1;
+      onMoveLeft(newMoveLeft);
+      onMessage(currentPlayer + " you have " + newMoveLeft + " moves left");
+      if (newMoveLeft == 0) {
+        //change player
+        togglePlayer(currentPlayer, onPlayerChange, onMessage);
+      }
     }
     onColumnSelect(50); //reset the color of the allowed points
-
-    
   }
+}
+
+function togglePlayer(
+  currentPlayer: string,
+  onPlayerChange: (player: string) => void,
+  onMessage: (message: string) => void
+) {
+  let newPlayer: string;
+  if (currentPlayer == PlayerNames.white[0]) {
+    newPlayer = PlayerNames.black[0];
+  } else {
+    newPlayer = PlayerNames.white[0];
+  }
+  onPlayerChange(newPlayer);
+  onMessage(newPlayer + " roll the dice");
+  return;
 }

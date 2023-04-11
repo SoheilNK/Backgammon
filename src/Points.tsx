@@ -98,7 +98,7 @@ type QuadrantProps = {
   drction: Direction;
   allowedColumns: number[];
   currentPlayer: string;
-  moveLeft: number;
+  moveAllowed: number;
   bar?: number;
 };
 export function Quadrant({
@@ -108,7 +108,7 @@ export function Quadrant({
   drction,
   allowedColumns,
   currentPlayer,
-  moveLeft,
+  moveAllowed: moveLeft,
   bar,
 }: QuadrantProps) {
   let isAllowed = false;

@@ -13,22 +13,21 @@ export const PlayerNames: { [key: string]: [string] } = {
 };
 // export type PlayerNames = keyof typeof PlayerNames;
 interface GameProps {
-  diceRoll: TdiceRoll;
-  boardState: Color[][];
+
   playerWon: boolean;
 }
 
-function Game({ diceRoll, boardState }: GameProps) {
+function Game({ playerWon }: GameProps) {
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState);
-  const [currentDiceRoll, setDiceRoll] = useState(diceRoll);
+  const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
   const [currentPlayer, setCurrentPlayer] = useState<string>(
     PlayerNames.white[0]
   );
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [message, setMessage] = useState(currentPlayer + " roll the dice");
   const [selectedColumn, setSelectedColumn] = useState(30);
-  const [whiteBar, setWhiteBar] = useState(0);
+  const [whiteBar, setWhiteBar] = useState(1); // value 1 for test //number of white checkers on the bar
   const [blackBar, setBlackBar] = useState(0);
   const [whiteOut, setWhiteOut] = useState(0);
   const [blackOut, setBlackOut] = useState(0);
@@ -78,9 +77,9 @@ let initialState: Color[][] = [
   ["White", "White"],
   [],
   [],
-  ["Black"],
   [],
-  ["Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
   [],
   ["Black", "Black", "Black"],
   [],
@@ -100,3 +99,5 @@ let initialState: Color[][] = [
   [],
   ["Black", "Black"],
 ];
+
+
