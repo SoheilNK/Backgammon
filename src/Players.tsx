@@ -13,27 +13,16 @@ export default function Players({
   anyMoveAvailable,
 }: PlayersProps): JSX.Element {
 
-  //extract the player names from the enum
+  //extract the player names from the PlayerNames object
   const player1 = PlayerNames.white[0];
 
   //change the background color of the player who is playing
-    const [isActive1, setIsActive1] = useState(false);
-    const [isActive2, setIsActive2] = useState(false);
-    useEffect(() => {
-        if (currentPlayer === player1) {
-            setIsActive1(true);
-            setIsActive2(false);
-        } else {
-            setIsActive1(false);
-            setIsActive2(true);
-        }
-    }, [currentPlayer]);
     
   const player1Class = classNames("player1", {
-    'playerActive': isActive1,
+    'playerActive': currentPlayer === player1 && anyMoveAvailable,
   });
   const player2Class = classNames("player1", {
-    'playerActive': isActive2,
+    'playerActive': currentPlayer !== player1 && anyMoveAvailable,
   });
 
   return (

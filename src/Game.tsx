@@ -35,7 +35,7 @@ function Game({ playerWon }: GameProps) {
 
   return (
     <div className="game">
-      <Players currentPlayer={currentPlayer} anyMoveAvailable={false} />
+      <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState) => setCurrentBoardState(boardState)}
