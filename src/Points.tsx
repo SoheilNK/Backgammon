@@ -50,15 +50,15 @@ interface PointProps {
   drction: Direction;
   isAllowed: boolean;
   currentPlayer: string;
-  moveLeft: number;
+  moveAllowed: boolean;
 }
 function Point({
   colName,
   items,
   drction,
-  isAllowed,
+  isAllowed, //isAllowed is true if the point is in the allowed columns
   currentPlayer,
-  moveLeft,
+  moveAllowed, //moveAllowed is true if the player can move checkers
 }: PointProps) {
   const { setNodeRef } = useDroppable({
     id: colName,
@@ -80,7 +80,7 @@ function Point({
     <div id={colName} ref={setNodeRef} className={drction + " " + pointClass}>
       {items.map((checkerClr, key) => (
         <Checker
-          disabled={checkerClr != allowedClr || moveLeft == 0}
+          disabled={checkerClr != allowedClr || moveAllowed == false}
           key={key}
           parent={colName}
           clr={checkerClr}
@@ -98,7 +98,7 @@ type QuadrantProps = {
   drction: Direction;
   allowedColumns: number[];
   currentPlayer: string;
-  moveAllowed: number;
+  moveAllowed: boolean;
   bar?: number;
 };
 export function Quadrant({
@@ -108,13 +108,13 @@ export function Quadrant({
   drction,
   allowedColumns,
   currentPlayer,
-  moveAllowed: moveLeft,
+  moveAllowed,
   bar,
 }: QuadrantProps) {
   let isAllowed = false;
-  if (bar == undefined) {
-    bar = 0;
-  }
+  // if (bar == undefined) {
+  //   bar = 0;
+  // }
 
   return (
     <div className={"grid-container " + drction}>
@@ -128,10 +128,10 @@ export function Quadrant({
             isAllowed={
               (allowedColumns[0] == start + i + 10 ||
                 allowedColumns[1] == start + i + 10) &&
-              (moveLeft > 0 || bar != 0)
+              (moveAllowed || bar != 0)
             }
             currentPlayer={currentPlayer}
-            moveLeft={moveLeft}
+            moveAllowed={moveAllowed}
           />
           {/* added 10 to make it 2 digits*/}
         </div>

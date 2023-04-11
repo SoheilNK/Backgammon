@@ -50,28 +50,27 @@ export function Board({
   winner,
   onWinner,
 }: BoardProps) {
-  let anyMoveLeft = anyMoveAvailable(
+  let allowedColumns: number[];
+  let moveAllowed = anyMoveAvailable(
     currentBoardState,
     currentPlayer,
     currentDiceRoll
   );
   //******************to be checked for no move available */
-  if (anyMoveLeft == 0) {
-    onMoveLeft(0);
-    // alert("No move available");
+  if (moveAllowed[0] === false && moveAllowed[1] === false) {
+    alert("No move available");
+    //change player
+    allowedColumns = []; //reset allowed columns
     // togglePlayer(currentPlayer, onPlayerChange, onMessage);
+  } else {
+    allowedColumns = setAllowedColumns(
+      currentBoardState,
+      currentDiceRoll,
+      currentPlayer,
+      selectedColumn
+    );
   }
-
-  // console.log("anyMoveAvailable >>> " + newMoveAllowed);
-
-  let allowedColumns = setAllowedColumns(
-    currentBoardState,
-    currentDiceRoll,
-    currentPlayer,
-    selectedColumn
-  );
 //check if the move is allowed for the current player's checkers on the board
-  let boardMoveAllowed = (anyMoveLeft > 0 );
   return (
     <DndContext
       onDragStart={handelDragStart}
@@ -86,7 +85,7 @@ export function Board({
           drction={"ltr"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={(anyMoveLeft)}
+          moveAllowed={moveAllowed[0]}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -95,7 +94,7 @@ export function Board({
           drction={"ltr"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={anyMoveLeft}
+          moveAllowed={moveAllowed[0]}
           bar={blackBar}
         />
         <Quadrant
@@ -105,7 +104,7 @@ export function Board({
           drction={"rtl"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={anyMoveLeft}
+          moveAllowed={moveAllowed[0]}
         />
         <Quadrant
           boardState={currentBoardState}
@@ -114,7 +113,7 @@ export function Board({
           drction={"rtl"}
           allowedColumns={allowedColumns}
           currentPlayer={currentPlayer}
-          moveAllowed={anyMoveLeft}
+          moveAllowed={moveAllowed[0]}
           bar={whiteBar}
         />
       </div>
@@ -153,14 +152,15 @@ export function Board({
       enteryPoint = 24; //black checkers can enter from 18 to 23
     }
 
-    let moveAvailable = 0;
+    let moveAvailable = [false, false]; //for [movefromboard, movefrombar]
     if (
       currentDiceRoll[0] == 0 &&
       currentDiceRoll[1] == 0 //check if any move is available from the board
     ) {
-      moveAvailable = 0;
+      moveAvailable[0] = false;
     } else {
       if (barCounter > 0) {
+        moveAvailable[0] = false; //no move is allowed from the board if there is a checker on the bar
         //check if any move is available from the bar
         let target1 = enteryPoint + currentDiceRoll[0] * direction;
         let target2 = enteryPoint + currentDiceRoll[1] * direction;
@@ -175,9 +175,9 @@ export function Board({
           target2Length >= 2 &&
           target2Color == blockedChecker
         ) {
-          moveAvailable = 0;
+          moveAvailable[1] = false;
         } else {
-          moveAvailable = 1;
+          moveAvailable[1] = true;
         }
       } else {
         //check if any move is available from the board
@@ -195,33 +195,33 @@ export function Board({
             //check if the target is less that 23 and free or same color and no double opponent checker
 
             if (move1 > 23 || move1 < 0 || currentDiceRoll[0] == 0) {
-              moveAvailable = 0;
+              moveAvailable[0] = false;
             } else {
               let move1Length = currentBoardState[move1].length;
               let move1Color = currentBoardState[move1][0];
               if (move1Length >= 2 && move1Color == blockedChecker) {
                 // console.log("can't move");
-                moveAvailable = 0;
+               moveAvailable[0] = false;
               } else {
-                moveAvailable = 1;
+                moveAvailable[0] = true;
                 break;
               }
             }
 
             if (move2 > 23 || move2 < 0 || currentDiceRoll[1] == 0) {
-              moveAvailable = 0;
+              moveAvailable[0] = false;
             } else {
               let target2Length = currentBoardState[move2].length;
               let target2Color = currentBoardState[move2][0];
               if (target2Length >= 2 && target2Color == blockedChecker) {
-                moveAvailable = 0;
+                moveAvailable[0] = false;
               } else {
-                moveAvailable = 1;
+                moveAvailable[0] = true;
                 break;
               }
             }
           } else {
-            moveAvailable = 0;
+            moveAvailable[0] = false;
           }
         }
       }

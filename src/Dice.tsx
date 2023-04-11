@@ -44,7 +44,7 @@ export default function Dice({
               Math.round(Math.random() * 5 + 1),
               Math.round(Math.random() * 5 + 1),
             ] as TdiceRoll;
-            // newDiceRoll = [6, 6]; //for testing
+            newDiceRoll = [6, 6]; //for testing
             onRoll(newDiceRoll);
             onMessage(currentPlayer + " move a checker");
             let newMoveLeft = 2;
