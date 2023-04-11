@@ -8,8 +8,6 @@ interface DiceProps {
   currentPlayer: string;
   moveLeft: number;
   onMoveLeft: (allowed: number) => void;
-  message: string;
-  onMessage: (message: string) => void;
 }
 
 export default function Dice({
@@ -18,8 +16,6 @@ export default function Dice({
   currentPlayer,
   moveLeft,
   onMoveLeft,
-  message,
-  onMessage,
 }: DiceProps): JSX.Element {
 
   const btnClass = classNames("dice", {
@@ -27,11 +23,6 @@ export default function Dice({
   });
 
   return (
-    <div className="actionPanel">
-      <span id="alert" className="card">
-        {message}
-      </span>
-
       <div className="players">
         <span className="dice">{newDiceRoll}</span>
         <button
@@ -46,26 +37,19 @@ export default function Dice({
             ] as TdiceRoll;
             // newDiceRoll = [6, 6]; //for testing
             onRoll(newDiceRoll);
-            onMessage(currentPlayer + " move a checker");
             let newMoveLeft = 2;
             if (newDiceRoll[0] === newDiceRoll[1]) {
               //if the dice roll is a double, the player can move twice
               newMoveLeft = newMoveLeft + 2;
             }
             onMoveLeft(newMoveLeft);
-              onMessage(
-                currentPlayer +
-                  " you have " +
-                  newMoveLeft +
-                  " moves left"
-              );
             
           }}
         >
           <span>Roll Dice</span>
         </button>
       </div>
-    </div>
+    
   );
 }
 

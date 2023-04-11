@@ -169,7 +169,6 @@ export function setAllowedColumns(
 export function togglePlayer(
   currentPlayer: string,
   onPlayerChange: (player: string) => void,
-  onMessage: (message: string) => void
 ) {
   let newPlayer: string;
   if (currentPlayer == PlayerNames.white[0]) {
@@ -178,7 +177,6 @@ export function togglePlayer(
     newPlayer = PlayerNames.white[0];
   }
   onPlayerChange(newPlayer);
-  onMessage(newPlayer + " roll the dice");
   return;
 }
 

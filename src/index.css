@@ -82,12 +82,9 @@
   /* margin: calc(var(--checkerSize)/5); */
   display: flex;
   flex-direction: column;
-
+justify-content: center;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
-}
-.card span {
-  margin: auto;
 }
 .playerActive {
   background-color: var(--color5);

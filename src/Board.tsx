@@ -3,7 +3,6 @@ import { anyMoveAvailable, setAllowedColumns, togglePlayer } from "./gameRules";
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
-import { useEffect } from "react";
 import Bar from "./Bar";
 
 type BoardProps = {
@@ -14,7 +13,6 @@ type BoardProps = {
   onPlayerChange: (player: string) => void;
   selectedColumn: number;
   onColumnSelect: (column: number) => void;
-  onMessage: (message: string) => void;
   moveLeft: number;
   onMoveLeft: (allowed: number) => void;
   whiteBar: number;
@@ -36,7 +34,6 @@ export function Board({
   onPlayerChange,
   selectedColumn,
   onColumnSelect,
-  onMessage,
   moveLeft,
   onMoveLeft,
   whiteBar,
@@ -169,10 +166,9 @@ export function Board({
         }
         let newMoveLeft = moveLeft - 1;
         onMoveLeft(newMoveLeft);
-        onMessage(currentPlayer + " you have " + newMoveLeft + " moves left");
         if (newMoveLeft == 0) {
           //change player
-          togglePlayer(currentPlayer, onPlayerChange, onMessage);
+          togglePlayer(currentPlayer, onPlayerChange);
         }
       }
       onColumnSelect(50); //reset the color of the allowed points

@@ -2,18 +2,16 @@ import { useState } from "react";
 import { Board } from "./Board";
 import Dice from "./Dice";
 import Players from "./Players";
+import { Message } from "./Message";
 
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
 export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
-export const PlayerNames: { [key: string]: [string] } = {
-  //boolean is for if the player has won or not
+export const PlayerNames = {
   white: ["Player1"],
   black: ["Player2"],
 };
-// export type PlayerNames = keyof typeof PlayerNames;
 interface GameProps {
-
   playerWon: boolean;
 }
 
@@ -36,6 +34,10 @@ function Game({ playerWon }: GameProps) {
   return (
     <div className="game">
       <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
+      <Message
+        currentPlayer={currentPlayer}
+        moveLeft={moveLeft}
+      />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState) => setCurrentBoardState(boardState)}
@@ -44,7 +46,6 @@ function Game({ playerWon }: GameProps) {
         onPlayerChange={(player) => setCurrentPlayer(player)}
         selectedColumn={selectedColumn}
         onColumnSelect={(column) => setSelectedColumn(column)}
-        onMessage={(message) => setMessage(message)}
         moveLeft={moveLeft}
         onMoveLeft={(allowed) => setMoveLeft(allowed)}
         whiteBar={whiteBar}
@@ -64,8 +65,6 @@ function Game({ playerWon }: GameProps) {
         currentPlayer={currentPlayer}
         moveLeft={moveLeft}
         onMoveLeft={(allowed) => setMoveLeft(allowed)}
-        message={message}
-        onMessage={(message) => setMessage(message)}
       />
     </div>
   );
@@ -99,5 +98,3 @@ let initialState: Color[][] = [
   [],
   ["Black", "Black"],
 ];
-
-
