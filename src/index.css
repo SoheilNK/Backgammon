@@ -120,12 +120,12 @@
   
 }
 /*set disabled button*/
-.btn:disabled {
-  background-color: var(--color2);
+button:disabled {
+  background-color: var(--color3);
   cursor: not-allowed;
 }
-.btn:hover {
-  background-color: var(--color5);
+button:hover:not(:disabled) {
+  background-color: var(--color51);
 
 }
 
