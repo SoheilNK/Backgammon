@@ -4,9 +4,9 @@ import { Color, TdiceRoll, PlayerNames } from "./Game";
 export function anyMoveAvailable(
   currentBoardState: Color[][],
   currentPlayer: string,
-    currentDiceRoll: TdiceRoll,
-    whiteBar: number,
-    blackBar: number
+  currentDiceRoll: TdiceRoll,
+  whiteBar: number,
+  blackBar: number
 ) {
   let allowedChecker: string;
   let blockedChecker: string;
@@ -40,23 +40,38 @@ export function anyMoveAvailable(
     if (barCounter > 0) {
       moveAvailable[0] = false; //no move is allowed from the board if there is a checker on the bar
       //check if any move is available from the bar
-      let target1 = enteryPoint + currentDiceRoll[0] * direction;
-      let target2 = enteryPoint + currentDiceRoll[1] * direction;
-      let target1Length = currentBoardState[target1].length;
-      let target1Color = currentBoardState[target1][0];
-      let target2Length = currentBoardState[target2].length;
-      let target2Color = currentBoardState[target2][0];
 
-      if (
-        target1Length >= 2 &&
-        target1Color == blockedChecker &&
-        target2Length >= 2 &&
-        target2Color == blockedChecker
-      ) {
+      if (currentDiceRoll[0] == 0) {
+        //deal with target1
         moveAvailable[1] = false;
       } else {
-        moveAvailable[1] = true;
+        //deal with target1
+        let target1 = enteryPoint + currentDiceRoll[0] * direction;
+        let target1Length = currentBoardState[target1].length;
+        let target1Color = currentBoardState[target1][0];
+        if (target1Length >= 2 && target1Color == blockedChecker) {
+          moveAvailable[1] = false;
+        } else {
+          moveAvailable[1] = true;
+        }
       }
+
+      if (currentDiceRoll[1] == 0) {
+        //deal with target2
+        moveAvailable[1] = false;
+
+      } else {
+        //deal with target2
+        let target2 = enteryPoint + currentDiceRoll[1] * direction;
+        let target2Length = currentBoardState[target2].length;
+        let target2Color = currentBoardState[target2][0];
+        if (target2Length >= 2 && target2Color == blockedChecker) {
+          moveAvailable[1] = false;
+        } else {
+          moveAvailable[1] = true;
+        }
+      }
+
     } else {
       //check if any move is available from the board
       for (let index = 0; index < currentBoardState.length; index++) {
@@ -168,7 +183,7 @@ export function setAllowedColumns(
 
 export function togglePlayer(
   currentPlayer: string,
-  onPlayerChange: (player: string) => void,
+  onPlayerChange: (player: string) => void
 ) {
   let newPlayer: string;
   if (currentPlayer == PlayerNames.white[0]) {
@@ -179,4 +194,3 @@ export function togglePlayer(
   onPlayerChange(newPlayer);
   return;
 }
-

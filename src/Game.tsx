@@ -23,9 +23,8 @@ function Game({ playerWon }: GameProps) {
     PlayerNames.white[0]
   );
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
-  const [message, setMessage] = useState(currentPlayer + " roll the dice");
   const [selectedColumn, setSelectedColumn] = useState(30);
-  const [whiteBar, setWhiteBar] = useState(0); // value 1 for test //number of white checkers on the bar
+  const [whiteBar, setWhiteBar] = useState(2); // value 1 for test //number of white checkers on the bar
   const [blackBar, setBlackBar] = useState(0);
   const [whiteOut, setWhiteOut] = useState(0);
   const [blackOut, setBlackOut] = useState(0);
@@ -34,14 +33,12 @@ function Game({ playerWon }: GameProps) {
   return (
     <div className="game">
       <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
-      <Message
-        currentPlayer={currentPlayer}
-        moveLeft={moveLeft}
-      />
+      <Message currentPlayer={currentPlayer} moveLeft={moveLeft} />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState) => setCurrentBoardState(boardState)}
         currentDiceRoll={currentDiceRoll}
+        onRoll={(roll) => setDiceRoll(roll)}
         currentPlayer={currentPlayer}
         onPlayerChange={(player) => setCurrentPlayer(player)}
         selectedColumn={selectedColumn}
@@ -65,6 +62,10 @@ function Game({ playerWon }: GameProps) {
         currentPlayer={currentPlayer}
         moveLeft={moveLeft}
         onMoveLeft={(allowed) => setMoveLeft(allowed)}
+        currentBoardState={currentBoardState}
+        onPlayerChange={(player) => setCurrentPlayer(player)}
+        whiteBar={whiteBar}
+        blackBar={blackBar}
       />
     </div>
   );

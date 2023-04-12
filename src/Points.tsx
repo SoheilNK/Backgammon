@@ -112,10 +112,6 @@ export function Quadrant({
   bar,
 }: QuadrantProps) {
   let isAllowed = false;
-  // if (bar == undefined) {
-  //   bar = 0;
-  // }
-
   return (
     <div className={"grid-container " + drction}>
       {points.slice(start, end).map((point, i) => (
@@ -128,7 +124,7 @@ export function Quadrant({
             isAllowed={
               (allowedColumns[0] == start + i + 10 ||
                 allowedColumns[1] == start + i + 10) &&
-              (moveAllowed || bar != 0)
+              (moveAllowed || (bar || 0) != 0)
             }
             currentPlayer={currentPlayer}
             moveAllowed={moveAllowed}
