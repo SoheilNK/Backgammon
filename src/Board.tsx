@@ -108,14 +108,22 @@ export function Board({
       oldCol = parent.slice(6, 8) - 10;
       oldColColor = currentBoardState[oldCol][index];
     }
-
+    //if oldCol is the same as newcol return
+    if (oldCol == newCol) {
+      console.log("same column");
+      onColumnSelect(50); //reset the color of the allowed points
+      return;
+    }
     //update states
     const newBoardState = currentBoardState;
     const newDiceRoll = currentDiceRoll;
-
+    let newMoveLeft = moveLeft;
+    let newWhiteBar = whiteBar;
+    let newBlackBar = blackBar;
     if (newCol + 10 != allowedColumns[0] && newCol + 10 != allowedColumns[1]) {
       console.log("This move is not not allowed");
     } else {
+      //a move is allowed
       //rule#3--if the move is a hit
       if (
         newBoardState[newCol].length == 1 && //if the target column has one checker it is a blot
@@ -132,15 +140,16 @@ export function Board({
       newBoardState[newCol].push(oldColColor);
       if (parent == "Bar") {
         if (currentPlayer == PlayerNames.black[0]) {
-          onBlackBar(blackBar - 1);
+          newBlackBar = newBlackBar - 1;
+          onBlackBar(newBlackBar);
         } else {
-          onWhiteBar(whiteBar - 1);
+          newWhiteBar = newWhiteBar - 1;
+          onWhiteBar(newWhiteBar);
         }
       } else {
         newBoardState[oldCol].pop();
       }
 
-      onMove(newBoardState);
       //rull#2--if the move is a double
       if (currentDiceRoll[0] !== currentDiceRoll[1]) {
         if (newCol + 10 == allowedColumns[0]) {
@@ -150,27 +159,31 @@ export function Board({
           newDiceRoll[1] = 0;
         }
       }
-      let newMoveLeft = moveLeft - 1;
+      newMoveLeft = newMoveLeft - 1;
       //******************to be checked for no move available */
       let moveAllowed = anyMoveAvailable(
         newBoardState,
         currentPlayer,
         newDiceRoll,
-        whiteBar,
-        blackBar
+        newWhiteBar,
+        newBlackBar
       );
 
       if (moveAllowed[0] === false && moveAllowed[1] === false) {
         newMoveLeft = 0;
       }
 
-      onMoveLeft(newMoveLeft);
+      
       if (newMoveLeft == 0) {
         //change player
         togglePlayer(currentPlayer, onPlayerChange);
       }
     }
     onColumnSelect(50); //reset the color of the allowed points
+    onMoveLeft(newMoveLeft);
+    onMove(newBoardState);
+
+    return 
   }
 
   let moveAllowed = anyMoveAvailable(
@@ -180,7 +193,7 @@ export function Board({
     whiteBar,
     blackBar
   );
-  
+
   return (
     <DndContext
       onDragStart={handelDragStart}
@@ -235,4 +248,3 @@ export function Board({
     </DndContext>
   );
 }
-

@@ -24,7 +24,7 @@ function Game({ playerWon }: GameProps) {
   );
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(30);
-  const [whiteBar, setWhiteBar] = useState(2); // value 1 for test //number of white checkers on the bar
+  const [whiteBar, setWhiteBar] = useState(0); // value 1 for test //number of white checkers on the bar
   const [blackBar, setBlackBar] = useState(0);
   const [whiteOut, setWhiteOut] = useState(0);
   const [blackOut, setBlackOut] = useState(0);

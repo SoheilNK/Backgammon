@@ -43,7 +43,7 @@ export default function Dice({
             Math.round(Math.random() * 5 + 1),
             Math.round(Math.random() * 5 + 1),
           ] as TdiceRoll;
-          newDiceRoll = [6, 5]; //for testing
+          // newDiceRoll = [6, 5]; //for testing
           onRoll(newDiceRoll);
           let newMoveLeft = 2;
           if (newDiceRoll[0] === newDiceRoll[1]) {
