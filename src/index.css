@@ -188,6 +188,14 @@ img.checker:active {
   height: calc(var(--checkerSize));
   text-align: center;
 }
+.out {
+  display: flex;
+  flex-direction: column;
+  /* background-color: rgb(159, 164, 238); */
+  min-height: var(--checkerSize);
+  width: calc(var(--checkerSize) * 6.5);
+  text-align: center;
+}
 
 .point {
   display: flex;

@@ -32,6 +32,17 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
     imgUrl = "Checker_B.png";
   }
 
+  // function handelDoubleClick(parent: string) {
+  //   //on double click on a checker, move it to the Out
+  //   if (parent == "Bar" || parent == "Out") {
+  //     return;
+  //   } else {
+  //     //move the checker to the Out
+  //     console.log("double click on " + title);
+  //   }
+
+  // }
+
   return (
     <img
       ref={setNodeRef}
@@ -40,6 +51,7 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
       {...attributes}
       className="checker"
       src={imgUrl}
+      // onDoubleClick={() => {handelDoubleClick(parent)}}
     />
   );
 }

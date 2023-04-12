@@ -3,10 +3,14 @@ import { Checker } from "./Points";
 
 interface BarProps {
   whiteBar: number;
-    blackBar: number;
-    currentPlayer: string;
+  blackBar: number;
+  currentPlayer: string;
 }
-export default function Bar({ whiteBar, blackBar, currentPlayer }: BarProps): JSX.Element {
+export default function Bar({
+  whiteBar,
+  blackBar,
+  currentPlayer,
+}: BarProps): JSX.Element {
   return (
     <div className="grid-container-bar">
       <div className="whiteBar grid-item-bar ">
@@ -31,7 +35,7 @@ export default function Bar({ whiteBar, blackBar, currentPlayer }: BarProps): JS
           <div className="blackBar">
             {Array.from(Array(blackBar).keys()).map((i) => (
               <Checker
-                title={"bBlot_" + i }
+                title={"bBlot_" + i}
                 key={"blackBar_" + i}
                 clr={"Black"}
                 parent={"Bar"}

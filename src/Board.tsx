@@ -4,6 +4,7 @@ import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
 import Bar from "./Bar";
+import Out from "./out";
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -200,6 +201,12 @@ export function Board({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
+      <Out
+        whiteOut={whiteOut}
+        blackOut={blackOut}
+        currentPlayer={currentPlayer}
+      />
+
       <div className="board">
         <Quadrant
           boardState={currentBoardState}
