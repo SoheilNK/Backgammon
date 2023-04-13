@@ -1,20 +1,31 @@
 import { useDroppable } from "@dnd-kit/core";
 
 import { Checker } from "./Points";
+import classNames from "classnames";
 
 interface OutProps {
   whiteOut: number;
   blackOut: number;
   currentPlayer: string;
+  allowedColumns: number[];
 }
 export default function Out({
   whiteOut,
   blackOut,
   currentPlayer,
+  allowedColumns,
 }: OutProps): JSX.Element {
+  const outAllowed1 = classNames("out", {
+    outAllowed: allowedColumns.includes(100),
+  });
+  const outAllowed2 = classNames("out", {
+    outAllowed: allowedColumns.includes(200),
+  });
+
+
   return (
     <div className="grid-container-bar">
-      <div className="out">
+      <div className={outAllowed1}>
         {whiteOut > 0 ? (
           <DropOut id="whiteOut">
             {Array.from(Array(whiteOut).keys()).map((i) => (
@@ -31,7 +42,7 @@ export default function Out({
           <div className="whiteOut"></div>
         )}
       </div>
-      <div className="blackOut grid-item-out">
+      <div className={outAllowed2}>
         {blackOut > 0 ? (
           <DropOut id="blackOut">
             {Array.from(Array(blackOut).keys()).map((i) => (

@@ -195,6 +195,7 @@ img.checker:active {
   min-height: var(--checkerSize);
   width: calc(var(--checkerSize) * 6.5);
   text-align: center;
+  border-radius: var(--checkerSize);
 }
 
 .point {
@@ -210,8 +211,9 @@ img.checker:active {
 }
 .pointAllowed {
   background-color: var(--color51);
-  /* // make it half transparent */
-  /* opacity: 0.5; */
+}
+.outAllowed {
+  background-color: var(--color51);
 }
 .hidden {
   display: none;

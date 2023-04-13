@@ -94,10 +94,17 @@ export function Board({
     const index = e.active.data.current?.index ?? 0;
     const parent = e.active.data.current?.parent ?? "";
     console.log("----handle-drag end----------");
-    const newCol: number = +target.slice(6, 8) - 10;
-    const newColColor = currentBoardState[newCol][0];
     let oldCol: number = 0;
     let oldColColor: Color = "White";
+    const newBoardState = currentBoardState;
+    const newDiceRoll = currentDiceRoll;
+    let newCol: number = 0;
+    let newColColor: Color = "White";
+    let newMoveLeft = moveLeft;
+    let newWhiteBar = whiteBar;
+    let newBlackBar = blackBar;
+    let newWhiteOut = whiteOut;
+    let newBlackOut = blackOut;
 
     //check if checker is from bar or not to determine old color
     if (parent == "Bar") {
@@ -109,48 +116,65 @@ export function Board({
       oldCol = parent.slice(6, 8) - 10;
       oldColColor = currentBoardState[oldCol][index];
     }
-    //if oldCol is the same as newcol return
-    if (oldCol == newCol) {
-      console.log("same column");
-      onColumnSelect(50); //reset the color of the allowed points
-      return;
-    }
-    //update states
-    const newBoardState = currentBoardState;
-    const newDiceRoll = currentDiceRoll;
-    let newMoveLeft = moveLeft;
-    let newWhiteBar = whiteBar;
-    let newBlackBar = blackBar;
-    if (newCol + 10 != allowedColumns[0] && newCol + 10 != allowedColumns[1]) {
-      console.log("This move is not not allowed");
-    } else {
-      //a move is allowed
-      //rule#3--if the move is a hit
-      if (
-        newBoardState[newCol].length == 1 && //if the target column has one checker it is a blot
-        newBoardState[newCol][0] != oldColColor //if the checker is not the same color as the moving checker
-      ) {
-        if (newBoardState[newCol][0] == "White") {
-          onWhiteBar(whiteBar + 1);
-        } else {
-          onBlackBar(blackBar + 1);
-        }
-        newBoardState[newCol].pop();
-      }
 
-      newBoardState[newCol].push(oldColColor);
-      if (parent == "Bar") {
-        if (currentPlayer == PlayerNames.black[0]) {
-          newBlackBar = newBlackBar - 1;
-          onBlackBar(newBlackBar);
-        } else {
-          newWhiteBar = newWhiteBar - 1;
-          onWhiteBar(newWhiteBar);
-        }
-      } else {
+    //check if the move is a move out
+    if (allowedColumns.includes(100) || allowedColumns.includes(200)) {
+      if (target == "whiteOut" && oldColColor == "White") {
+        console.log("move out");
         newBoardState[oldCol].pop();
+        newWhiteOut = newWhiteOut + 1;
       }
+      if (target == "blackOut" && oldColColor == "Black") {
+        console.log("move out");
+        newBoardState[oldCol].pop();
+        newBlackOut = newBlackOut + 1;
+      }
+    } else {
+      newCol= +target.slice(6, 8) - 10;
+      newColColor = currentBoardState[newCol][0];
 
+      //if oldCol is the same as newcol return
+      if (oldCol == newCol) {
+        console.log("same column");
+        onColumnSelect(50); //reset the color of the allowed points
+        return;
+      }
+      //update states
+
+      if (
+        newCol + 10 != allowedColumns[0] &&
+        newCol + 10 != allowedColumns[1]
+      ) {
+        console.log("This move is not not allowed");
+      } else {
+        //a move is allowed
+        //rule#3--if the move is a hit
+        if (
+          newBoardState[newCol].length == 1 && //if the target column has one checker it is a blot
+          newBoardState[newCol][0] != oldColColor //if the checker is not the same color as the moving checker
+        ) {
+          if (newBoardState[newCol][0] == "White") {
+            onWhiteBar(whiteBar + 1);
+          } else {
+            onBlackBar(blackBar + 1);
+          }
+          newBoardState[newCol].pop();
+        }
+
+        newBoardState[newCol].push(oldColColor);
+        if (parent == "Bar") {
+          if (currentPlayer == PlayerNames.black[0]) {
+            newBlackBar = newBlackBar - 1;
+            onBlackBar(newBlackBar);
+          } else {
+            newWhiteBar = newWhiteBar - 1;
+            onWhiteBar(newWhiteBar);
+          }
+        } else {
+          newBoardState[oldCol].pop();
+        }
+      }
+    }
       //rull#2--if the move is a double
       if (currentDiceRoll[0] !== currentDiceRoll[1]) {
         if (newCol + 10 == allowedColumns[0]) {
@@ -160,6 +184,7 @@ export function Board({
           newDiceRoll[1] = 0;
         }
       }
+    
       newMoveLeft = newMoveLeft - 1;
       //******************to be checked for no move available */
       let moveAllowed = anyMoveAvailable(
@@ -174,17 +199,19 @@ export function Board({
         newMoveLeft = 0;
       }
 
-      
       if (newMoveLeft == 0) {
         //change player
         togglePlayer(currentPlayer, onPlayerChange);
       }
-    }
+    
+
     onColumnSelect(50); //reset the color of the allowed points
+    onWhiteOut(newWhiteOut);
+    onBlackOut(newBlackOut);
     onMoveLeft(newMoveLeft);
     onMove(newBoardState);
 
-    return 
+    return;
   }
 
   let moveAllowed = anyMoveAvailable(
@@ -205,6 +232,7 @@ export function Board({
         whiteOut={whiteOut}
         blackOut={blackOut}
         currentPlayer={currentPlayer}
+        allowedColumns={allowedColumns}
       />
 
       <div className="board">
