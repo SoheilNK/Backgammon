@@ -5,7 +5,7 @@ import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
-import { useEffect } from "react";
+
 
 type BoardProps = {
   currentBoardState: Color[][];
