@@ -9,7 +9,7 @@
   --color3: rgba(242, 223, 201, 1);
   --whiteChecker: #f7ed9e;
   --blackChecker: #592202;
-  --checkerSize: 2.5rem;
+  --checkerSize: 2.3rem;
   /* --color1: #F2E205;
     --color2: #F2BD1D;
     --color3: #BF9B7A;
@@ -234,4 +234,23 @@ li {
   justify-content: center;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
+}
+/* copyright footer style */
+div.copyright {
+  background-color: #f8f8f8;
+  color: #777;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+  margin-top: 50px;
+  border-top: 1px solid #ddd;
+}
+
+div.copyright a {
+  color: #777;
+  text-decoration: none;
+}
+
+div.copyright a:hover {
+  color: #555;
 }

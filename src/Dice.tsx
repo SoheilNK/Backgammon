@@ -60,7 +60,7 @@ export default function Dice({
           );
           //******************check if any move is available */
           if (moveAllowed[0] === false && moveAllowed[1] === false) {
-            alert("No move available for player. " + currentPlayer + newDiceRoll);
+            alert("No move available for " + currentPlayer + " with this dice roll " + newDiceRoll);
             //change player
             onRoll([0, 0]);
             onMoveLeft(0);

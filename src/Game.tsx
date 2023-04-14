@@ -36,7 +36,11 @@ function Game({ playerWon }: GameProps) {
   return (
     <div className="game">
       <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
-      <Message currentPlayer={currentPlayer} moveLeft={moveLeft} winner={winner} />
+      <Message
+        currentPlayer={currentPlayer}
+        moveLeft={moveLeft}
+        winner={winner}
+      />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState) => setCurrentBoardState(boardState)}
@@ -70,6 +74,9 @@ function Game({ playerWon }: GameProps) {
         whiteBar={whiteBar}
         blackBar={blackBar}
       />
+      <div className="copyright">
+        &copy; 2023 By Soheil Najmabadi Kia.
+      </div>
     </div>
   );
 }
