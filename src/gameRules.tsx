@@ -245,7 +245,7 @@ export function setAllowedColumns(
   let target2Board;
   let target1Home;
   let target2Home;
-
+  
   if (selectedColumn == 50) { //reset the selections
     return allowedColumns;
   }

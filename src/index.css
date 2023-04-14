@@ -52,7 +52,7 @@
 .player1 {
   background-color: var(--whiteChecker);
   line-height: calc(var(--checkerSize) * 0.75);
-  min-width: calc(var(--checkerSize)*4);
+  min-width: calc(var(--checkerSize) * 4);
   margin: calc(var(--checkerSize) / 2);
   display: flex;
   flex-direction: row;
@@ -82,7 +82,7 @@
   /* margin: calc(var(--checkerSize)/5); */
   display: flex;
   flex-direction: column;
-justify-content: center;
+  justify-content: center;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
 }
@@ -114,7 +114,6 @@ justify-content: center;
   align-items: center;
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
-  
 }
 /*set disabled button*/
 button:disabled {
@@ -123,7 +122,6 @@ button:disabled {
 }
 button:hover:not(:disabled) {
   background-color: var(--color51);
-
 }
 
 /* .btn-pressed {
@@ -184,7 +182,7 @@ img.checker:active {
   /* border: 1px solid rgba(0, 0, 0, 0.8); */
   padding: 2px;
   font-size: 30px;
-  width: var(--checkerSize)*6;
+  width: var(--checkerSize) * 6;
   height: calc(var(--checkerSize));
   text-align: center;
 }
@@ -224,4 +222,16 @@ li {
   padding: 0;
 }
 
-
+.winner {
+  background-color: var(--color4);
+  width: calc(var(--checkerSize) * 12);
+  height: calc(var(--checkerSize) * 5);
+  line-height: calc(var(--checkerSize) * 0.75);
+  /* margin: calc(var(--checkerSize)/5); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
+}

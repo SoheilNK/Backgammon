@@ -5,6 +5,7 @@ import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
+import { useEffect } from "react";
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -50,12 +51,22 @@ export function Board({
   winner,
   onWinner,
 }: BoardProps) {
-  let allowedColumns: number[];
+  let allowedColumns: number[] = [];
   let allowedChecker: string;
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
   } else {
     allowedChecker = "Black";
+  }
+
+  //check for winner
+  if (whiteOut == 15) {
+    onWinner(PlayerNames.white[0]);
+  } else if (blackOut == 15) {
+    onWinner(PlayerNames.black[0]);
+  }
+
+  if (winner != "") {
   }
 
   allowedColumns = setAllowedColumns(
@@ -67,7 +78,6 @@ export function Board({
 
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
-    let allowedColumns: number[] = [];
     let currentPoint = 0;
 
     if (parent == "Bar") {
@@ -204,22 +214,29 @@ export function Board({
       }
       if (target == "whiteOut" || target == "blackOut") {
         //it is a move out
-        if ((homePosition <= newDiceRoll[0])) {
+        if ((homePosition = newDiceRoll[0])) {
           newDiceRoll[0] = 0;
         } else {
-          if ((homePosition <= newDiceRoll[1])) {
+          if ((homePosition = newDiceRoll[1])) {
             newDiceRoll[1] = 0;
+          } else {
+            if (homePosition < newDiceRoll[0]) {
+              newDiceRoll[0] = 0;
+            } else {
+              if (homePosition < newDiceRoll[1]) {
+                newDiceRoll[1] = 0;
+              }
+            }
           }
         }
-
       } else {
         //it is a board move
         if (newCol + 10 == allowedColumns[0]) {
           newDiceRoll[0] = 0;
         } else {
-        if (newCol + 10 == allowedColumns[1]) {
-          newDiceRoll[1] = 0;
-        }
+          if (newCol + 10 == allowedColumns[1]) {
+            newDiceRoll[1] = 0;
+          }
         }
       }
     } else {
