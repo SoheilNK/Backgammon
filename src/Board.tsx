@@ -51,6 +51,12 @@ export function Board({
   onWinner,
 }: BoardProps) {
   let allowedColumns: number[];
+  let allowedChecker: string;
+  if (PlayerNames.white[0] == currentPlayer) {
+    allowedChecker = "White";
+  } else {
+    allowedChecker = "Black";
+  }
 
   allowedColumns = setAllowedColumns(
     currentBoardState,
@@ -62,13 +68,6 @@ export function Board({
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
     let allowedColumns: number[] = [];
-    let allowedChecker: string;
-    if (PlayerNames.white[0] == currentPlayer) {
-      allowedChecker = "White";
-    } else {
-      allowedChecker = "Black";
-    }
-
     let currentPoint = 0;
 
     if (parent == "Bar") {
@@ -99,12 +98,13 @@ export function Board({
     const newBoardState = currentBoardState;
     const newDiceRoll = currentDiceRoll;
     let newCol: number = 0;
-    let newColColor: Color = "White";
+    let newColColor;
     let newMoveLeft = moveLeft;
     let newWhiteBar = whiteBar;
     let newBlackBar = blackBar;
     let newWhiteOut = whiteOut;
     let newBlackOut = blackOut;
+    let moveOut = false;
 
     //check if checker is from bar or not to determine old color
     if (parent == "Bar") {
@@ -118,20 +118,34 @@ export function Board({
     }
 
     //check if the move is a move out
-    if (allowedColumns.includes(100) || allowedColumns.includes(200)) {
-      if (target == "whiteOut" && oldColColor == "White") {
-        console.log("move out");
-        newBoardState[oldCol].pop();
-        newWhiteOut = newWhiteOut + 1;
+    // if (allowedColumns.includes(100) || allowedColumns.includes(200)) {
+    if (target == "whiteOut" && oldColColor == "White") {
+      console.log("move out");
+      moveOut = true;
+      newBoardState[oldCol].pop();
+      newWhiteOut = newWhiteOut + 1;
+      newMoveLeft = newMoveLeft - 1;
+    }
+
+    if (target == "blackOut" && oldColColor == "Black") {
+      console.log("move out");
+      moveOut = true;
+      newBoardState[oldCol].pop();
+      newBlackOut = newBlackOut + 1;
+      newMoveLeft = newMoveLeft - 1;
+    }
+
+    //if the move is not a move out
+    //check if the target is a point
+    if (moveOut == false) {
+      if (target.slice(0, 6) == "Point-") {
+        newCol = +target.slice(6, 8) - 10;
+        newColColor = currentBoardState[newCol][0];
+      } else {
+        console.log("target is not a point");
+        onColumnSelect(50); //reset the color of the allowed points
+        return;
       }
-      if (target == "blackOut" && oldColColor == "Black") {
-        console.log("move out");
-        newBoardState[oldCol].pop();
-        newBlackOut = newBlackOut + 1;
-      }
-    } else {
-      newCol= +target.slice(6, 8) - 10;
-      newColColor = currentBoardState[newCol][0];
 
       //if oldCol is the same as newcol return
       if (oldCol == newCol) {
@@ -146,6 +160,8 @@ export function Board({
         newCol + 10 != allowedColumns[1]
       ) {
         console.log("This move is not not allowed");
+        onColumnSelect(50); //reset the color of the allowed points
+        return;
       } else {
         //a move is allowed
         //rule#3--if the move is a hit
@@ -173,10 +189,29 @@ export function Board({
         } else {
           newBoardState[oldCol].pop();
         }
+        newMoveLeft = newMoveLeft - 1;
       }
     }
-      //rull#2--if the move is a double
-      if (currentDiceRoll[0] !== currentDiceRoll[1]) {
+
+    //rull--set dice state
+    if (currentDiceRoll[0] != currentDiceRoll[1]) {
+      //if the move is not a double
+      let homePosition;
+      if (allowedChecker == "White") {
+        homePosition = 24 - selectedColumn;
+      } else {
+        homePosition = selectedColumn + 1;
+      }
+      if (target == "whiteOut" || target == "blackOut") {
+        //it is a move out
+        if ((homePosition = newDiceRoll[0])) {
+          newDiceRoll[0] = 0;
+        }
+        if ((homePosition = newDiceRoll[1])) {
+          newDiceRoll[1] = 0;
+        }
+      } else {
+        //it is a board move
         if (newCol + 10 == allowedColumns[0]) {
           newDiceRoll[0] = 0;
         }
@@ -184,26 +219,31 @@ export function Board({
           newDiceRoll[1] = 0;
         }
       }
-    
-      newMoveLeft = newMoveLeft - 1;
-      //******************to be checked for no move available */
-      let moveAllowed = anyMoveAvailable(
-        newBoardState,
-        currentPlayer,
-        newDiceRoll,
-        newWhiteBar,
-        newBlackBar
-      );
-
-      if (moveAllowed[0] === false && moveAllowed[1] === false) {
-        newMoveLeft = 0;
-      }
-
+    } else {
+      //if the move is a double
       if (newMoveLeft == 0) {
-        //change player
-        togglePlayer(currentPlayer, onPlayerChange);
+        newDiceRoll[0] = 0;
+        newDiceRoll[1] = 0;
       }
-    
+    }
+
+    //******************check if no move is available */
+    let moveAllowed = anyMoveAvailable(
+      newBoardState,
+      currentPlayer,
+      newDiceRoll,
+      newWhiteBar,
+      newBlackBar
+    );
+
+    if (moveAllowed[0] === false && moveAllowed[1] === false) {
+      newMoveLeft = 0;
+    }
+
+    if (newMoveLeft == 0) {
+      //change player
+      togglePlayer(currentPlayer, onPlayerChange);
+    }
 
     onColumnSelect(50); //reset the color of the allowed points
     onWhiteOut(newWhiteOut);

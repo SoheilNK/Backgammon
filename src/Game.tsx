@@ -17,17 +17,17 @@ interface GameProps {
 
 function Game({ playerWon }: GameProps) {
   const [currentBoardState, setCurrentBoardState] =
-    useState<Color[][]>(initialState1);
+    useState<Color[][]>(initialState2);
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
   const [currentPlayer, setCurrentPlayer] = useState<string>(
     PlayerNames.white[0]
   );
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(30);
-  const [whiteBar, setWhiteBar] = useState(0); // value 1 for test //number of white checkers on the bar
+  const [whiteBar, setWhiteBar] = useState(0); 
   const [blackBar, setBlackBar] = useState(0);
-  const [whiteOut, setWhiteOut] = useState(2);//TEST
-  const [blackOut, setBlackOut] = useState(1);//TEST
+  const [whiteOut, setWhiteOut] = useState(0);
+  const [blackOut, setBlackOut] = useState(0);
   const [winner, setWinner] = useState("");
 
   return (
@@ -127,3 +127,31 @@ let initialState1: Color[][] = [
   [],
   [],
 ];
+let initialState2: Color[][] = [
+  //test state for move out
+  ["Black", "Black", "Black", "Black", "Black"],
+  ["Black", "Black", "Black", "Black", "Black", "Black"],
+  ["Black", "Black"],
+  [],
+  ["Black", "Black"],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  ["White", "White", "White"],
+  [],
+  [],
+  [],
+  ["White", "White", "White", "White", "White"],
+  [],
+  ["White", "White"],
+  ["White", "White", "White", "White", "White"],
+];
+

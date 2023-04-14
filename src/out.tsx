@@ -26,11 +26,12 @@ export default function Out({
   return (
     <div className="grid-container-bar">
       <div className={outAllowed1}>
-        {whiteOut > 0 ? (
+        {whiteOut >= 0 ? (
           <DropOut id="whiteOut">
+            <span>{whiteOut}</span>
             {Array.from(Array(whiteOut).keys()).map((i) => (
               <Checker
-                title={"wBlot_" + i}
+                title={"wHit_" + i}
                 key={"wihtOut_" + i}
                 clr={"White"}
                 parent={"Out"}
@@ -43,11 +44,12 @@ export default function Out({
         )}
       </div>
       <div className={outAllowed2}>
-        {blackOut > 0 ? (
+        {blackOut >= 0 ? (
           <DropOut id="blackOut">
+            <span>{blackOut}</span>
             {Array.from(Array(blackOut).keys()).map((i) => (
               <Checker
-                title={"bBlot_" + i}
+                title={"bHit_" + i}
                 key={"blackOut_" + i}
                 clr={"Black"}
                 parent={"Out"}

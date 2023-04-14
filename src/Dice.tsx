@@ -43,12 +43,12 @@ export default function Dice({
             Math.round(Math.random() * 5 + 1),
             Math.round(Math.random() * 5 + 1),
           ] as TdiceRoll;
-          // newDiceRoll = [6, 5]; //for testing
+          newDiceRoll = [4, 6]; //for testing
           onRoll(newDiceRoll);
           let newMoveLeft = 2;
           if (newDiceRoll[0] === newDiceRoll[1]) {
             //if the dice roll is a double, the player can move twice
-            newMoveLeft = newMoveLeft + 2;
+            newMoveLeft = 4;
           }
           onMoveLeft(newMoveLeft);
           let moveAllowed = anyMoveAvailable(
@@ -60,7 +60,7 @@ export default function Dice({
           );
           //******************check if any move is available */
           if (moveAllowed[0] === false && moveAllowed[1] === false) {
-            alert("No move available");
+            alert("No move available for player. " + currentPlayer + newDiceRoll);
             //change player
             onRoll([0, 0]);
             onMoveLeft(0);
