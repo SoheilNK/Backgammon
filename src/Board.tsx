@@ -195,7 +195,7 @@ export function Board({
 
     //rull--set dice state
     if (currentDiceRoll[0] != currentDiceRoll[1]) {
-      //if the move is not a double
+      //if the move is not a double----------------
       let homePosition;
       if (allowedChecker == "White") {
         homePosition = 24 - selectedColumn;
@@ -204,30 +204,33 @@ export function Board({
       }
       if (target == "whiteOut" || target == "blackOut") {
         //it is a move out
-        if ((homePosition = newDiceRoll[0])) {
+        if ((homePosition <= newDiceRoll[0])) {
           newDiceRoll[0] = 0;
+        } else {
+          if ((homePosition <= newDiceRoll[1])) {
+            newDiceRoll[1] = 0;
+          }
         }
-        if ((homePosition = newDiceRoll[1])) {
-          newDiceRoll[1] = 0;
-        }
+
       } else {
         //it is a board move
         if (newCol + 10 == allowedColumns[0]) {
           newDiceRoll[0] = 0;
-        }
+        } else {
         if (newCol + 10 == allowedColumns[1]) {
           newDiceRoll[1] = 0;
         }
+        }
       }
     } else {
-      //if the move is a double
+      //if the move is a double----------------
       if (newMoveLeft == 0) {
         newDiceRoll[0] = 0;
         newDiceRoll[1] = 0;
       }
     }
 
-    //******************check if no move is available */
+    //******************check if any move is available */
     let moveAllowed = anyMoveAvailable(
       newBoardState,
       currentPlayer,

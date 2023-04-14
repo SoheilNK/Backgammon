@@ -149,24 +149,30 @@ export function anyMoveAvailable(
           //deal with position1
           target1 = homeStart - currentDiceRoll[0] * direction;
           target1Color = currentBoardState[target1][0];
-          if (target1Color == allowedChecker) {
+          if (target1Color == allowedChecker || currentDiceRoll[0] == 6) {
+            //when current dic roll is 6,
+            //it means that it is the highest position and
+            //there is no higher position to check
             moveAvailable[0] = true;
-          } else { //check higher positions
+          } else {
+            //check higher positions
             for (let i = currentDiceRoll[0] + 1; i < 7; i++) {
               target1 = homeStart - i * direction;
               target1Color = currentBoardState[target1][0];
               if (target1Color !== allowedChecker) {
                 moveAvailable[0] = true;
-              } 
+              }
             }
-            
           }
         }
         if (currentDiceRoll[1] !== 0) {
           //deal with target2
           target2 = homeStart - currentDiceRoll[1] * direction;
           target2Color = currentBoardState[target2][0];
-          if (target2Color == allowedChecker) {
+          if (target2Color == allowedChecker || currentDiceRoll[1] == 6) {
+            //when current dic roll is 6,
+            //it means that it is the highest position and
+            //there is no higher position to check
             moveAvailable[0] = true;
           } else {
             //check higher positions
@@ -197,7 +203,7 @@ function isAllCheckersAtHome(
   allCheckersAtHome: boolean,
   barCounter: number
 ) {
-  for (let i = 0; 17 > i; i++) {
+  for (let i = 0; 18 > i; i++) {
     let index = homeCheckStart + i * direction;
     let col = currentBoardState[index];
     let colLength = col.length;
@@ -344,6 +350,7 @@ export function setAllowedColumns(
               target1Color = currentBoardState[target1][0];
               if (target1Color == allowedChecker) {
                 target1 = 0;
+                break;
               } else {
                 target1 = allowedChecker == "White" ? 100 : 200;
               }
@@ -366,6 +373,7 @@ export function setAllowedColumns(
             target2Color = currentBoardState[target2][0];
             if (target2Color == allowedChecker) {
               target2 = 0;
+              break;
             } else {
               target2 = allowedChecker == "White" ? 100 : 200;
             }

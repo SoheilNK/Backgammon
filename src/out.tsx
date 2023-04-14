@@ -27,7 +27,7 @@ export default function Out({
     <div className="grid-container-bar">
       <div className={outAllowed1}>
         {whiteOut >= 0 ? (
-          <DropOut id="whiteOut">
+          <DropOut id="whiteOut" disabled={!allowedColumns.includes(100)}>
             <span>{whiteOut}</span>
             {Array.from(Array(whiteOut).keys()).map((i) => (
               <Checker
@@ -45,7 +45,7 @@ export default function Out({
       </div>
       <div className={outAllowed2}>
         {blackOut >= 0 ? (
-          <DropOut id="blackOut">
+          <DropOut id="blackOut" disabled={!allowedColumns.includes(200)}>
             <span>{blackOut}</span>
             {Array.from(Array(blackOut).keys()).map((i) => (
               <Checker
@@ -64,12 +64,13 @@ export default function Out({
     </div>
   );
 }
-interface DroppableProps {
+interface DropOutProps {
   id: string;
   children: React.ReactNode;
+  disabled: boolean;
 }
-function DropOut({ id, children }: DroppableProps) {
-  const { isOver, setNodeRef } = useDroppable({ id });
+function DropOut({ id, children, disabled }: DropOutProps) {
+  const { isOver, setNodeRef } = useDroppable({ id, disabled });
 
   return (
     <div

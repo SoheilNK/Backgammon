@@ -17,7 +17,7 @@ interface GameProps {
 
 function Game({ playerWon }: GameProps) {
   const [currentBoardState, setCurrentBoardState] =
-    useState<Color[][]>(initialState2);
+    useState<Color[][]>(initialState);
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
   const [currentPlayer, setCurrentPlayer] = useState<string>(
     PlayerNames.white[0]
@@ -145,12 +145,12 @@ let initialState2: Color[][] = [
   [],
   [],
   [],
+  [],
+  ["White"],
+  [],
+  [],
+  ["White", "White", "White", "White"],
   ["White", "White", "White"],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
   ["White", "White"],
   ["White", "White", "White", "White", "White"],
 ];
