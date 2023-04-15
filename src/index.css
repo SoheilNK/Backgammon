@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Color Theme Swatches in RGBA */
   --color2: #f25c05;
@@ -132,7 +136,7 @@ button:hover:not(:disabled) {
   display: inline-grid;
   grid-template-columns: auto auto;
   /* background-color: #926f40; */
-  background-image: url("board2.jpg");
+  background-image: url("./board2.jpg");
   background-size: 100% 100%;
   padding-left: calc(var(--checkerSize) / 1.2);
   padding-right: calc(var(--checkerSize) / 1.2);

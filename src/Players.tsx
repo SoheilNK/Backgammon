@@ -1,6 +1,5 @@
 import classNames from "classnames";
-import { PlayerNames } from "./Game";
-import { useState, useEffect } from "react";
+import { PlayerNames } from "./GamePlay";
 import { Checker } from "./Points";
 
 //define a players component
@@ -9,20 +8,19 @@ interface PlayersProps {
   anyMoveAvailable: boolean;
 }
 export default function Players({
-    currentPlayer,
+  currentPlayer,
   anyMoveAvailable,
 }: PlayersProps): JSX.Element {
-
   //extract the player names from the PlayerNames object
   const player1 = PlayerNames.white[0];
 
   //change the background color of the player who is playing
-    
+
   const player1Class = classNames("player1", {
-    'playerActive': currentPlayer === player1 && anyMoveAvailable,
+    playerActive: currentPlayer === player1 && anyMoveAvailable,
   });
   const player2Class = classNames("player1", {
-    'playerActive': currentPlayer !== player1 && anyMoveAvailable,
+    playerActive: currentPlayer !== player1 && anyMoveAvailable,
   });
 
   return (

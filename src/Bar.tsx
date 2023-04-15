@@ -1,4 +1,4 @@
-import { PlayerNames } from "./Game";
+import { PlayerNames } from "./GamePlay";
 import { Checker } from "./Points";
 
 interface BarProps {

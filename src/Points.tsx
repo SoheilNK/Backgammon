@@ -2,7 +2,7 @@ import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
 import classNames from "classnames";
-import { Color, Direction, PlayerNames } from "./Game";
+import { Color, Direction, PlayerNames } from "./GamePlay";
 
 let imgUrl = "";
 

@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import Game from "./Game";
+import App from "./Backgammon";
+import GamePlay from "./GamePlay";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Game
-      playerWon={false}
-    />
+    <App />
+    <GamePlay />
   </React.StrictMode>
 );

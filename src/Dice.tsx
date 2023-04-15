@@ -1,4 +1,4 @@
-import { Color, PlayerNames, TdiceRoll } from "./Game";
+import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";
@@ -60,7 +60,12 @@ export default function Dice({
           );
           //******************check if any move is available */
           if (moveAllowed[0] === false && moveAllowed[1] === false) {
-            alert("No move available for " + currentPlayer + " with this dice roll " + newDiceRoll);
+            alert(
+              "No move available for " +
+                currentPlayer +
+                " with this dice roll " +
+                newDiceRoll
+            );
             //change player
             onRoll([0, 0]);
             onMoveLeft(0);

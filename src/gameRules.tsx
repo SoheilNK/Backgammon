@@ -1,4 +1,4 @@
-import { Color, TdiceRoll, PlayerNames } from "./Game";
+import { Color, TdiceRoll, PlayerNames } from "./GamePlay";
 
 //define a function to return a boolean value if any move is available or not
 export function anyMoveAvailable(
@@ -24,7 +24,6 @@ export function anyMoveAvailable(
   let target2Length;
   let target2Color;
 
-  
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
     blockedChecker = "Black";
@@ -107,7 +106,7 @@ export function anyMoveAvailable(
           target2 = index + currentDiceRoll[1] * direction;
 
           //rule#1
-          //check if the target is less that 23 and free or same color and 
+          //check if the target is less that 23 and free or same color and
           //no double opponent checker
 
           if (target1 > 23 || target1 < 0 || currentDiceRoll[0] == 0) {
@@ -142,9 +141,9 @@ export function anyMoveAvailable(
       }
       if (allCheckersAtHome) {
         //check if any moveout is available from home
-        //rule for moving out If the roll of the dice is higher than 
+        //rule for moving out If the roll of the dice is higher than
         //all of the home positions, the checkers in the highest position can move out
-        
+
         if (currentDiceRoll[0] !== 0) {
           //deal with position1
           target1 = homeStart - currentDiceRoll[0] * direction;
@@ -245,12 +244,11 @@ export function setAllowedColumns(
   let target2Board;
   let target1Home;
   let target2Home;
-  
-  if (selectedColumn == 50) { //reset the selections
+
+  if (selectedColumn == 50) {
+    //reset the selections
     return allowedColumns;
   }
-
-
 
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
@@ -338,22 +336,23 @@ export function setAllowedColumns(
 
     if (currentDiceRoll[0] !== 0) {
       //deal with dice roll 0
-      //if selected checker's column equals to current dice roll 
+      //if selected checker's column equals to current dice roll
       //it can move out
       if (homePosition == currentDiceRoll[0]) {
         target1 = allowedChecker == "White" ? 100 : 200;
-      } else {//check higher positions
+      } else {
+        //check higher positions
         //check if there is any allowed checker in higher positions
         if (homePosition < currentDiceRoll[0]) {
-            for (let i = homePosition + 1; i < 7; i++) {
-              target1 = homeStart - i * direction;
-              target1Color = currentBoardState[target1][0];
-              if (target1Color == allowedChecker) {
-                target1 = 0;
-                break;
-              } else {
-                target1 = allowedChecker == "White" ? 100 : 200;
-              }
+          for (let i = homePosition + 1; i < 7; i++) {
+            target1 = homeStart - i * direction;
+            target1Color = currentBoardState[target1][0];
+            if (target1Color == allowedChecker) {
+              target1 = 0;
+              break;
+            } else {
+              target1 = allowedChecker == "White" ? 100 : 200;
+            }
           }
         } else {
           target1 = 0;

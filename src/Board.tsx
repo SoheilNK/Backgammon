@@ -1,11 +1,10 @@
-import { Color, PlayerNames, TdiceRoll } from "./Game";
+import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import { anyMoveAvailable, setAllowedColumns, togglePlayer } from "./gameRules";
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
-
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -27,7 +26,7 @@ type BoardProps = {
   blackOut: number;
   onBlackOut: (counter: number) => void;
   winner: string;
-  onWinner: (winner: string) => void;
+  onWin: (winner: string) => void;
 };
 export function Board({
   currentBoardState,
@@ -49,7 +48,7 @@ export function Board({
   blackOut,
   onBlackOut,
   winner,
-  onWinner,
+  onWin: onWinner,
 }: BoardProps) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;

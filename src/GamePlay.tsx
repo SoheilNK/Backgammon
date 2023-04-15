@@ -12,10 +12,10 @@ export const PlayerNames = {
   black: ["Player2"],
 };
 interface GameProps {
-  playerWon: boolean;
+  onStart: (player1: string, player2: string) => void;
 }
 
-function Game({ playerWon }: GameProps) {
+function GamePlay() {
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState); //test
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
@@ -24,14 +24,11 @@ function Game({ playerWon }: GameProps) {
   );
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(50);
-  const [whiteBar, setWhiteBar] = useState(0); 
+  const [whiteBar, setWhiteBar] = useState(0);
   const [blackBar, setBlackBar] = useState(0);
-  const [whiteOut, setWhiteOut] = useState(0);//test
-  const [blackOut, setBlackOut] = useState(0);//test
+  const [whiteOut, setWhiteOut] = useState(0); //test
+  const [blackOut, setBlackOut] = useState(0); //test
   const [winner, setWinner] = useState("");
-
-
-
 
   return (
     <div className="game">
@@ -61,7 +58,7 @@ function Game({ playerWon }: GameProps) {
         blackOut={blackOut}
         onBlackOut={(counter) => setBlackOut(counter)}
         winner={winner}
-        onWinner={(winner) => setWinner(winner)}
+        onWin={(winner) => setWinner(winner)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
@@ -74,14 +71,12 @@ function Game({ playerWon }: GameProps) {
         whiteBar={whiteBar}
         blackBar={blackBar}
       />
-      <div className="copyright">
-        &copy; 2023 By Soheil Najmabadi Kia.
-      </div>
+      <div className="copyright">&copy; 2023 By Soheil Najmabadi Kia.</div>
     </div>
   );
 }
 
-export default Game;
+export default GamePlay;
 
 let initialState: Color[][] = [
   ["White", "White"],
@@ -191,4 +186,3 @@ let winnertest: Color[][] = [
   [],
   ["White", "White"],
 ];
-
