@@ -35,7 +35,7 @@ export default function Dice({
       <span className="dice">{newDiceRoll}</span>
       <button
         id="roll"
-        className={btnClass} //btnClass
+        className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
         type="button"
         disabled={moveLeft > 0}
         onClick={() => {

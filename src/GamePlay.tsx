@@ -3,25 +3,26 @@ import { Board } from "./Board";
 import Dice from "./Dice";
 import Players from "./Players";
 import { Message } from "./Message";
+import { MessageContainer } from "./MessageContainer";
 
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
 export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
-export const PlayerNames = {
-  white: ["Player1"],
-  black: ["Player2"],
+export let PlayerNames = {
+  white: ["Player 1"],
+  black: ["Player 2"],
 };
-interface GameProps {
-  onStart: (player1: string, player2: string) => void;
+
+interface GamePlayProps {
+  player1: string;
+  player2: string;
 }
 
-function GamePlay() {
+function GamePlay({ player1, player2 }: GamePlayProps) {
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState); //test
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
-  const [currentPlayer, setCurrentPlayer] = useState<string>(
-    PlayerNames.white[0]
-  );
+  const [currentPlayer, setCurrentPlayer] = useState<string>(player1);
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(50);
   const [whiteBar, setWhiteBar] = useState(0);
@@ -29,15 +30,22 @@ function GamePlay() {
   const [whiteOut, setWhiteOut] = useState(0); //test
   const [blackOut, setBlackOut] = useState(0); //test
   const [winner, setWinner] = useState("");
+  PlayerNames = {
+    white: [player1],
+    black: [player2],
+  };
 
   return (
     <div className="game">
+      <div className="container mx-auto p-4">
+        <Message
+          currentPlayer={currentPlayer}
+          moveLeft={moveLeft}
+          winner={winner}
+        />
+      </div>
+
       <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
-      <Message
-        currentPlayer={currentPlayer}
-        moveLeft={moveLeft}
-        winner={winner}
-      />
       <Board
         currentBoardState={currentBoardState}
         onMove={(boardState) => setCurrentBoardState(boardState)}

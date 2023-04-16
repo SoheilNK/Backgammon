@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /*
 ! tailwindcss v3.3.1 | MIT License | https://tailwindcss.com
 */
@@ -225,7 +228,7 @@ button,
 [type='submit'] {
   -webkit-appearance: button;
   /* 1 */
-  background-color: transparent;
+  /* background-color: transparent; changed */
   /* 2 */
   background-image: none;
   /* 2 */
@@ -383,7 +386,7 @@ Make sure disabled buttons don't get the pointer cursor.
 */
 
 :disabled {
-  cursor: default;
+  cursor: not-allowed;
 }
 
 /*
@@ -544,8 +547,8 @@ video {
   --color4: rgba(1, 89, 89, 1);
   --color5: rgb(41, 243, 23);
   --color51: rgb(41, 243, 23, 0.5);
-  --color3: rgba(242, 223, 201, 1);
-  --whiteChecker: #f7ed9e;
+  --color3:#FFEDD5;
+  --whiteChecker: #FEF08A;
   --blackChecker: #592202;
   --checkerSize: 2.3rem;
   /* --color1: #F2E205;
@@ -661,14 +664,14 @@ video {
 
 /*set disabled button*/
 
-button:disabled {
+/* button.dice:disabled {
   background-color: var(--color3);
   cursor: not-allowed;
 }
 
-button:hover:not(:disabled) {
+button.dice:hover:not(:disabled) {
   background-color: var(--color51);
-}
+} */
 
 /* .btn-pressed {
   background-color: var(--color2);
