@@ -25,8 +25,8 @@ type BoardProps = {
   onWhiteOut: (counter: number) => void;
   blackOut: number;
   onBlackOut: (counter: number) => void;
-  winner: string;
-  onWin: (winner: string) => void;
+ // winner: string;
+  //onWin: (winner: string) => void;
 };
 export function Board({
   currentBoardState,
@@ -47,8 +47,8 @@ export function Board({
   onWhiteOut,
   blackOut,
   onBlackOut,
-  winner,
-  onWin: onWinner,
+ // winner,
+  //onWin: onWinner,
 }: BoardProps) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;
@@ -58,15 +58,7 @@ export function Board({
     allowedChecker = "Black";
   }
 
-  //check for winner
-  if (whiteOut == 15) {
-    onWinner(PlayerNames.white[0]);
-  } else if (blackOut == 15) {
-    onWinner(PlayerNames.black[0]);
-  }
 
-  if (winner != "") {
-  }
 
   allowedColumns = setAllowedColumns(
     currentBoardState,
@@ -259,10 +251,11 @@ export function Board({
       newMoveLeft = 0;
     }
 
-    if (newMoveLeft == 0) {
+    if (newMoveLeft == 0 && newWhiteBar !== 15 && newBlackBar == 15) {
       //change player
       togglePlayer(currentPlayer, onPlayerChange);
     }
+      
 
     onColumnSelect(50); //reset the color of the allowed points
     onWhiteOut(newWhiteOut);

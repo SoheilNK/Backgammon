@@ -74,6 +74,7 @@ function DropOut({ id, children, disabled }: DropOutProps) {
 
   return (
     <div
+      className="flex flex-wrap items-center justify-center"
       ref={setNodeRef}
       style={{ border: isOver ? "2px solid #ccc" : "2px solid transparent" }}
     >

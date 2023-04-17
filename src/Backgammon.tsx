@@ -1,7 +1,5 @@
 import { useState } from "react";
 import GamePlay from "./GamePlay";
-// import "./index1.css";
-import classNames from "classnames";
 
 const App = () => {
   const [started, setStarted] = useState(false);
@@ -25,7 +23,7 @@ const App = () => {
     <div>
       {!started && <Intro onStart={handleStart} />}
       {started && <GamePlay player1={player1} player2={player2}  />}
-      {winner && <Won winner={winner} />}
+      {/* {winner && <Won winner={winner} />} */}
     </div>
   );
 };

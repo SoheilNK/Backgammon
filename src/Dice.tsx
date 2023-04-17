@@ -13,6 +13,8 @@ interface DiceProps {
   onPlayerChange: (player: string) => void;
   whiteBar: number;
   blackBar: number;
+  whiteOut: number;
+  blackOut: number;
 }
 
 export default function Dice({
@@ -25,6 +27,8 @@ export default function Dice({
   currentBoardState,
   whiteBar,
   blackBar,
+  whiteOut,
+  blackOut,
 }: DiceProps): JSX.Element {
   const btnClass = classNames("dice", {
     "btn:disabled": moveLeft > 0,
@@ -37,7 +41,7 @@ export default function Dice({
         id="roll"
         className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
         type="button"
-        disabled={moveLeft > 0}
+        disabled={moveLeft > 0 || whiteOut === 15 || blackOut === 15}
         onClick={() => {
           newDiceRoll = [
             Math.round(Math.random() * 5 + 1),
