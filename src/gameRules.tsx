@@ -65,8 +65,8 @@ export function anyMoveAvailable(
       //check if any move is available from the bar
 
       if (currentDiceRoll[0] == 0) {
-        //deal with target1
         moveAvailable[1] = false;
+        //check targhet2
       } else {
         //deal with target1
         target1 = enteryPoint + currentDiceRoll[0] * direction;
@@ -78,19 +78,20 @@ export function anyMoveAvailable(
           moveAvailable[1] = true;
         }
       }
-
-      if (currentDiceRoll[1] == 0) {
-        //deal with target2
-        moveAvailable[1] = false;
-      } else {
-        //deal with target2
-        target2 = enteryPoint + currentDiceRoll[1] * direction;
-        target2Length = currentBoardState[target2].length;
-        target2Color = currentBoardState[target2][0];
-        if (target2Length >= 2 && target2Color == blockedChecker) {
+      if (!moveAvailable[1]) {
+        if (currentDiceRoll[1] == 0) {
+          //deal with target2
           moveAvailable[1] = false;
         } else {
-          moveAvailable[1] = true;
+          //deal with target2
+          target2 = enteryPoint + currentDiceRoll[1] * direction;
+          target2Length = currentBoardState[target2].length;
+          target2Color = currentBoardState[target2][0];
+          if (target2Length >= 2 && target2Color == blockedChecker) {
+            moveAvailable[1] = false;
+          } else {
+            moveAvailable[1] = true;
+          }
         }
       }
     } else {

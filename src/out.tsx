@@ -24,12 +24,12 @@ export default function Out({
 
 
   return (
-    <div className="grid-container-bar">
+    <div className="grid-container-out">
       <div className={outAllowed1}>
-        {whiteOut >= 0 ? (
+        { 
           <DropOut id="whiteOut" disabled={!allowedColumns.includes(100)}>
             <span>{whiteOut}</span>
-            {Array.from(Array(whiteOut).keys()).map((i) => (
+            {whiteOut >= 0 && Array.from(Array(whiteOut).keys()).map((i) => (
               <Checker
                 title={"wHit_" + i}
                 key={"wihtOut_" + i}
@@ -39,15 +39,13 @@ export default function Out({
               />
             ))}
           </DropOut>
-        ) : (
-          <div className="whiteOut"></div>
-        )}
+        }
       </div>
       <div className={outAllowed2}>
-        {blackOut >= 0 ? (
+        {
           <DropOut id="blackOut" disabled={!allowedColumns.includes(200)}>
             <span>{blackOut}</span>
-            {Array.from(Array(blackOut).keys()).map((i) => (
+            {blackOut >= 0 && Array.from(Array(blackOut).keys()).map((i) => (
               <Checker
                 title={"bHit_" + i}
                 key={"blackOut_" + i}
@@ -57,9 +55,7 @@ export default function Out({
               />
             ))}
           </DropOut>
-        ) : (
-          <div className="blackOut"></div>
-        )}
+        }
       </div>
     </div>
   );
@@ -76,7 +72,7 @@ function DropOut({ id, children, disabled }: DropOutProps) {
     <div
       className="flex flex-wrap items-center justify-center"
       ref={setNodeRef}
-      style={{ border: isOver ? "2px solid #ccc" : "2px solid transparent" }}
+      // style={{ border: isOver ? "2px solid #ccc" : "2px solid transparent" }}
     >
       {children}
     </div>

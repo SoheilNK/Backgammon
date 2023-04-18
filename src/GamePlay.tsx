@@ -19,16 +19,15 @@ interface GamePlayProps {
 
 function GamePlay({ player1, player2 }: GamePlayProps) {
   const [currentBoardState, setCurrentBoardState] =
-    useState<Color[][]>(winnertest); //test
+    useState<Color[][]>(initialState); //test
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
   const [currentPlayer, setCurrentPlayer] = useState<string>(player1);
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(50);
   const [whiteBar, setWhiteBar] = useState(0);
   const [blackBar, setBlackBar] = useState(0);
-  const [whiteOut, setWhiteOut] = useState(13); //test
-  const [blackOut, setBlackOut] = useState(13); //test
-  // const [winner, setWinner] = useState("");
+  const [whiteOut, setWhiteOut] = useState(0); //test
+  const [blackOut, setBlackOut] = useState(0); //test
   PlayerNames = {
     white: [player1],
     black: [player2],
@@ -42,7 +41,6 @@ function GamePlay({ player1, player2 }: GamePlayProps) {
           moveLeft={moveLeft}
           whiteOut={whiteOut}
           blackOut={blackOut}
-          //      winner={winner}
         />
       </div>
 
@@ -66,8 +64,6 @@ function GamePlay({ player1, player2 }: GamePlayProps) {
         onWhiteOut={(counter) => setWhiteOut(counter)}
         blackOut={blackOut}
         onBlackOut={(counter) => setBlackOut(counter)}
-        // winner={winner}
-        //onWin={(winner) => setWinner(winner)}
       />
       <Dice
         currentDiceRoll={currentDiceRoll}
@@ -162,13 +158,13 @@ let initialState2: Color[][] = [
   [],
   [],
   [],
-  ["White"],
   [],
-  [],
-  ["White", "White", "White", "White"],
+  ["White", "White"],
+  ["White", "White"],
+  ["White", "White"],
   ["White", "White", "White"],
   ["White", "White"],
-  ["White", "White", "White", "White", "White"],
+  ["White", "White", "White", "White"],
 ];
 let winnertest: Color[][] = [
   //test state for winner

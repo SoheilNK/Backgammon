@@ -25,7 +25,7 @@ type BoardProps = {
   onWhiteOut: (counter: number) => void;
   blackOut: number;
   onBlackOut: (counter: number) => void;
- // winner: string;
+  // winner: string;
   //onWin: (winner: string) => void;
 };
 export function Board({
@@ -47,9 +47,9 @@ export function Board({
   onWhiteOut,
   blackOut,
   onBlackOut,
- // winner,
-  //onWin: onWinner,
-}: BoardProps) {
+}: // winner,
+//onWin: onWinner,
+BoardProps) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;
   if (PlayerNames.white[0] == currentPlayer) {
@@ -57,8 +57,6 @@ export function Board({
   } else {
     allowedChecker = "Black";
   }
-
-
 
   allowedColumns = setAllowedColumns(
     currentBoardState,
@@ -109,6 +107,7 @@ export function Board({
 
     //check if checker is from bar or not to determine old color
     if (parent == "Bar") {
+      oldCol = 24;
       console.log("drag from bar");
       if (currentPlayer == PlayerNames.black[0]) {
         oldColColor = "Black";
@@ -138,7 +137,7 @@ export function Board({
 
     //if the move is not a move out
     //check if the target is a point
-    if (moveOut == false) {
+    if (!moveOut) {
       if (target.slice(0, 6) == "Point-") {
         newCol = +target.slice(6, 8) - 10;
         newColColor = currentBoardState[newCol][0];
@@ -205,10 +204,10 @@ export function Board({
       }
       if (target == "whiteOut" || target == "blackOut") {
         //it is a move out
-        if ((homePosition = newDiceRoll[0])) {
+        if ((homePosition == newDiceRoll[0])) {
           newDiceRoll[0] = 0;
         } else {
-          if ((homePosition = newDiceRoll[1])) {
+          if ((homePosition == newDiceRoll[1])) {
             newDiceRoll[1] = 0;
           } else {
             if (homePosition < newDiceRoll[0]) {
@@ -247,15 +246,14 @@ export function Board({
       newBlackBar
     );
 
-    if (moveAllowed[0] === false && moveAllowed[1] === false) {
+    if (!moveAllowed[0] && !moveAllowed[1]) {
       newMoveLeft = 0;
     }
 
-    if (newMoveLeft == 0 && newWhiteBar !== 15 && newBlackBar == 15) {
+    if (newMoveLeft == 0 && newWhiteBar !== 15 && newBlackBar !== 15) {
       //change player
       togglePlayer(currentPlayer, onPlayerChange);
     }
-      
 
     onColumnSelect(50); //reset the color of the allowed points
     onWhiteOut(newWhiteOut);
@@ -297,6 +295,12 @@ export function Board({
           currentPlayer={currentPlayer}
           moveAllowed={moveAllowed[0]}
         />
+        <Bar
+          whiteBar={whiteBar}
+          blackBar={blackBar}
+          currentPlayer={currentPlayer}
+        />
+
         <Quadrant
           boardState={currentBoardState}
           start={18}
@@ -327,11 +331,6 @@ export function Board({
           bar={whiteBar}
         />
       </div>
-      <Bar
-        whiteBar={whiteBar}
-        blackBar={blackBar}
-        currentPlayer={currentPlayer}
-      />
     </DndContext>
   );
 }

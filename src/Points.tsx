@@ -92,7 +92,7 @@ function Point({
     <div id={colName} ref={setNodeRef} className={drction + " " + pointClass}>
       {items.map((checkerClr, key) => (
         <Checker
-          disabled={checkerClr != allowedClr || moveAllowed == false}
+          disabled={checkerClr != allowedClr || !moveAllowed}
           key={key}
           parent={colName}
           clr={checkerClr}
