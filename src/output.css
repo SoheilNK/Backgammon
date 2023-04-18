@@ -48,17 +48,6 @@
 .Travel-4-rgba { color: rgba(160, 165, 3, 1); }
 .Travel-5-rgba { color: rgba(242, 223, 201, 1); } */
 
-.game {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  /* justify-content: center; */
-  align-items: center;
-  height: 98vh;
-  width: 98vw;
-  background-color: var(--color3);
-  font-family: "Roboto", sans-serif;
-}
 
 .players {
   display: flex;
@@ -290,7 +279,7 @@ li {
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
 }
 
-/* copyright footer style */
+/* copyright footer style
 
 div.copyright {
   background-color: #f8f8f8;
@@ -309,4 +298,8 @@ div.copyright a {
 
 div.copyright a:hover {
   color: #555;
+} */
+
+.footer {
+  min-width: calc(var(--checkerSize) * 17);
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GamePlay from "./GamePlay";
+import { Footer } from "./footer";
 
 const App = () => {
   const [started, setStarted] = useState(false);
@@ -20,24 +21,24 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className=" bg-slate-100 h-screen" >
       {!started && <Intro onStart={handleStart} />}
-      {started && <GamePlay player1={player1} player2={player2}  />}
+      {started && <GamePlay player1={player1} player2={player2} />}
       {/* {winner && <Won winner={winner} />} */}
+      <Footer />
     </div>
   );
 };
 
 export default App;
-type GameProps = {
+
+
+type IntroProps = {
   onStart: (player1: string, player2: string) => void;
 };
 
-type WonProps = {
-  winner: string;
-};
 
-const Intro = ({ onStart }: GameProps) => {
+const Intro = ({ onStart }: IntroProps) => {
   const [player1, setPlayer1] = useState("");
   const [player2, setPlayer2] = useState("");
 
@@ -48,7 +49,6 @@ const Intro = ({ onStart }: GameProps) => {
   };
 
   return (
-    <div className="bg-orange-100  min-h-screen">
       <div className="  relative rounded-xl overflow-auto p-8">
         <div className="py-8 px-8 max-w-sm mx-auto rounded-xl bg-white shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
           <div className="text-center sm:text-left space-y-2">
@@ -95,15 +95,6 @@ const Intro = ({ onStart }: GameProps) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-const Won = ({ winner }: WonProps) => {
-  return (
-    <div>
-      <h1>The game is won</h1>
-      <p>{`${winner} is the winner!`}</p>
-    </div>
-  );
-};

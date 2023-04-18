@@ -3,6 +3,7 @@ import { Board } from "./Board";
 import Dice from "./Dice";
 import Players from "./Players";
 import { Message } from "./Message";
+import { Footer } from "./footer";
 
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
@@ -34,8 +35,8 @@ function GamePlay({ player1, player2 }: GamePlayProps) {
   };
 
   return (
-    <div className="game">
-      <div className="container mx-auto p-4">
+    <div className="flex flex-col items-center">
+      <div className=" mx-auto p-4">
         <Message
           currentPlayer={currentPlayer}
           moveLeft={moveLeft}
@@ -78,7 +79,6 @@ function GamePlay({ player1, player2 }: GamePlayProps) {
         whiteOut={whiteOut}
         blackOut={blackOut}
       />
-      <div className="copyright">&copy; 2023 By Soheil Najmabadi Kia.</div>
     </div>
   );
 }
