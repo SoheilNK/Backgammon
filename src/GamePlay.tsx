@@ -3,8 +3,8 @@ import { Board } from "./Board";
 import Dice from "./Dice";
 import Players from "./Players";
 import { Message } from "./Message";
-import { Footer } from "./footer";
-
+import { useLocation } from "react-router-dom";
+//----------------------------------------------
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
 export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
@@ -13,12 +13,10 @@ export let PlayerNames = {
   black: ["Player 2"],
 };
 
-interface GamePlayProps {
-  player1: string;
-  player2: string;
-}
+function GamePlay() {
+  const { state } = useLocation();
+  const { player1, player2 } = state; // Read values passed on state
 
-function GamePlay({ player1, player2 }: GamePlayProps) {
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState); //test
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
@@ -29,6 +27,7 @@ function GamePlay({ player1, player2 }: GamePlayProps) {
   const [blackBar, setBlackBar] = useState(0);
   const [whiteOut, setWhiteOut] = useState(0); //test
   const [blackOut, setBlackOut] = useState(0); //test
+
   PlayerNames = {
     white: [player1],
     black: [player2],

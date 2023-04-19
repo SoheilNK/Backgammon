@@ -1,18 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-// type IntroProps = {
-//   onStart: (player1: string, player2: string) => void;
-// };
-// export const Intro = ({ onStart }: IntroProps) => {
 export const Intro = () => {
   const [player1, setPlayer1] = useState("");
   const [player2, setPlayer2] = useState("");
+  const navigate = useNavigate();
 
   const handleStart = () => {
     console.log("clicked");
     if (player1 && player2) {
       console.log(player2 + player1);
-      window.location.href = "./Game";
+        navigate("./Game", { state: { player1: player1, player2: player2} });
+
     }
   };
 
@@ -55,11 +54,10 @@ export const Intro = () => {
           </div>
 
           <button
-            // disabled={!player1 || !player2}
-            className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+            disabled={!player1 || !player2}
+            className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-slate-400"
             onClick={handleStart}
           >
-            {/* <a href="./Game">Start the Game!</a> */}
             Start the Game!
           </button>
         </div>

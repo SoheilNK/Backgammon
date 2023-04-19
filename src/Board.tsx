@@ -25,8 +25,6 @@ type BoardProps = {
   onWhiteOut: (counter: number) => void;
   blackOut: number;
   onBlackOut: (counter: number) => void;
-  // winner: string;
-  //onWin: (winner: string) => void;
 };
 export function Board({
   currentBoardState,
@@ -47,8 +45,7 @@ export function Board({
   onWhiteOut,
   blackOut,
   onBlackOut,
-}: // winner,
-//onWin: onWinner,
+}:
 BoardProps) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;

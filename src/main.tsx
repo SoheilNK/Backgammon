@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useLocation } from "react-router-dom";
 import { Intro } from "./Intro";
 import { Footer } from "./footer";
 import ErrorPage from "./error-page";
 import GamePlay from "./GamePlay";
 //
-
 const router = createBrowserRouter([
   {
     path: "Backgammon/",
