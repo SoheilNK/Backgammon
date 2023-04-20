@@ -74,7 +74,7 @@ export default function Dice({
       <span className="dice">{newDiceRoll}</span>
       <button
         id="roll"
-        className=" disabled:cursor-not-allowed bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
         type="button"
         disabled={moveLeft > 0 || whiteOut === 15 || blackOut === 15}
         onClick={handleClick}
