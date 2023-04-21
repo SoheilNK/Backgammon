@@ -10,8 +10,8 @@ export const Intro = () => {
   const handleStart = () => {
     console.log("clicked");
     if (player1 && player2) {
-      console.log(player2 + player1);
-      navigate("./Game", { state: { player1: player1, player2: player2 } });
+      
+      navigate("./Game", { state: { player1: player1 , player2: player2 } });
     }
   };
 

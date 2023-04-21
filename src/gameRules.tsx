@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Color, TdiceRoll, PlayerNames } from "./GamePlay";
 
 //define a function to return a boolean value if any move is available or not
@@ -23,6 +24,8 @@ export function anyMoveAvailable(
   let target2;
   let target2Length;
   let target2Color;
+
+  const [isOnline, setIsOnline] = useState(true); 
 
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
