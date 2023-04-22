@@ -23,7 +23,6 @@ function Box2(props: ThreeElements["mesh"]) {
   const rightTexture = useLoader(TextureLoader, "textures/dice_5.jpg");
 
   // let colors = ['red','green','blue','yellow','purple','orange'];
-  let colors = ["white", "white", "white", "white", "white", "white"];
   let textures = [
     frontTexture,
     backTexture,
