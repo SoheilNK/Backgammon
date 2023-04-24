@@ -2,6 +2,7 @@ import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";
+import Dice3Dv4 from "./Dice3Dv4";
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
@@ -30,6 +31,8 @@ export default function Dice({
   whiteOut,
   blackOut,
 }: DiceProps): JSX.Element {
+  const [remainingTime, setRemainingTime] = useState(1500); // in milliseconds
+
   const btnClass = classNames("dice", {
     "btn:disabled": moveLeft > 0,
   });
@@ -41,6 +44,7 @@ export default function Dice({
     ] as TdiceRoll;
     // newDiceRoll = [3, 5]; //test
     onRoll(newDiceRoll);
+    setRemainingTime(1500);
     let newMoveLeft = 2;
     if (newDiceRoll[0] === newDiceRoll[1]) {
       //if the dice roll is a double, the player can move twice
@@ -71,7 +75,15 @@ export default function Dice({
 
   return (
     <div className="players">
-      <span className="dice">{newDiceRoll}</span>
+      <span className="dice">
+        <Dice3Dv4
+          roll1={newDiceRoll[0]}
+          roll2={newDiceRoll[1]}
+          rotate={true}
+          remainingTime={remainingTime}
+          onRemainingTime={setRemainingTime}
+        />{" "}
+      </span>
       <button
         id="roll"
         className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"

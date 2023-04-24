@@ -25,7 +25,6 @@ export function anyMoveAvailable(
   let target2Length;
   let target2Color;
 
-  const [isOnline, setIsOnline] = useState(true); 
 
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
