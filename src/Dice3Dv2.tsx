@@ -1,11 +1,10 @@
 import * as THREE from "three";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   Canvas,
   useFrame,
   ThreeElements,
   useLoader,
-  Color,
 } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
@@ -14,9 +13,6 @@ function Box2(
   props: ThreeElements["mesh"] & { roll: number; rotate: boolean }
 ) {
   const mesh = useRef<THREE.Mesh>(null!);
-  // const [hovered, setHover] = useState(false);
-  // const [active, setActive] = useState(false);
-  const [rolling, setRolling] = useState(props.rotate);
 
   // all texture
   const frontTexture = useLoader(TextureLoader, "textures/dice_2.jpg");

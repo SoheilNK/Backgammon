@@ -45,39 +45,43 @@ function GamePlay() {
       </div>
 
       <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
-      <Board
-        currentBoardState={currentBoardState}
-        onMove={(boardState) => setCurrentBoardState(boardState)}
-        currentDiceRoll={currentDiceRoll}
-        onRoll={(roll) => setDiceRoll(roll)}
-        currentPlayer={currentPlayer}
-        onPlayerChange={(player) => setCurrentPlayer(player)}
-        selectedColumn={selectedColumn}
-        onColumnSelect={(column) => setSelectedColumn(column)}
-        moveLeft={moveLeft}
-        onMoveLeft={(allowed) => setMoveLeft(allowed)}
-        whiteBar={whiteBar}
-        onWhiteBar={(counter) => setWhiteBar(counter)}
-        blackBar={blackBar}
-        onBlackBar={(counter) => setBlackBar(counter)}
-        whiteOut={whiteOut}
-        onWhiteOut={(counter) => setWhiteOut(counter)}
-        blackOut={blackOut}
-        onBlackOut={(counter) => setBlackOut(counter)}
-      />
-      <Dice
-        currentDiceRoll={currentDiceRoll}
-        onRoll={(roll) => setDiceRoll(roll)}
-        currentPlayer={currentPlayer}
-        moveLeft={moveLeft}
-        onMoveLeft={(allowed) => setMoveLeft(allowed)}
-        currentBoardState={currentBoardState}
-        onPlayerChange={(player) => setCurrentPlayer(player)}
-        whiteBar={whiteBar}
-        blackBar={blackBar}
-        whiteOut={whiteOut}
-        blackOut={blackOut}
-      />
+      <div className=" relative flex flex-col items-center">
+        <Board
+          currentBoardState={currentBoardState}
+          onMove={(boardState) => setCurrentBoardState(boardState)}
+          currentDiceRoll={currentDiceRoll}
+          onRoll={(roll) => setDiceRoll(roll)}
+          currentPlayer={currentPlayer}
+          onPlayerChange={(player) => setCurrentPlayer(player)}
+          selectedColumn={selectedColumn}
+          onColumnSelect={(column) => setSelectedColumn(column)}
+          moveLeft={moveLeft}
+          onMoveLeft={(allowed) => setMoveLeft(allowed)}
+          whiteBar={whiteBar}
+          onWhiteBar={(counter) => setWhiteBar(counter)}
+          blackBar={blackBar}
+          onBlackBar={(counter) => setBlackBar(counter)}
+          whiteOut={whiteOut}
+          onWhiteOut={(counter) => setWhiteOut(counter)}
+          blackOut={blackOut}
+          onBlackOut={(counter) => setBlackOut(counter)}
+        />
+        <div className="absolute top-9">
+          <Dice
+            currentDiceRoll={currentDiceRoll}
+            onRoll={(roll) => setDiceRoll(roll)}
+            currentPlayer={currentPlayer}
+            moveLeft={moveLeft}
+            onMoveLeft={(allowed) => setMoveLeft(allowed)}
+            currentBoardState={currentBoardState}
+            onPlayerChange={(player) => setCurrentPlayer(player)}
+            whiteBar={whiteBar}
+            blackBar={blackBar}
+            whiteOut={whiteOut}
+            blackOut={blackOut}
+          />
+        </div>
+      </div>
     </div>
   );
 }

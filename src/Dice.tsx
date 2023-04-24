@@ -31,20 +31,24 @@ export default function Dice({
   whiteOut,
   blackOut,
 }: DiceProps): JSX.Element {
-  const [remainingTime, setRemainingTime] = useState(1500); // in milliseconds
+  const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
 
   const btnClass = classNames("dice", {
     "btn:disabled": moveLeft > 0,
   });
 
   function handleClick() {
+   let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15
+    if (disabled) {
+      return;
+    }
     newDiceRoll = [
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
     // newDiceRoll = [3, 5]; //test
     onRoll(newDiceRoll);
-    setRemainingTime(1500);
+    setRemainingTime(1500); //reset animation time
     let newMoveLeft = 2;
     if (newDiceRoll[0] === newDiceRoll[1]) {
       //if the dice roll is a double, the player can move twice
@@ -74,25 +78,14 @@ export default function Dice({
   }
 
   return (
-    <div className="players">
-      <span className="dice">
+    <div onClick={handleClick}>
         <Dice3Dv4
           roll1={newDiceRoll[0]}
           roll2={newDiceRoll[1]}
           rotate={true}
           remainingTime={remainingTime}
           onRemainingTime={setRemainingTime}
-        />{" "}
-      </span>
-      <button
-        id="roll"
-        className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
-        type="button"
-        disabled={moveLeft > 0 || whiteOut === 15 || blackOut === 15}
-        onClick={handleClick}
-      >
-        <span>Roll Dice</span>
-      </button>
+        />
     </div>
   );
 }
