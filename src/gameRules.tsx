@@ -226,7 +226,8 @@ export function setAllowedColumns(
   currentBoardState: Color[][],
   currentDiceRoll: TdiceRoll,
   currentPlayer: string,
-  selectedColumn: number
+  selectedColumn: number,
+  moveLeft: number,
 ) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;
@@ -248,7 +249,7 @@ export function setAllowedColumns(
   let target1Home;
   let target2Home;
 
-  if (selectedColumn == 50) {
+  if (selectedColumn == 50 || moveLeft == 0) {
     //reset the selections
     return allowedColumns;
   }

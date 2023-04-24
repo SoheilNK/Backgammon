@@ -25,6 +25,7 @@ type BoardProps = {
   onWhiteOut: (counter: number) => void;
   blackOut: number;
   onBlackOut: (counter: number) => void;
+  onAlert: (message: string) => void;
 };
 export function Board({
   currentBoardState,
@@ -45,6 +46,7 @@ export function Board({
   onWhiteOut,
   blackOut,
   onBlackOut,
+  onAlert,
 }:
 BoardProps) {
   let allowedColumns: number[] = [];
@@ -59,7 +61,8 @@ BoardProps) {
     currentBoardState,
     currentDiceRoll,
     currentPlayer,
-    selectedColumn
+    selectedColumn,
+    moveLeft,
   );
 
   function handelDragStart(e: DragStartEvent) {
@@ -101,6 +104,7 @@ BoardProps) {
     let newWhiteOut = whiteOut;
     let newBlackOut = blackOut;
     let moveOut = false;
+    let checkerMoved = false; //to check if a checker is moved or not to play the sound
 
     //check if checker is from bar or not to determine old color
     if (parent == "Bar") {
@@ -122,6 +126,7 @@ BoardProps) {
       newBoardState[oldCol].pop();
       newWhiteOut = newWhiteOut + 1;
       newMoveLeft = newMoveLeft - 1;
+      checkerMoved = true;
     }
 
     if (target == "blackOut" && oldColColor == "Black") {
@@ -130,6 +135,7 @@ BoardProps) {
       newBoardState[oldCol].pop();
       newBlackOut = newBlackOut + 1;
       newMoveLeft = newMoveLeft - 1;
+      checkerMoved = true;
     }
 
     //if the move is not a move out
@@ -161,6 +167,7 @@ BoardProps) {
         return;
       } else {
         //a move is allowed
+        checkerMoved = true;
         //rule#3--if the move is a hit
         if (
           newBoardState[newCol].length == 1 && //if the target column has one checker it is a blot
@@ -242,9 +249,10 @@ BoardProps) {
       newWhiteBar,
       newBlackBar
     );
-
-    if (!moveAllowed[0] && !moveAllowed[1]) {
+    if (!moveAllowed[0] && !moveAllowed[1] && newMoveLeft !== 0) {
       newMoveLeft = 0;
+      onAlert("No move available")
+      
     }
 
     if (newMoveLeft == 0 && newWhiteBar !== 15 && newBlackBar !== 15) {
@@ -257,6 +265,11 @@ BoardProps) {
     onBlackOut(newBlackOut);
     onMoveLeft(newMoveLeft);
     onMove(newBoardState);
+    if (checkerMoved) {
+      //play a sound
+      let audio = new Audio("/checkerMove.m4a");
+      audio.play();
+    }
 
     return;
   }

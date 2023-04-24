@@ -16,6 +16,7 @@ interface DiceProps {
   blackBar: number;
   whiteOut: number;
   blackOut: number;
+  onAlert: (message: string) => void;
 }
 
 export default function Dice({
@@ -30,15 +31,19 @@ export default function Dice({
   blackBar,
   whiteOut,
   blackOut,
+  onAlert,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
+  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
 
-  const btnClass = classNames("dice", {
-    "btn:disabled": moveLeft > 0,
+  var glowDice = classNames("dice", {
+    "opacity-5": disabled,
+    "opacity-100": !disabled,
   });
 
+   
+
   function handleClick() {
-   let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15
     if (disabled) {
       return;
     }
@@ -46,9 +51,13 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // newDiceRoll = [3, 5]; //test
+    // newDiceRoll = [5, 6]; //test
     onRoll(newDiceRoll);
-    setRemainingTime(1500); //reset animation time
+    setRemainingTime(2500); //reset animation time
+    //play a sound
+    let audio = new Audio("/diceRoll3.m4a");
+    audio.play();
+
     let newMoveLeft = 2;
     if (newDiceRoll[0] === newDiceRoll[1]) {
       //if the dice roll is a double, the player can move twice
@@ -64,11 +73,10 @@ export default function Dice({
     );
     //******************check if any move is available */
     if (!moveAllowed[0] && !moveAllowed[1]) {
-      alert(
-        "No move available for " +
-          currentPlayer +
-          " with this dice roll " +
-          newDiceRoll
+      onAlert(
+        currentPlayer +
+        " has no possible moves with a roll of " +
+           newDiceRoll 
       );
       //change player
       onRoll([0, 0]);
@@ -78,14 +86,25 @@ export default function Dice({
   }
 
   return (
-    <div onClick={handleClick}>
-        <Dice3Dv4
-          roll1={newDiceRoll[0]}
-          roll2={newDiceRoll[1]}
-          rotate={true}
-          remainingTime={remainingTime}
-          onRemainingTime={setRemainingTime}
-        />
+    <div>
+      <div className=" group relative max-w-7xl mx-auto">
+        <div
+          className={
+            "absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur transition duration-1000 group-hover:duration-200" +
+            glowDice
+          }
+          // className={"" + glowDice}
+        ></div>
+        <div onClick={handleClick}>
+          <Dice3Dv4
+            roll1={newDiceRoll[0]}
+            roll2={newDiceRoll[1]}
+            rotate={true}
+            remainingTime={remainingTime}
+            onRemainingTime={setRemainingTime}
+          />
+        </div>
+      </div>
     </div>
   );
 }

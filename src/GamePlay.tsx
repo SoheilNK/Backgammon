@@ -4,6 +4,7 @@ import Dice from "./Dice";
 import Players from "./Players";
 import { Message } from "./Message";
 import { useLocation } from "react-router-dom";
+import { Alert } from "./Alert";
 //----------------------------------------------
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
@@ -15,7 +16,7 @@ export let PlayerNames = {
 
 function GamePlay() {
   const { state } = useLocation();
-  const { player1, player2 } = state ; // Read values passed on state
+  const { player1, player2 } = state; // Read values passed on state
 
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState); //test
@@ -23,10 +24,11 @@ function GamePlay() {
   const [currentPlayer, setCurrentPlayer] = useState<string>(player1);
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(50);
-  const [whiteBar, setWhiteBar] = useState(0);
+  const [whiteBar, setWhiteBar] = useState(0); //test
   const [blackBar, setBlackBar] = useState(0);
   const [whiteOut, setWhiteOut] = useState(0); //test
   const [blackOut, setBlackOut] = useState(0); //test
+  const [alertMessage, setAlertMessage] = useState(""); //test
 
   PlayerNames = {
     white: [player1],
@@ -43,9 +45,12 @@ function GamePlay() {
           blackOut={blackOut}
         />
       </div>
-
+      <Alert
+        alertMessage={alertMessage}
+        onAlert={(message) => setAlertMessage(message)}
+      />
       <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
-      <div className=" relative flex flex-col items-center">
+      <div className=" relative flex flex-col items-center mb-4">
         <Board
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}
@@ -65,6 +70,7 @@ function GamePlay() {
           onWhiteOut={(counter) => setWhiteOut(counter)}
           blackOut={blackOut}
           onBlackOut={(counter) => setBlackOut(counter)}
+          onAlert={(message) => setAlertMessage(message)}
         />
         <div className="absolute top-9">
           <Dice
@@ -79,6 +85,7 @@ function GamePlay() {
             blackBar={blackBar}
             whiteOut={whiteOut}
             blackOut={blackOut}
+            onAlert={(message) => setAlertMessage(message)}
           />
         </div>
       </div>
