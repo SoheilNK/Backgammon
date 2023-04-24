@@ -288,14 +288,7 @@ BoardProps) {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <Out
-        whiteOut={whiteOut}
-        blackOut={blackOut}
-        currentPlayer={currentPlayer}
-        allowedColumns={allowedColumns}
-      />
-
-      <div className="board">
+      <div className="board m-3">
         <Quadrant
           boardState={currentBoardState}
           start={12}
@@ -341,6 +334,12 @@ BoardProps) {
           bar={whiteBar}
         />
       </div>
+      <Out
+        whiteOut={whiteOut}
+        blackOut={blackOut}
+        currentPlayer={currentPlayer}
+        allowedColumns={allowedColumns}
+      />
     </DndContext>
   );
 }

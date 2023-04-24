@@ -235,6 +235,8 @@ img.checker:active {
   border-radius: var(--checkerSize);
 }
 
+
+
 .point {
   display: flex;
   flex-direction: column;

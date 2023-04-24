@@ -93,7 +93,6 @@ export default function Dice({
             "absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur transition duration-1000 group-hover:duration-200" +
             glowDice
           }
-          // className={"" + glowDice}
         ></div>
         <div onClick={handleClick}>
           <Dice3Dv4

@@ -72,7 +72,7 @@ function GamePlay() {
           onBlackOut={(counter) => setBlackOut(counter)}
           onAlert={(message) => setAlertMessage(message)}
         />
-        <div className="absolute top-9">
+        <div className="absolute top-2">
           <Dice
             currentDiceRoll={currentDiceRoll}
             onRoll={(roll) => setDiceRoll(roll)}

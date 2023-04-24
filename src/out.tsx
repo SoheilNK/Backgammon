@@ -28,7 +28,7 @@ export default function Out({
       <div className={outAllowed1}>
         { 
           <DropOut id="whiteOut" disabled={!allowedColumns.includes(100)}>
-            <span>{whiteOut}</span>
+            {/* <span>{whiteOut}</span> */}
             {whiteOut >= 0 && Array.from(Array(whiteOut).keys()).map((i) => (
               <Checker
                 title={"wHit_" + i}
@@ -44,7 +44,7 @@ export default function Out({
       <div className={outAllowed2}>
         {
           <DropOut id="blackOut" disabled={!allowedColumns.includes(200)}>
-            <span>{blackOut}</span>
+            {/* <span>{blackOut}</span> */}
             {blackOut >= 0 && Array.from(Array(blackOut).keys()).map((i) => (
               <Checker
                 title={"bHit_" + i}
@@ -70,7 +70,7 @@ function DropOut({ id, children, disabled }: DropOutProps) {
 
   return (
     <div
-      className="flex flex-wrap items-center justify-center"
+      className=" flex flex-wrap min-h-full  items-center justify-center"
       ref={setNodeRef}
       // style={{ border: isOver ? "2px solid #ccc" : "2px solid transparent" }}
     >
