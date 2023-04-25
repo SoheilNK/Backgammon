@@ -23,6 +23,7 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
   });
   const style = {
     transform: CSS.Translate.toString(transform),
+    touchAction: "none", //to prevent scroll on touch screens
   };
 
   if (clr == "White") {

@@ -24,16 +24,16 @@ export default function Players({
   });
 
   return (
-    <div className="players">
+    <div className="players justify-center">
       <div className={player1Class}>
         <Checker title={""} clr={"White"} parent={""} disabled={false} />
         <div>
           <span>{PlayerNames.white[0]}</span>
         </div>
       </div>
-      <div className="card">
+      <div className=" card">
         <span>
-          <strong>Backgammon</strong>
+          <strong>SoSep<br />Backgammon</strong>
         </span>
       </div>
       <div className={player2Class}>

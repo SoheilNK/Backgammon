@@ -109,7 +109,7 @@ export default function Dice3Dv4({
   onClick,
 }: Dice3DProps) {
   return (
-    <div id="canvas" className=" h-12 w-32">
+    <div id="canvas" className=" h-8 w-24  sm:h-12 sm:w-28">
       <Canvas camera={{ fov: 35, position: [0, -3, 0] }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[1, -3, 1]} />

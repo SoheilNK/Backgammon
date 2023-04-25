@@ -87,7 +87,7 @@ export default function Dice({
 
   return (
     <div>
-      <div className=" group relative max-w-7xl mx-auto">
+      <div className="group relative  mx-auto">
         <div
           className={
             "absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur transition duration-1000 group-hover:duration-200" +

@@ -54,7 +54,7 @@ export function Message({
         <div
           id="alert"
           className={classNames(
-            " scale-125 py-1 px-8 max-w-sm mx-auto rounded-xl  bg-blue-950  text-yellow-200 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center ",
+            " scale-90 sm:scale-125 py-1 px-8 max-w-sm mx-auto rounded-xl  bg-blue-950  text-yellow-200 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center ",
           )}
         >
           <div id="alert">{message}</div>

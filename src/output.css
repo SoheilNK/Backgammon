@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -56,7 +58,7 @@
   align-items: center;
   width: calc(var(--checkerSize) * 16);
   height: calc(var(--checkerSize) * 1.5);
-  margin: 4px;
+  /* margin: 4px; */
   padding: 0;
   list-style: none;
   font-size: calc(var(--checkerSize) * 00.4);
@@ -92,7 +94,7 @@
 
 .card {
   background-color: var(--color2);
-  width: calc(var(--checkerSize) * 12);
+  min-width: calc(var(--checkerSize) * 4);
   height: calc(var(--checkerSize) * 1.5);
   line-height: calc(var(--checkerSize) * 0.75);
   /* margin: calc(var(--checkerSize)/5); */
@@ -106,7 +108,7 @@
 .playerActive {
   background-color: var(--color5);
   color: black;
-  scale: 1.5;
+  scale: 1.3;
   transition: all 0.5s ease-in-out;
 }
 
@@ -304,4 +306,10 @@ div.copyright a:hover {
 
 .footer {
   min-width: calc(var(--checkerSize) * 17);
+}
+
+@media only screen and (max-width: 640px) {
+  :root {
+    --checkerSize: 1.5rem;
+  }
 }
