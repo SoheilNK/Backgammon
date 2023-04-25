@@ -30,8 +30,8 @@
   --color2: #f25c05;
   --color1: #d18457;
   --color4: rgba(1, 89, 89, 1);
-  --color5: rgb(41, 243, 23);
-  --color51: rgb(41, 243, 23, 0.5);
+  --color5: RGB(152, 251, 152);
+  --color51: RGB(152, 251, 152 , 0.50);
   --color3:#FFEDD5;
   --whiteChecker: #FEF08A;
   --blackChecker: #592202;
@@ -67,9 +67,10 @@
 }
 
 .player1 {
-  background-color: var(--whiteChecker);
+  color: rgb(31 41 55);
+  background-color: RGB(152, 251, 152);
   line-height: calc(var(--checkerSize) * 0.75);
-  min-width: calc(var(--checkerSize) * 4);
+  min-width: calc(var(--checkerSize) * 3.5);
   margin: calc(var(--checkerSize) / 2);
   display: flex;
   flex-direction: row;
@@ -93,7 +94,8 @@
 }
 
 .card {
-  background-color: var(--color2);
+  color: rgb(31 41 55);
+  background-color: RGB(245, 245, 220);
   min-width: calc(var(--checkerSize) * 4);
   height: calc(var(--checkerSize) * 1.5);
   line-height: calc(var(--checkerSize) * 0.75);
@@ -106,8 +108,8 @@
 }
 
 .playerActive {
-  background-color: var(--color5);
-  color: black;
+  color: rgb(255 255 255);
+  background-color: RGB(0, 102, 0);
   scale: 1.3;
   transition: all 0.5s ease-in-out;
 }

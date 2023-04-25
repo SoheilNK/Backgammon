@@ -23,9 +23,11 @@ export default function Players({
     playerActive: currentPlayer !== player1 && anyMoveAvailable,
   });
 
+
+
   return (
-    <div className="players justify-center">
-      <div className={player1Class}>
+    <div className="players justify-center ">
+      <div className={player1Class + " bg-purple-300 text-gray-800"}>
         <Checker title={""} clr={"White"} parent={""} disabled={false} />
         <div>
           <span>{PlayerNames.white[0]}</span>
@@ -33,7 +35,11 @@ export default function Players({
       </div>
       <div className=" card">
         <span>
-          <strong>SoSep<br />Backgammon</strong>
+          <strong>
+            SoSep
+            <br />
+            Backgammon
+          </strong>
         </span>
       </div>
       <div className={player2Class}>

@@ -18,7 +18,7 @@ export const Intro = () => {
     <div>
       <div className=" bg-slate-100 relative rounded-xl overflow-auto p-8">
         <div className=" bg-white p-10 max-w-xl m-auto">
-          <div className="flex flex-col justify-center items-center dark:bg-gray-900">
+          <div className="flex flex-col justify-center items-center">
             <Dice3Dv2 roll1={3} roll2={4}  rotate={true}/>
             <h1 className=" text-xl text-black font-bold  m-4">
               Welcome to SoSep Backgammon

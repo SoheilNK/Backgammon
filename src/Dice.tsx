@@ -90,7 +90,7 @@ export default function Dice({
       <div className="group relative  mx-auto">
         <div
           className={
-            "absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur transition duration-1000 group-hover:duration-200" +
+            "absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-lg blur transition duration-1000 group-hover:duration-200" +
             glowDice
           }
         ></div>

@@ -24,36 +24,42 @@ export default function Out({
 
 
   return (
-    <div className="grid-container-out">
+    <div className="flex flex-row">
+
       <div className={outAllowed1}>
-        { 
+        {
           <DropOut id="whiteOut" disabled={!allowedColumns.includes(100)}>
             {/* <span>{whiteOut}</span> */}
-            {whiteOut >= 0 && Array.from(Array(whiteOut).keys()).map((i) => (
-              <Checker
-                title={"wHit_" + i}
-                key={"wihtOut_" + i}
-                clr={"White"}
-                parent={"Out"}
-                disabled={true}
-              />
-            ))}
+            {whiteOut >= 0 &&
+              Array.from(Array(whiteOut).keys()).map((i) => (
+                <Checker
+                  title={"wHit_" + i}
+                  key={"wihtOut_" + i}
+                  clr={"White"}
+                  parent={"Out"}
+                  disabled={true}
+                />
+              ))}
           </DropOut>
         }
+      </div>
+      <div className=" m-auto checker">
+        <img src="pitcherPlant.png" />
       </div>
       <div className={outAllowed2}>
         {
           <DropOut id="blackOut" disabled={!allowedColumns.includes(200)}>
             {/* <span>{blackOut}</span> */}
-            {blackOut >= 0 && Array.from(Array(blackOut).keys()).map((i) => (
-              <Checker
-                title={"bHit_" + i}
-                key={"blackOut_" + i}
-                clr={"Black"}
-                parent={"Out"}
-                disabled={true}
-              />
-            ))}
+            {blackOut >= 0 &&
+              Array.from(Array(blackOut).keys()).map((i) => (
+                <Checker
+                  title={"bHit_" + i}
+                  key={"blackOut_" + i}
+                  clr={"Black"}
+                  parent={"Out"}
+                  disabled={true}
+                />
+              ))}
           </DropOut>
         }
       </div>
