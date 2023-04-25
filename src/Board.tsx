@@ -267,7 +267,7 @@ BoardProps) {
     onMove(newBoardState);
     if (checkerMoved) {
       //play a sound
-      let audio = new Audio("/checkerMove.m4a");
+      let audio = new Audio("checkerMove.m4a");
       audio.play();
     }
 

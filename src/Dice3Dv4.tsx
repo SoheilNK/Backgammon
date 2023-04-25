@@ -43,6 +43,9 @@ function Box2(
   let roll = props.roll;
   let rollRotation: [number, number, number] = [0, 0, 0];
   switch (roll) {
+    case 0:
+      rollRotation = [Math.PI / 4, 0, Math.PI / 4]; //--
+      break;
     case 1:
       rollRotation = [(Math.PI * 2) / 2, 0, 0]; //--
       break;
@@ -69,28 +72,6 @@ function Box2(
 
       props.onRemainingTime(props.remainingTime - 16); // 60 FPS
     } else {
-      // set the dice side that matches the roll value
-
-      switch (roll) {
-        case 1:
-          rollRotation = [(Math.PI * 2) / 2, 0, 0]; //--
-          break;
-        case 2:
-          rollRotation = [0, 0, (Math.PI * 3) / 2]; //--
-          break;
-        case 3:
-          rollRotation = [Math.PI / 2, 0, 0]; //--
-          break;
-        case 4:
-          rollRotation = [0, 0, Math.PI / 2]; //--
-          break;
-        case 5:
-          rollRotation = [(Math.PI * 3) / 2, 0, 0]; //--
-          break;
-        case 6:
-          rollRotation = [0, Math.PI / 2, 0]; //--
-          break;
-      }
       mesh.current.rotation.x = rollRotation[0];
       mesh.current.rotation.y = rollRotation[1];
       mesh.current.rotation.z = rollRotation[2];
@@ -115,8 +96,8 @@ interface Dice3DProps {
   roll2?: number;
   rotate?: boolean;
   remainingTime: number;
-    onRemainingTime: CallableFunction;
-    onClick?: CallableFunction;
+  onRemainingTime: CallableFunction;
+  onClick?: CallableFunction;
 }
 
 export default function Dice3Dv4({
@@ -124,13 +105,13 @@ export default function Dice3Dv4({
   roll2 = 1,
   rotate = false,
   remainingTime,
-    onRemainingTime,
-    onClick,
+  onRemainingTime,
+  onClick,
 }: Dice3DProps) {
   return (
     <div id="canvas" className=" h-12 w-32">
       <Canvas camera={{ fov: 35, position: [0, -3, 0] }}>
-        <ambientLight intensity={.5} />
+        <ambientLight intensity={0.5} />
         <pointLight position={[1, -3, 1]} />
         <Box2
           position={[-1, 0, 0]}

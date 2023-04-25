@@ -55,7 +55,7 @@ export default function Dice({
     onRoll(newDiceRoll);
     setRemainingTime(2500); //reset animation time
     //play a sound
-    let audio = new Audio("/diceRoll3.m4a");
+    let audio = new Audio("diceRoll3.m4a");
     audio.play();
 
     let newMoveLeft = 2;
