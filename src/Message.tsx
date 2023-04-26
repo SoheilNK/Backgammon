@@ -26,7 +26,7 @@ export function Message({
   if (winner1 != "") { 
     return (
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-        <div className=" flex-col  bg-brown-900  text-yellow-200 text-lg px-8  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center ">
+        <div className=" flex-col   bg-amber-900  text-yellow-200 text-lg px-8  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center ">
           <h2>GAME OVER!</h2>
           <h2 className=" text-xl">{winner1} won the game!</h2>
           <button

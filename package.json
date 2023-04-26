@@ -1,5 +1,6 @@
 {
-  "name": "backgammon",
+  "name": "sosepbackgammon",
+  "homepage": "/Backgammon/#",
   "private": true,
   "version": "0.0.0",
   "type": "module",
