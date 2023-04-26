@@ -96,7 +96,7 @@
 .card {
   color: rgb(31 41 55);
   background-color: RGB(245, 245, 220);
-  min-width: calc(var(--checkerSize) * 4);
+  min-width: calc(var(--checkerSize) * 3);
   height: calc(var(--checkerSize) * 1.5);
   line-height: calc(var(--checkerSize) * 0.75);
   /* margin: calc(var(--checkerSize)/5); */
@@ -245,7 +245,7 @@ img.checker:active {
   display: flex;
   flex-direction: column;
   width: var(--checkerSize);
-  height: calc(var(--checkerSize) * 6.5);
+  min-height: calc(var(--checkerSize) * 6.5);
   border-radius: var(--checkerSize);
 }
 

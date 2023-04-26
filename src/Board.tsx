@@ -26,6 +26,8 @@ type BoardProps = {
   blackOut: number;
   onBlackOut: (counter: number) => void;
   onAlert: (message: string) => void;
+  scores: number[];
+  onScoresChange: (scores: number[]) => void;
 };
 export function Board({
   currentBoardState,
@@ -47,6 +49,8 @@ export function Board({
   blackOut,
   onBlackOut,
   onAlert,
+  scores,
+  onScoresChange,
 }:
 BoardProps) {
   let allowedColumns: number[] = [];
@@ -56,7 +60,9 @@ BoardProps) {
   } else {
     allowedChecker = "Black";
   }
-
+  function test() {
+    console.log("test: I'm from Board.tsx");
+  }
   allowedColumns = setAllowedColumns(
     currentBoardState,
     currentDiceRoll,
@@ -259,7 +265,21 @@ BoardProps) {
       //change player
       togglePlayer(currentPlayer, onPlayerChange);
     }
+    //set Scores
+    //He have a winner
+    let newScores = [...scores];
+    if (newWhiteOut == 15) {
+      newScores[0] = scores[0] + 1;
+      onScoresChange(newScores);
+    }
+    if (newBlackOut == 15) {
+      newScores[1] = scores[1] + 1;
+      onScoresChange(newScores);
+    }
 
+
+
+    //update states
     onColumnSelect(50); //reset the color of the allowed points
     onWhiteOut(newWhiteOut);
     onBlackOut(newBlackOut);
@@ -288,7 +308,14 @@ BoardProps) {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <div className="board m-3">
+      <div className="relative board m-3">
+        <span className=" scale-75 sm:scale-100 absolute top-0 right-0 sm:right-8 text-yellow-100">
+          White's Home Board
+        </span>
+
+        <span className=" scale-75 sm:scale-100 absolute bottom-0 right-0 sm:right-8 text-yellow-100">
+          Brown's Home Board
+        </span>
         <Quadrant
           boardState={currentBoardState}
           start={12}

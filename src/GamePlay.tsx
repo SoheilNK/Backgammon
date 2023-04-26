@@ -16,7 +16,7 @@ export let PlayerNames = {
 
 function GamePlay() {
   const { state } = useLocation();
-  const { player1, player2 } = state; // Read values passed on state
+  const { player1, player2, newScores } = state; // Read values passed on state
 
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(winnertest); //test
@@ -26,9 +26,10 @@ function GamePlay() {
   const [selectedColumn, setSelectedColumn] = useState(50);
   const [whiteBar, setWhiteBar] = useState(0); //test
   const [blackBar, setBlackBar] = useState(0);
-  const [whiteOut, setWhiteOut] = useState(11); //test
-  const [blackOut, setBlackOut] = useState(13); //test
+  const [whiteOut, setWhiteOut] = useState(12); //test
+  const [blackOut, setBlackOut] = useState(12); //test
   const [alertMessage, setAlertMessage] = useState(""); //test
+  const [scores, setScores] = useState(newScores);
 
   PlayerNames = {
     white: [player1],
@@ -43,13 +44,18 @@ function GamePlay() {
           moveLeft={moveLeft}
           whiteOut={whiteOut}
           blackOut={blackOut}
+          scores={scores}
         />
       </div>
       <Alert
         alertMessage={alertMessage}
         onAlert={(message) => setAlertMessage(message)}
       />
-      <Players currentPlayer={currentPlayer} anyMoveAvailable={true} />
+      <Players
+        currentPlayer={currentPlayer}
+        anyMoveAvailable={true}
+        scores={scores}
+      />
       <div className=" relative flex flex-col items-center mb-4">
         <Board
           currentBoardState={currentBoardState}
@@ -71,6 +77,8 @@ function GamePlay() {
           blackOut={blackOut}
           onBlackOut={(counter) => setBlackOut(counter)}
           onAlert={(message) => setAlertMessage(message)}
+          scores={scores}
+          onScoresChange={(scores) => setScores(scores)}
         />
         <div className="absolute top-2">
           <Dice
@@ -180,6 +188,7 @@ let winnertest: Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],
+  ["Black"],
   [],
   [],
   [],
@@ -195,11 +204,10 @@ let winnertest: Color[][] = [
   [],
   [],
   [],
+  ["White"],
+  [],
+  ["White"],
   [],
   [],
-  [],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White"],
+  ["White" ],
 ];

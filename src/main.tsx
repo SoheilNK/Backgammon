@@ -8,7 +8,7 @@ import GamePlay from "./GamePlay";
 //
 const router = createBrowserRouter([
   {
-    path: "Backgammon/",
+    path: "/Backgammon/",
     element: (
       <div className=" bg-slate-100 h-screen">
         <Intro />
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "Backgammon/Game/",
+    path: "/Backgammon/Game/",
     element: (
       <div className=" bg-slate-100 h-screen">
         <GamePlay />
