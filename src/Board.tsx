@@ -255,7 +255,7 @@ BoardProps) {
       
     }
 
-    if (newMoveLeft == 0 && newWhiteBar !== 15 && newBlackBar !== 15) {
+    if (newMoveLeft == 0 && newWhiteOut !== 15 && newBlackOut !== 15) {
       //change player
       togglePlayer(currentPlayer, onPlayerChange);
     }
