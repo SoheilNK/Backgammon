@@ -19,15 +19,15 @@ function GamePlay() {
   const { player1, player2, newScores } = state; // Read values passed on state
 
   const [currentBoardState, setCurrentBoardState] =
-    useState<Color[][]>(winnertest); //test
+    useState<Color[][]>(initialState); //test
   const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
   const [currentPlayer, setCurrentPlayer] = useState<string>(player1);
   const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
   const [selectedColumn, setSelectedColumn] = useState(50);
   const [whiteBar, setWhiteBar] = useState(0); //test
   const [blackBar, setBlackBar] = useState(0);
-  const [whiteOut, setWhiteOut] = useState(12); //test
-  const [blackOut, setBlackOut] = useState(12); //test
+  const [whiteOut, setWhiteOut] = useState(0); //test
+  const [blackOut, setBlackOut] = useState(0); //test
   const [alertMessage, setAlertMessage] = useState(""); //test
   const [scores, setScores] = useState(newScores);
 

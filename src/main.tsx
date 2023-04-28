@@ -1,30 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, useLocation } from "react-router-dom";
-import { Intro } from "./Intro";
-import { Footer } from "./footer";
-import ErrorPage from "./error-page";
-import GamePlay from "./GamePlay";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./pages/error-page";
+import { About } from "./pages/About";
+import { Game } from "./pages/Game";
+import { Home } from "./pages/Home";
 //
 const router = createBrowserRouter([
   {
-    path: "/Backgammon/",
-    element: (
-      <div className=" bg-slate-100 h-screen">
-        <Intro />
-        <Footer />
-      </div>
-    ),
+    path: "/Backgammon",
+    element: <Home />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/Backgammon/Game/",
-    element: (
-      <div className=" bg-slate-100 h-screen">
-        <GamePlay />
-        <Footer />
-      </div>
-    ),
+    path: "/Backgammon/Game",
+    element: <Game />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/Backgammon/about",
+    element: <About />,
     errorElement: <ErrorPage />,
   },
 ]);
