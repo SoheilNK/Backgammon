@@ -9,7 +9,7 @@ export function Game() {
       <Navbar title={"SoSep Backgammon"} />
       <div className=" w-screen bg-slate-100">
         <div className="container m-auto p-4">
-          <div className=" sm:w-3/4 bg-white relative  rounded-md p-8 m-auto">
+          <div className=" md:w-3/4 bg-white relative  rounded-md p-8 m-auto">
             <GamePlay />
           </div>
         </div>
