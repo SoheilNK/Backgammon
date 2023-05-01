@@ -51,8 +51,7 @@ export function Board({
   onAlert,
   scores,
   onScoresChange,
-}:
-BoardProps) {
+}: BoardProps) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;
   if (PlayerNames.white[0] == currentPlayer) {
@@ -60,15 +59,13 @@ BoardProps) {
   } else {
     allowedChecker = "Black";
   }
-  function test() {
-    console.log("test: I'm from Board.tsx");
-  }
+
   allowedColumns = setAllowedColumns(
     currentBoardState,
     currentDiceRoll,
     currentPlayer,
     selectedColumn,
-    moveLeft,
+    moveLeft
   );
 
   function handelDragStart(e: DragStartEvent) {
@@ -214,37 +211,28 @@ BoardProps) {
       }
       if (target == "whiteOut" || target == "blackOut") {
         //it is a move out
-        if ((homePosition == newDiceRoll[0])) {
+        if (homePosition == newDiceRoll[0]) {
           newDiceRoll[0] = 0;
-        } else {
-          if ((homePosition == newDiceRoll[1])) {
-            newDiceRoll[1] = 0;
-          } else {
-            if (homePosition < newDiceRoll[0]) {
-              newDiceRoll[0] = 0;
-            } else {
-              if (homePosition < newDiceRoll[1]) {
-                newDiceRoll[1] = 0;
-              }
-            }
-          }
+        } else if (homePosition == newDiceRoll[1]) {
+          newDiceRoll[1] = 0;
+        } else if (homePosition < newDiceRoll[0]) {
+          newDiceRoll[0] = 0;
+        } else if (homePosition < newDiceRoll[1]) {
+          newDiceRoll[1] = 0;
         }
       } else {
         //it is a board move
         if (newCol + 10 == allowedColumns[0]) {
           newDiceRoll[0] = 0;
-        } else {
-          if (newCol + 10 == allowedColumns[1]) {
-            newDiceRoll[1] = 0;
-          }
+        } else if (newCol + 10 == allowedColumns[1]) {
+          newDiceRoll[1] = 0;
         }
       }
-    } else {
+    } else if (newMoveLeft == 0) {
       //if the move is a double----------------
-      if (newMoveLeft == 0) {
-        newDiceRoll[0] = 0;
-        newDiceRoll[1] = 0;
-      }
+
+      newDiceRoll[0] = 0;
+      newDiceRoll[1] = 0;
     }
 
     //******************check if any move is available */
@@ -257,8 +245,7 @@ BoardProps) {
     );
     if (!moveAllowed[0] && !moveAllowed[1] && newMoveLeft !== 0) {
       newMoveLeft = 0;
-      onAlert("No move available")
-      
+      onAlert("No move available");
     }
 
     if (newMoveLeft == 0 && newWhiteOut !== 15 && newBlackOut !== 15) {
@@ -266,7 +253,7 @@ BoardProps) {
       togglePlayer(currentPlayer, onPlayerChange);
     }
     //set Scores
-    //He have a winner
+    //We have a winner
     let newScores = [...scores];
     if (newWhiteOut == 15) {
       newScores[0] = scores[0] + 1;
@@ -276,8 +263,6 @@ BoardProps) {
       newScores[1] = scores[1] + 1;
       onScoresChange(newScores);
     }
-
-
 
     //update states
     onColumnSelect(50); //reset the color of the allowed points
@@ -307,6 +292,7 @@ BoardProps) {
       onDragStart={handelDragStart}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      autoScroll={false}
     >
       <div className="relative board m-3">
         <span className=" scale-75 sm:scale-100 absolute top-0 right-0 sm:right-8 text-yellow-100">

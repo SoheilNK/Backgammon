@@ -4,13 +4,13 @@ const AboutBackgammon: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div>
-        <h1 className=" text-xl text-black text-clip font-bold  m-4">
+        <h1 className=" text-xl text-black text-clip font-bold  m-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
           About Backgammon
         </h1>
       </div>
-      <div className="py-8 px-8 sm:w-3/4 mx-auto rounded-xl bg-white border-2 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
+      <div className="py-8 px-8 sm:w-3/4 mx-auto rounded-xl bg-white border-2 shadow-lg flex-col sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
         <div className="text-center sm:text-left space-y-2">
-          <p className="">
+          <p>
             Backgammon is a classic two-player board game that involves strategy
             and luck. The objective of the game is to move all of your checkers
             around the board and into your home board before your opponent does
@@ -36,30 +36,30 @@ const AboutBackgammon: React.FC = () => {
             Backgammon skills!
           </p>
         </div>
-      </div>
-      <div className="py-8 px-8 sm:w-3/4 mx-auto rounded-xl bg-white border-2 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
-        <p className="text-center sm:text-left space-y-2">
-          To learn more about this game and it's rulls, please visit the
-          following links:
-          <br />
-          <br />
-          <a
-            href="https://www.bkgm.com/rules.html"
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            target="_blank"
-          >
-            Backgammon Rules
-          </a>
-          <br />
-          <a
-            href="https://en.wikipedia.org/wiki/Backgammon"
-            className="font-medium text-blue-600 dark:text-blue-500
-            hover:underline"
-            target="_blank"
-          >
-            Backgammon Wikipedia
-          </a>
-        </p>
+        <br />
+        <div className="text-center sm:text-left space-y-2">
+          <p>
+            To learn more about this game and it's rulls, please visit the
+            following links:
+            <br />
+            <a
+              href="https://www.bkgm.com/rules.html"
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              target="_blank"
+            >
+              Backgammon Rules
+            </a>
+            <br />
+            <a
+              href="https://en.wikipedia.org/wiki/Backgammon"
+              className="font-medium text-blue-600 dark:text-blue-500
+              hover:underline"
+              target="_blank"
+            >
+              Backgammon Wikipedia
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

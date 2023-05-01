@@ -1,8 +1,8 @@
 export function Footer() {
   return (
-    <footer className="  bg-white shadow dark:bg-gray-800">
+    <footer className="  bg-green-900 shadow">
       <div className=" p-4 flex flex-col items-center justify-center">
-        <span className="text-sm text-gray-500  dark:text-gray-400">
+        <span className="text-sm text-white ">
           © 2023{" "}
           <a
             target="_blank"
@@ -17,7 +17,7 @@ export function Footer() {
           <a
             target="_blank"
             href="https://www.facebook.com/profile.php?id=100080812375664"
-            className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+            className="text-white  hover:text-gray-900"
           >
             <svg
               className="w-5 h-5"
@@ -36,7 +36,7 @@ export function Footer() {
           <a
             target="_blank"
             href="https://twitter.com/SoheilNajmabadi"
-            className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+            className="text-white  hover:text-gray-900"
           >
             <svg
               className="w-5 h-5"
@@ -48,10 +48,10 @@ export function Footer() {
             </svg>
             <span className="sr-only">Twitter page</span>
           </a>
-                  <a
+          <a
             target="_blank"
             href="https://github.com/SoheilNK"
-            className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+            className="text-white  hover:text-gray-900"
           >
             <svg
               className="w-5 h-5"

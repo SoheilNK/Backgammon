@@ -85,12 +85,11 @@ export function Message({
     return (
       <div className=" container flex">
         <div
-          id="alert"
-          className={classNames(
+          className={
             " scale-90 sm:scale-125 py-1 px-8 max-w-sm mx-auto rounded-xl bg-amber-900 text-white shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center "
-          )}
+          }
         >
-          <div id="alert">{message}</div>
+          <div>{newMessage}</div>
         </div>
       </div>
     );

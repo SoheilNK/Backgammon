@@ -16,7 +16,7 @@ export let PlayerNames = {
 
 function GamePlay() {
   const { state } = useLocation();
-  const { player1, player2, newScores } = state; // Read values passed on state
+  const { player1, player2, newScores} = state; // Read values passed on state
 
   const [currentBoardState, setCurrentBoardState] =
     useState<Color[][]>(initialState); //test
@@ -30,6 +30,7 @@ function GamePlay() {
   const [blackOut, setBlackOut] = useState(0); //test
   const [alertMessage, setAlertMessage] = useState(""); //test
   const [scores, setScores] = useState(newScores);
+
 
   PlayerNames = {
     white: [player1],

@@ -47,10 +47,10 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               </li>
 
               <li className={`p-2 sm:block  ${!open && "hidden"}`}>
-                <Link to="/Backgammon/">Home</Link>
+                <Link to="/Backgammon">Home</Link>
               </li>
               <li className={`p-2 sm:block  ${!open && "hidden"}`}>
-                <Link to="/Backgammon/about/">About</Link>
+                <Link to="/Backgammon/users">Game Room</Link>
               </li>
             </ul>
           </nav>
