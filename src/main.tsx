@@ -5,7 +5,7 @@ import ErrorPage from "./pages/error-page";
 import { Game } from "./pages/Game";
 import { Home } from "./pages/Home";
 import { Users } from "./pages/Users";
-//
+
 const router = createBrowserRouter([
   {
     path: "/Backgammon",
@@ -23,6 +23,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 ]);
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
