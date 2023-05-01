@@ -3,6 +3,8 @@ import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";
 import Dice3Dv4 from "./Dice3Dv4";
+let audio = new Audio("diceRoll3.m4a");
+
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
@@ -36,7 +38,7 @@ export default function Dice({
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
   let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
 
-  var glowDice = classNames("dice", {
+  var glowDice = classNames("", {
     "opacity-5": disabled,
     "opacity-100": !disabled,
   });
@@ -55,7 +57,6 @@ export default function Dice({
     onRoll(newDiceRoll);
     setRemainingTime(2500); //reset animation time
     //play a sound
-    let audio = new Audio("diceRoll3.m4a");
     audio.play();
 
     let newMoveLeft = 2;
@@ -86,11 +87,11 @@ export default function Dice({
   }
 
   return (
-    <div>
+    <div className=" flex flex-col items-center -mt-4 ">
       <div className="group relative  mx-auto">
         <div
           className={
-            "absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-lg blur transition duration-1000 group-hover:duration-200" +
+            "z-0 absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-lg blur transition duration-1000 group-hover:duration-200 " +
             glowDice
           }
         ></div>
@@ -104,6 +105,15 @@ export default function Dice({
           />
         </div>
       </div>
+      <span className=" text-center w-full text-white">
+        <strong
+          className={
+            glowDice
+          }
+        >
+          Click Me!
+        </strong>
+      </span>
     </div>
   );
 }
