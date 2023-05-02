@@ -1,42 +1,51 @@
-## Backgammon
-
+## Backgammon Game
 ---
 
 ### **Description**
 
-This is my first project as a student with Get Coding. In this project I tried to simulate two sections of Wechsler's IQ test for adults using JavaScript/Html/CSS.
+This project is a Backgammon game developed as part of my coursework in the second module of the Get Coding program. 
 
-In the first section, the app will show you some patterns. You need to recreate each pattern by dragging and dropping the provided shapes onto the given grid.
-In the original test the user should use special cubes to create the patterns, but it was a little bit more than I could do in my first project so I went with the 2D version of it. Maybe I upgrade it in next versions 🙂.  
+The primary technologies used in this project are Vite, React, and Typescript. In addition, several libraries were utilized, including dnd kit, Tailwind, React Three Fibre, and React Router.
 
-In the second section, you will encounter mathematical questions. You need to answer them in the allotted time.    
+## Features
 
-And finally you will receive your points for each section and a description for that on a standard scale. 
+- Two-player game mode
+- Interactive game board with drag-and-drop capabilities
+- Animations for dice rolling and piece movements
+- Scoreboard and game history tracking
 
-Please give it a try and I'll be happy to hear about your comments.
+## How to Play
 
----
+1. Clone the repository to your local machine using `git clone https://github.com/SoheilNK/Backgammon.git`.
+2. Install the dependencies with `npm install`.
+3. Run the application with `npm run dev`.
+4. Open your browser and navigate to `http://localhost:5173/Backgammon`.
+5. Roll the dice and move your pieces according to the rules of the game.
+6. The first player to bear off all of their pieces wins!
 
-### **Motivation**
+Try it out, and I look forward to hearing your thoughts on it.
 
-My wife is a psychologist, and we often discuss our work. I recall her telling me about Wechsler's IQ test and how it could be life changing if our children took it at a young age and we could use the results to guide them to the best path for them.
-That is why I decided to create this web-app. However, because this is only two sections of the test and not the entire test, the results are only valid for these sections.
 
 ---
 
 
 #### **Getting Started**
 
-Click this link: [IQ Test](https://soheilnk.github.io/IQ-Test/)
+Click this link: [SoSep Backgammon](https://soheilnk.github.io/Backgammon/)
 
 ---
 
 #### **Credits**
 
-I'd like to thank my instructors for their help with this project:
+My coach Mitchell Hynes has been an incredible help to me in this whole process, and I can't thank him enough.
 
-[Leon Chisholm](https://www.linkedin.com/in/leon-chisholm/), 
-[Matthew Kennedy](https://www.linkedin.com/in/mattjamesk/) and 
-[Sahand Seifi](https://www.linkedin.com/in/sahandseifi/)
+[Mitchell Hynes](https://www.linkedin.com/in/mitchell-hynes/), 
 
 ---
+## Contributions
+
+Contributions are welcome! Please feel free to fork the repository and submit a pull request with your changes.
+
+## License
+
+This project is licensed under the MIT License.
