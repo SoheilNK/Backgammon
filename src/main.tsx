@@ -1,32 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/error-page";
 import { Game } from "./pages/Game";
 import { Home } from "./pages/Home";
 import { Users } from "./pages/Users";
-
-const router = createBrowserRouter([
-  {
-    path: "/Backgammon",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/Backgammon/Game",
-    element: <Game />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/Backgammon/users",
-    element: <Users />,
-    errorElement: <ErrorPage />,
-  },
-]);
-
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+        <Route path="/users" element={<Users />} errorElement={<ErrorPage />} />
+        <Route path="/game" element={<Game />} errorElement={<ErrorPage />} />
+      </Routes>
+    </HashRouter>
   </React.StrictMode>
 );

@@ -11,7 +11,6 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   const handleBurgerClick = () => {
     setShowMenu(!showMenu);
   };
-  // {showMenu ? "flex" : "hidden" + "  mt-6"}
   return (
     <header className=" sticky top-0 z-20 flex flex-row  bg-green-900 text-white font-serif">
       <div className="container items-center text-justify m-auto">
@@ -47,10 +46,10 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               </li>
 
               <li className={`p-2 sm:block  ${!open && "hidden"}`}>
-                <Link to="/Backgammon">Home</Link>
+                <Link to="/">Home</Link>
               </li>
               <li className={`p-2 sm:block  ${!open && "hidden"}`}>
-                <Link to="/Backgammon/users">Game Room</Link>
+                <Link to="/users">Game Room</Link>
               </li>
             </ul>
           </nav>

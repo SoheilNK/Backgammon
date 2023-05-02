@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dice3Dv2 from "./Dice3Dv2";
-import Navbar from "./Navbar";
 
 export const Intro = () => {
   const [player1, setPlayer1] = useState("");
@@ -11,7 +10,7 @@ export const Intro = () => {
   const handleStart = () => {
     console.log("clicked");
     if (player1 && player2) {
-      navigate("/Backgammon/Game", {
+      navigate("/Game", {
         state: { player1: player1, player2: player2, newScores: [0, 0] },
       });
     }

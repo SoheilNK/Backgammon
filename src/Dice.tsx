@@ -1,4 +1,4 @@
-import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
+import { Color,  TdiceRoll } from "./GamePlay";
 import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";

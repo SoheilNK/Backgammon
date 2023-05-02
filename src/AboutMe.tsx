@@ -13,7 +13,7 @@ const AboutMe: React.FC = () => {
           <img
             src="ScreenShot.jpg"
             alt="backgammon"
-            className="m-auto h-52 inline- float-right"
+            className="m-auto w-36 inline- float-right"
           />
           Well, hello there! I'm Soheil, and I love learning new things and
           improving my programing skills. As part of my coursework in the second

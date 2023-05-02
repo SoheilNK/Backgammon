@@ -23,22 +23,26 @@ export default function Out({
   });
 
 
+
+
   return (
     <div className="flex flex-row">
 
-      <div className={outAllowed1}>
+      <div className={outAllowed1} >
         {
           <DropOut id="whiteOut" disabled={!allowedColumns.includes(100)}>
             {/* <span>{whiteOut}</span> */}
             {whiteOut >= 0 &&
               Array.from(Array(whiteOut).keys()).map((i) => (
-                <Checker
-                  title={"wHit_" + i}
-                  key={"wihtOut_" + i}
-                  clr={"White"}
-                  parent={"Out"}
-                  disabled={true}
-                />
+                <div className=" -translate-x-4">
+                  <Checker
+                    title={"wHit_" + i}
+                    key={"wihtOut_" + i}
+                    clr={"White"}
+                    parent={"Out"}
+                    disabled={true}
+                  />
+                </div>
               ))}
           </DropOut>
         }

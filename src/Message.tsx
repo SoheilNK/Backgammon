@@ -1,8 +1,6 @@
-import classNames from "classnames";
 import { useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { Board } from "./Board";
 
 interface MessageProps {
   currentPlayer: string;
@@ -23,7 +21,8 @@ export function Message({
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
-  const [rotateAnimation, setRotateAnimation] = useState<boolean>(false);
+  const [oldPlayer, setOldPlayer] = useState("");
+  const [animation, setAnimation] = useState(false);
 
   let winner1 = "";
   let newMessage = "";
@@ -78,28 +77,34 @@ export function Message({
     } else {
       newMessage = " you have " + moveLeft + " moves left";
     }
+    if(oldPlayer !== currentPlayer){
+            setAnimation(true);
+
+            // Disable the animation after a delay
+            setTimeout(() => {
+              setAnimation(false);
+            }, 1000);
+
+    }
 
     if (message != newMessage) {
       setMessage(newMessage);
-      // Enable the rotate animation
-      setRotateAnimation(true);
-
-      // Disable the rotate animation after a delay
-      setTimeout(() => {
-        setRotateAnimation(false);
-      }, 1000);
+      setOldPlayer(currentPlayer);
     }
 
     return (
       <div id="message" className=" container flex ">
         <div
+          style={{ backgroundColor: "#8E8268" }}
           className={
-            " scale-90 sm:scale-125 bg-amber-500 py-1 px-8 max-w-sm mx-auto rounded-xl shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center " +
-            (rotateAnimation ? " rotate-animation" : "")
+            " scale-90 sm:scale-125  text-white py-1 px-8 max-w-sm mx-auto rounded-xl shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center " +
+            (animation ? " animate-spin" : "")
           }
         >
-          <div>
-            <strong className=" bg-yellow-200 rounded-md p-1">{currentPlayer}</strong> {' '} 
+          <div className="m-1">
+            <strong className=" bg-yellow-200 text-black rounded-md p-1">
+              {currentPlayer}
+            </strong>{" "}
             {newMessage}
           </div>
         </div>
