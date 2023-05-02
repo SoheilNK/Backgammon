@@ -1,4 +1,4 @@
-## Backgammon Game
+## SoSep Backgammon Game
 ---
 
 ### **Description**
