@@ -11,7 +11,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <HashRouter>
       <Routes>
         <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
-        <Route path="/users" element={<Users />} errorElement={<ErrorPage />} />
+        <Route path="/users" element={<Users isGameStarted={false} onGameStarted={function (isGameStarted: boolean): void {
+          throw new Error("Function not implemented.");
+        } } />} errorElement={<ErrorPage />} />
         <Route path="/game" element={<Game />} errorElement={<ErrorPage />} />
       </Routes>
     </HashRouter>

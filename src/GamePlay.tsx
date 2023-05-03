@@ -183,7 +183,7 @@ let initialState2: Color[][] = [
   ["White", "White"],
   ["White", "White", "White"],
   ["White", "White"],
-  ["White", "White", "White", "White"],
+  ["White", "White", "White", "White",],
 ];
 let winnertest: Color[][] = [
   //test state for winner

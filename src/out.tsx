@@ -2,6 +2,7 @@ import { useDroppable } from "@dnd-kit/core";
 
 import { Checker } from "./Points";
 import classNames from "classnames";
+import { styled } from "@chakra-ui/react";
 
 interface OutProps {
   whiteOut: number;
@@ -23,27 +24,38 @@ export default function Out({
   });
 
 
-
+  let d = 0;
+  var r = document.querySelector(":root") as HTMLElement;
+  var rs = getComputedStyle(r);
+  var checker = parseInt(rs.getPropertyValue("--checkerSize")) * 18; //convert rem to px
+  // r.style.setProperty("--fontSize", "40px");
+  
 
   return (
     <div className="flex flex-row">
-
-      <div className={outAllowed1} >
+      <div className={outAllowed1}>
         {
           <DropOut id="whiteOut" disabled={!allowedColumns.includes(100)}>
-            {/* <span>{whiteOut}</span> */}
             {whiteOut >= 0 &&
-              Array.from(Array(whiteOut).keys()).map((i) => (
-                <div className=" -translate-x-4">
-                  <Checker
-                    title={"wHit_" + i}
-                    key={"wihtOut_" + i}
-                    clr={"White"}
-                    parent={"Out"}
-                    disabled={true}
-                  />
-                </div>
-              ))}
+              Array.from(Array(whiteOut).keys()).map(
+                (i) => (
+                  whiteOut <= 6 ? (d = checker*i) : (d = checker*6/whiteOut*i ),
+                  (
+                    <div
+                      style={{ right: d + "px" }}
+                      className={"absolute top-0 bottom-0"}
+                    >
+                      <Checker
+                        title={"wHit_" + i}
+                        key={"wihtOut_" + i}
+                        clr={"White"}
+                        parent={"Out"}
+                        disabled={true}
+                      />
+                    </div>
+                  )
+                )
+              )}
           </DropOut>
         }
       </div>
@@ -53,17 +65,28 @@ export default function Out({
       <div className={outAllowed2}>
         {
           <DropOut id="blackOut" disabled={!allowedColumns.includes(200)}>
-            {/* <span>{blackOut}</span> */}
             {blackOut >= 0 &&
-              Array.from(Array(blackOut).keys()).map((i) => (
-                <Checker
-                  title={"bHit_" + i}
-                  key={"blackOut_" + i}
-                  clr={"Black"}
-                  parent={"Out"}
-                  disabled={true}
-                />
-              ))}
+              Array.from(Array(blackOut).keys()).map(
+                (i) => (
+                  blackOut <= 6
+                    ? (d = checker * i)
+                    : (d = checker*6/ blackOut *i),
+                  (
+                    <div
+                      style={{ left: d + "px" }}
+                      className={"absolute top-0 bottom-0"}
+                    >
+                      <Checker
+                        title={"bHit_" + i}
+                        key={"blackOut_" + i}
+                        clr={"Black"}
+                        parent={"Out"}
+                        disabled={true}
+                      />
+                    </div>
+                  )
+                )
+              )}
           </DropOut>
         }
       </div>
@@ -80,7 +103,7 @@ function DropOut({ id, children, disabled }: DropOutProps) {
 
   return (
     <div
-      className=" flex flex-wrap min-h-full  items-center justify-center"
+      className=" relative flex flex-wrap min-h-full  items-center justify-center"
       ref={setNodeRef}
       // style={{ border: isOver ? "2px solid #ccc" : "2px solid transparent" }}
     >

@@ -2,17 +2,27 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dice3Dv2 from "./Dice3Dv2";
 
-export const Intro = () => {
-  const [player1, setPlayer1] = useState("");
+interface IntroProps {
+  isGameStarted: boolean;
+  onGameStarted: (isGameStarted: boolean) => void;
+}
+export const Intro = ( {isGameStarted, onGameStarted}: IntroProps) => {
+    const navigate = useNavigate();
+  if (isGameStarted) {
+    navigate("/Game");
+  }
+  
+const [player1, setPlayer1] = useState("");
   const [player2, setPlayer2] = useState("");
-  const navigate = useNavigate();
 
   const handleStart = () => {
     console.log("clicked");
     if (player1 && player2) {
+      
       navigate("/Game", {
         state: { player1: player1, player2: player2, newScores: [0, 0] },
       });
+      onGameStarted(true);
     }
   };
 

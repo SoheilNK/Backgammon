@@ -53,7 +53,7 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // newDiceRoll = [5, 5]; //test
+    // newDiceRoll = [1, 1]; //test
     onRoll(newDiceRoll);
     setRemainingTime(2500); //reset animation time
     //play a sound
@@ -91,11 +91,11 @@ export default function Dice({
       <div className="group relative  mx-auto">
         <div
           className={
-            "z-0 absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-lg blur transition duration-1000 group-hover:duration-200 " +
+            "z-0 absolute  -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-lg blur transition duration-1000 group-hover:duration-200 " +
             glowDice
           }
         ></div>
-        <div onClick={handleClick}>
+        <div onClick={handleClick} className="hover:cursor-pointer">
           <Dice3Dv4
             roll1={newDiceRoll[0]}
             roll2={newDiceRoll[1]}
@@ -105,14 +105,11 @@ export default function Dice({
           />
         </div>
       </div>
-      <span className=" text-center w-full text-white">
-        <strong
-          className={
-            glowDice
-          }
-        >
-          Click Me!
-        </strong>
+      <span
+        className=" text-center w-full text-white hover:cursor-pointer"
+        onClick={handleClick}
+      >
+        <strong className={glowDice + " text-xs sm:text-base"}>&uarr; Click Me &uarr;</strong>
       </span>
     </div>
   );

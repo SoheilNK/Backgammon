@@ -77,17 +77,41 @@ function Point({
     allowedClr = "Black";
   }
 
+  let d = 0;
+  var r = document.querySelector(":root") as HTMLElement;
+  var rs = getComputedStyle(r);
+  var checker = parseInt(rs.getPropertyValue("--checkerSize")) * 18; //convert rem to px
+  let pointLength = items.length;
+  let drcTop = "ltr" as Direction;
   return (
-    <div id={colName} ref={setNodeRef} className={drction + " " + pointClass}>
-      {items.map((checkerClr, key) => (
-        <Checker
-          disabled={checkerClr != allowedClr || !moveAllowed}
-          key={key}
-          parent={colName}
-          clr={checkerClr}
-          title={colName + "-ch-" + key}
-        />
-      ))}
+    <div
+      id={colName}
+      ref={setNodeRef}
+      className={drction + " relative " + pointClass}
+    >
+      {items.map(
+        (checkerClr, key) => (
+          pointLength <= 6
+            ? (d = checker * key)
+            : (d = ((checker * 6) / pointLength) * key),
+          (
+            <div
+              style={
+                drction == drcTop ? { top: d + "px" } : { bottom: d + "px" }
+              }
+              className={"absolute "}
+            >
+              <Checker
+                disabled={checkerClr != allowedClr || !moveAllowed}
+                key={key}
+                parent={colName}
+                clr={checkerClr}
+                title={colName + "-ch-" + key}
+              />
+            </div>
+          )
+        )
+      )}
     </div>
   );
 }
