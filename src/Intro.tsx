@@ -21,8 +21,8 @@ export const Intro = () => {
           </h1>
           <h2 className=" m-auto h-1/2 bg-yellow-200 text-black rounded-md p-1">
             <strong>
-              There's a new game in progress. Would you like to keep playing or
-              start a new one?
+              A game is already in progress. Would you like to continue playing
+              or begin a new one?
             </strong>
           </h2>
           <h1></h1>

@@ -39,7 +39,7 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className="checker"
+      className="checker z-auto"
       src={imgUrl}
     />
   );
@@ -80,27 +80,28 @@ function Point({
   let d = 0;
   var r = document.querySelector(":root") as HTMLElement;
   var rs = getComputedStyle(r);
-  var checker = parseInt(rs.getPropertyValue("--checkerSize")) * 18; //convert rem to px
+  var checkerSize = parseInt(rs.getPropertyValue("--checkerSize"));
+  var space = checkerSize * (checkerSize >= 2 ? 18 : 24); //convert rem to px
   let pointLength = items.length;
   let drcTop = "ltr" as Direction;
   return (
     <div
       id={colName}
       ref={setNodeRef}
-      className={drction + " relative " + pointClass}
+      className={drction + " relative z-10 " + pointClass}
     >
       {items.map(
         (checkerClr, key) => (
           pointLength <= 6
-            ? (d = checker * key)
-            : (d = ((checker * 6) / pointLength) * key),
+            ? (d = space * key)
+            : (d = ((space * 6) / pointLength) * key),
           (
             <div
               key={key}
               style={
                 drction == drcTop ? { top: d + "px" } : { bottom: d + "px" }
               }
-              className={"absolute "}
+              className={"absolute z-20 "}
             >
               <Checker
                 disabled={checkerClr != allowedClr || !moveAllowed}

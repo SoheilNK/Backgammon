@@ -6,7 +6,7 @@ import { Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "./useLocalStorage";
-let audio = new Audio("checkerMove.m4a");
+let audio = new Audio("checkerMove.mp3");
 
 type BoardProps = {
   currentBoardState: Color[][];
