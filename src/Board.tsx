@@ -5,6 +5,8 @@ import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
+import { useLocalStorage } from "./useLocalStorage";
+let audio = new Audio("checkerMove.m4a");
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -26,8 +28,6 @@ type BoardProps = {
   blackOut: number;
   onBlackOut: (counter: number) => void;
   onAlert: (message: string) => void;
-  scores: number[];
-  onScoresChange: (scores: number[]) => void;
 };
 export function Board({
   currentBoardState,
@@ -49,9 +49,9 @@ export function Board({
   blackOut,
   onBlackOut,
   onAlert,
-  scores,
-  onScoresChange,
 }: BoardProps) {
+  const [scores, setScores] = useLocalStorage("scores", [0, 0]);
+
   let allowedColumns: number[] = [];
   let allowedChecker: string;
   if (PlayerNames.white[0] == currentPlayer) {
@@ -257,22 +257,25 @@ export function Board({
     let newScores = [...scores];
     if (newWhiteOut == 15) {
       newScores[0] = scores[0] + 1;
-      onScoresChange(newScores);
+      setScores(newScores);
     }
     if (newBlackOut == 15) {
       newScores[1] = scores[1] + 1;
-      onScoresChange(newScores);
+      setScores(newScores);
     }
 
     //update states
+    currentDiceRoll = [...newDiceRoll];
+    currentBoardState = [...newBoardState];
+    onRoll(currentDiceRoll);
     onColumnSelect(50); //reset the color of the allowed points
     onWhiteOut(newWhiteOut);
     onBlackOut(newBlackOut);
     onMoveLeft(newMoveLeft);
-    onMove(newBoardState);
+    onMove(currentBoardState);
+
     if (checkerMoved) {
       //play a sound
-      let audio = new Audio("checkerMove.m4a");
       audio.play();
     }
 

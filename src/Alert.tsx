@@ -1,4 +1,3 @@
-import { useState } from "react";
 interface AlertProps {
     alertMessage: string;
     onAlert: (alertMessage: string) => void;

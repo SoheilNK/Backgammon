@@ -39,15 +39,17 @@ export default function Out({
             {whiteOut >= 0 &&
               Array.from(Array(whiteOut).keys()).map(
                 (i) => (
-                  whiteOut <= 6 ? (d = checker*i) : (d = checker*6/whiteOut*i ),
+                  whiteOut <= 6
+                    ? (d = checker * i)
+                    : (d = ((checker * 6) / whiteOut) * i),
                   (
                     <div
+                      key={"wihtOut_" + i}
                       style={{ right: d + "px" }}
                       className={"absolute top-0 bottom-0"}
                     >
                       <Checker
                         title={"wHit_" + i}
-                        key={"wihtOut_" + i}
                         clr={"White"}
                         parent={"Out"}
                         disabled={true}
@@ -70,15 +72,15 @@ export default function Out({
                 (i) => (
                   blackOut <= 6
                     ? (d = checker * i)
-                    : (d = checker*6/ blackOut *i),
+                    : (d = ((checker * 6) / blackOut) * i),
                   (
                     <div
+                      key={"blackOut_" + i}
                       style={{ left: d + "px" }}
                       className={"absolute top-0 bottom-0"}
                     >
                       <Checker
                         title={"bHit_" + i}
-                        key={"blackOut_" + i}
                         clr={"Black"}
                         parent={"Out"}
                         disabled={true}

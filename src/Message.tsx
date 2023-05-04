@@ -1,23 +1,25 @@
 import { useState } from "react";
-import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "./useLocalStorage";
 
 interface MessageProps {
   currentPlayer: string;
   moveLeft: number;
   whiteOut: number;
   blackOut: number;
-  scores: number[];
 }
 export function Message({
   currentPlayer,
   moveLeft,
   whiteOut,
   blackOut,
-  scores,
 }: MessageProps) {
-  const { state } = useLocation();
-  const { player1, player2 } = state; // Read values passed on state
+  const [p1, setPlayer1] = useLocalStorage("player1", "");
+  const [p2, setPlayer2] = useLocalStorage("player2", "");
+  const [scores, setScores] = useLocalStorage("scores", [0, 0]);
+    let player1 = p1;
+    let player2 = p2;
+
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
@@ -28,9 +30,19 @@ export function Message({
   let newMessage = "";
 
   //check for winner
-  if (whiteOut == 15 || blackOut == 15) {
-    winner1 = currentPlayer;
+  //set Scores
+  //We have a winner
+  let newScores = [...scores];
+  if (whiteOut == 15) {
+    newScores[0] = scores[0] + 1;
+    winner1 = player1;
   }
+  if (blackOut == 15) {
+    newScores[1] = scores[1] + 1;
+    winner1 = player2;
+  }
+
+
 
   if (winner1 != "") {
     return (
@@ -43,28 +55,35 @@ export function Message({
           <h2 className=" text-xl">
             <strong>{winner1}</strong> won this game!
           </h2>
-          <h2>SCORES</h2>
-          <h2>{player1 + ": " + scores[0] + "............." + player2 + ": " + scores[1]}</h2>
-          <div className="flex p-4 gap-4">
+          <h1>SCORES</h1>
+          <div className="flex w-full p-2 gap-4">
+            <strong className="w-1/2 bg-yellow-200 text-black rounded-md p-1">
+              {player1 + ": " + newScores[0]}
+            </strong>{" "}
+            <strong className="w-1/2 bg-yellow-200 text-black rounded-md p-1">
+              {player2 + ": " + newScores[1]}
+            </strong>{" "}
+          </div>
+          <div className="flex w-full p-4 gap-4">
             <button
               onClick={() => (
-                navigate("/Game", {
-                  state: {
-                    player1: player1,
-                    player2: player2,
-                    newScores: scores,
-                  },
-                }),
-                //reload page
+                localStorage.clear(),
+                localStorage.setItem("player1", JSON.stringify(player1)),
+                localStorage.setItem("player2", JSON.stringify(player2)),
+                localStorage.setItem("scores", JSON.stringify(newScores)),
                 window.location.reload()
               )}
-              className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+              className="w-1/2 bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               Continue
             </button>
             <button
-              onClick={() => (navigate("/users"), window.location.reload())}
-              className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => (
+                localStorage.clear(),
+                navigate("/users"),
+                window.location.reload()
+              )}
+              className="w-1/2 bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               New Players
             </button>
@@ -78,14 +97,13 @@ export function Message({
     } else {
       newMessage = " you have " + moveLeft + " moves left";
     }
-    if(oldPlayer !== currentPlayer){
-            setAnimation(true);
+    if (oldPlayer !== currentPlayer) {
+      setAnimation(true);
 
-            // Disable the animation after a delay
-            setTimeout(() => {
-              setAnimation(false);
-            }, 1000);
-
+      // Disable the animation after a delay
+      setTimeout(() => {
+        setAnimation(false);
+      }, 1000);
     }
 
     if (message != newMessage) {

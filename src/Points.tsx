@@ -96,6 +96,7 @@ function Point({
             : (d = ((checker * 6) / pointLength) * key),
           (
             <div
+              key={key}
               style={
                 drction == drcTop ? { top: d + "px" } : { bottom: d + "px" }
               }
@@ -103,7 +104,6 @@ function Point({
             >
               <Checker
                 disabled={checkerClr != allowedClr || !moveAllowed}
-                key={key}
                 parent={colName}
                 clr={checkerClr}
                 title={colName + "-ch-" + key}

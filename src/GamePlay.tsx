@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { Board } from "./Board";
 import Dice from "./Dice";
 import Players from "./Players";
 import { Message } from "./Message";
-import { useLocation } from "react-router-dom";
 import { Alert } from "./Alert";
+import { useLocalStorage } from "./useLocalStorage";
 //----------------------------------------------
 export type Color = "White" | "Black";
 export type Direction = "rtl" | "ltr";
@@ -15,23 +14,31 @@ export let PlayerNames = {
 };
 
 function GamePlay() {
-  const { state } = useLocation();
-  const { player1, player2, newScores} = state; // Read values passed on state
-
-  const [currentBoardState, setCurrentBoardState] =
-    useState<Color[][]>(initialState); //test
-  const [currentDiceRoll, setDiceRoll] = useState([0, 0] as TdiceRoll);
-  const [currentPlayer, setCurrentPlayer] = useState<string>(player1);
-  const [moveLeft, setMoveLeft] = useState<number>(0); //number of moves left
-  const [selectedColumn, setSelectedColumn] = useState(50);
-  const [whiteBar, setWhiteBar] = useState(0); //test
-  const [blackBar, setBlackBar] = useState(0);
-  const [whiteOut, setWhiteOut] = useState(0); //test
-  const [blackOut, setBlackOut] = useState(0); //test
-  const [alertMessage, setAlertMessage] = useState(""); //test
-  const [scores, setScores] = useState(newScores);
-
-
+  const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  const [scores, setScores] = useLocalStorage("scores", [0, 0]);
+  const [currentPlayer, setCurrentPlayer] = useLocalStorage(
+    "currentPlayer",
+    PlayerNames.white[0]
+  );
+  const [currentDiceRoll, setDiceRoll] = useLocalStorage(
+    "currentDiceRoll",
+    [0, 0] as TdiceRoll
+  ) ;
+  const [currentBoardState, setCurrentBoardState] = useLocalStorage(
+    "currentBoardState",
+    initialState
+  );
+  const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
+  const [selectedColumn, setSelectedColumn] = useLocalStorage(
+    "selectedColumn",
+    50
+  );
+  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
+  const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
+  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
+  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
+  const [alertMessage, setAlertMessage] = useLocalStorage("alertMessage", "");
   PlayerNames = {
     white: [player1],
     black: [player2],
@@ -45,7 +52,6 @@ function GamePlay() {
           moveLeft={moveLeft}
           whiteOut={whiteOut}
           blackOut={blackOut}
-          scores={scores}
         />
       </div>
       <Alert
@@ -62,7 +68,7 @@ function GamePlay() {
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}
           currentDiceRoll={currentDiceRoll}
-          onRoll={(roll) => setDiceRoll(roll)}
+          onRoll={(roll) => setDiceRoll(roll) as TdiceRoll}
           currentPlayer={currentPlayer}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           selectedColumn={selectedColumn}
@@ -78,8 +84,6 @@ function GamePlay() {
           blackOut={blackOut}
           onBlackOut={(counter) => setBlackOut(counter)}
           onAlert={(message) => setAlertMessage(message)}
-          scores={scores}
-          onScoresChange={(scores) => setScores(scores)}
         />
         <div className="absolute top-2">
           <Dice
@@ -183,9 +187,9 @@ let initialState2: Color[][] = [
   ["White", "White"],
   ["White", "White", "White"],
   ["White", "White"],
-  ["White", "White", "White", "White",],
+  ["White", "White", "White", "White"],
 ];
-let winnertest: Color[][] = [
+let winState: Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],
@@ -210,5 +214,5 @@ let winnertest: Color[][] = [
   ["White"],
   [],
   [],
-  ["White" ],
+  ["White"],
 ];

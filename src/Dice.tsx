@@ -22,7 +22,7 @@ interface DiceProps {
 }
 
 export default function Dice({
-  currentDiceRoll: newDiceRoll,
+  currentDiceRoll,
   onRoll,
   currentPlayer,
   onPlayerChange,
@@ -49,18 +49,18 @@ export default function Dice({
     if (disabled) {
       return;
     }
-    newDiceRoll = [
+    currentDiceRoll = [
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // newDiceRoll = [1, 1]; //test
-    onRoll(newDiceRoll);
+    // currentDiceRoll = [1, 1]; //test
+    onRoll(currentDiceRoll);
     setRemainingTime(2500); //reset animation time
     //play a sound
     audio.play();
 
     let newMoveLeft = 2;
-    if (newDiceRoll[0] === newDiceRoll[1]) {
+    if (currentDiceRoll[0] === currentDiceRoll[1]) {
       //if the dice roll is a double, the player can move twice
       newMoveLeft = 4;
     }
@@ -68,7 +68,7 @@ export default function Dice({
     let moveAllowed = anyMoveAvailable(
       currentBoardState,
       currentPlayer,
-      newDiceRoll,
+      currentDiceRoll,
       whiteBar,
       blackBar
     );
@@ -77,7 +77,7 @@ export default function Dice({
       onAlert(
         currentPlayer +
         " has no possible moves with a roll of " +
-           newDiceRoll 
+           currentDiceRoll 
       );
       //change player
       onRoll([0, 0]);
@@ -97,8 +97,8 @@ export default function Dice({
         ></div>
         <div onClick={handleClick} className="hover:cursor-pointer">
           <Dice3Dv4
-            roll1={newDiceRoll[0]}
-            roll2={newDiceRoll[1]}
+            roll1={currentDiceRoll[0]}
+            roll2={currentDiceRoll[1]}
             rotate={true}
             remainingTime={remainingTime}
             onRemainingTime={setRemainingTime}
