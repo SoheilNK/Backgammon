@@ -19,7 +19,7 @@ function GamePlay() {
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
   const [currentPlayer, setCurrentPlayer] = useLocalStorage(
     "currentPlayer",
-    PlayerNames.white[0]
+    player1
   );
   const [currentDiceRoll, setDiceRoll] = useLocalStorage(
     "currentDiceRoll",
