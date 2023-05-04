@@ -5,7 +5,7 @@ import { Message } from "./Message";
 import { Alert } from "./Alert";
 import { useLocalStorage } from "./useLocalStorage";
 //----------------------------------------------
-export type Color = "White" | "Black";
+export type Color = "White" | "Black" | null;
 export type Direction = "rtl" | "ltr";
 export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
 export let PlayerNames = {
