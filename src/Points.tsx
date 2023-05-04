@@ -17,7 +17,7 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
     id: title,
     disabled: disabled,
     data: {
-      title,
+      clr,
       parent,
     },
   });

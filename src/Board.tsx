@@ -1,11 +1,12 @@
 import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import { anyMoveAvailable, setAllowedColumns, togglePlayer } from "./gameRules";
-import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import { DragEndEvent, DragOverlay, DragStartEvent } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { Quadrant } from "./Points";
+import { Checker, Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "./useLocalStorage";
+import { useState } from "react";
 let audio = new Audio("checkerMove.mp3");
 
 type BoardProps = {
@@ -51,7 +52,9 @@ export function Board({
   onAlert,
 }: BoardProps) {
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
+  const [activeClr, setActiveClr] = useState('white' as Color);
 
+  
   let allowedColumns: number[] = [];
   let allowedChecker: string;
   if (PlayerNames.white[0] == currentPlayer) {
@@ -70,6 +73,8 @@ export function Board({
 
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
+    setActiveClr(e.active.data.current?.clr ?? "White");
+
     let currentPoint = 0;
 
     if (parent == "Bar") {
@@ -87,6 +92,7 @@ export function Board({
   }
 
   function handleDragEnd(e: DragEndEvent) {
+    setActiveClr(null);
     let newPlayer: string;
     if (!e.over) return;
     const target = e.over.id as string;
@@ -356,6 +362,11 @@ export function Board({
         currentPlayer={currentPlayer}
         allowedColumns={allowedColumns}
       />
+      <DragOverlay>
+        {activeClr ? (
+          <Checker title={""} clr={`${activeClr}`} parent={""} disabled={false} />
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }
