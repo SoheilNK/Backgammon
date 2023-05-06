@@ -37,16 +37,17 @@ export default function Players({
 
   return (
     <div className="players justify-centerr">
-      <div
-        className={
-          player1Active ? "w-4/5 " : "" 
-        }
-      >
+      <div className={player1Active ? "w-4/5 " : ""}>
         <div className={player1Class + " float-right w-3/4"}>
           {/* <div className={" w-3/4 m-auto " + player1Class}> */}
 
           <div className="w-1/3 p-1">
-            <Checker title={""} clr={"White"} parent={""} disabled={false} />
+            <Checker
+              title={"player1"}
+              clr={"White"}
+              parent={""}
+              disabled={false}
+            />
           </div>
           <div className="w-1/3 truncate">
             <span>
@@ -59,10 +60,15 @@ export default function Players({
           </div>
         </div>
       </div>
-      <div className={player2Active ? "w-4/5 ": ""}>
+      <div className={player2Active ? "w-4/5 " : ""}>
         <div className={player2Class + " w-3/4 "}>
           <div className="w-1/3 p-1">
-            <Checker title={""} clr={"Black"} parent={""} disabled={false} />
+            <Checker
+              title={"player1"}
+              clr={"Black"}
+              parent={""}
+              disabled={false}
+            />
           </div>
           <div className="w-1/3 truncate ">
             <span>

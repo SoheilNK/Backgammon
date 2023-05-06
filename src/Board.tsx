@@ -7,7 +7,7 @@ import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "./useLocalStorage";
 import { useState } from "react";
-let audio = new Audio("checkerMove.mp3");
+let audioMove = new Audio("checkerMove.mp3");
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -52,11 +52,12 @@ export function Board({
   onAlert,
 }: BoardProps) {
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
-  const [activeClr, setActiveClr] = useState('white' as Color);
+  // const [activeClr, setActiveClr] = useState('white' as Color);
+  const [activeId, setActiveId] = useState("");
 
   
   let allowedColumns: number[] = [];
-  let allowedChecker: string;
+  let allowedChecker: Color;
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
   } else {
@@ -73,7 +74,7 @@ export function Board({
 
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
-    setActiveClr(e.active.data.current?.clr ?? "White");
+    setActiveId(e.active.data.current?.title);
 
     let currentPoint = 0;
 
@@ -92,7 +93,7 @@ export function Board({
   }
 
   function handleDragEnd(e: DragEndEvent) {
-    setActiveClr(null);
+    setActiveId("");
     let newPlayer: string;
     if (!e.over) return;
     const target = e.over.id as string;
@@ -282,7 +283,7 @@ export function Board({
 
     if (checkerMoved) {
       //play a sound
-      audio.play();
+      audioMove.play();
     }
 
     return;
@@ -362,9 +363,20 @@ export function Board({
         currentPlayer={currentPlayer}
         allowedColumns={allowedColumns}
       />
-      <DragOverlay>
+      {/* <DragOverlay>
         {activeClr ? (
           <Checker title={""} clr={`${activeClr}`} parent={""} disabled={false} />
+        ) : null}
+      </DragOverlay> */}
+
+      <DragOverlay>
+        {activeId ? (
+          <Checker
+            title={"${activeId}"}
+            clr={allowedChecker}
+            parent={""}
+            disabled={false}
+          />
         ) : null}
       </DragOverlay>
     </DndContext>

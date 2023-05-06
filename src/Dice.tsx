@@ -3,7 +3,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";
 import Dice3Dv4 from "./Dice3Dv4";
-let audio = new Audio("diceRoll3.mp3");
+let audioDice = new Audio("diceRoll3.mp3");
 
 
 interface DiceProps {
@@ -57,7 +57,7 @@ export default function Dice({
     onRoll(currentDiceRoll);
     setRemainingTime(2500); //reset animation time
     //play a sound
-    audio.play();
+    audioDice.play();
 
     let newMoveLeft = 2;
     if (currentDiceRoll[0] === currentDiceRoll[1]) {

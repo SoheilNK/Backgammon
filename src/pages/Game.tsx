@@ -4,7 +4,7 @@ import { Footer } from "../Footer";
 import { useLocalStorage } from "../useLocalStorage";
 
 export function Game() {
-    const [started, setStarted] = useLocalStorage("started", "yes");
+    // const [started, setStarted] = useLocalStorage("started", "yes");
 
     
 

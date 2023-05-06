@@ -100,7 +100,18 @@ export const Intro = () => {
           <button
             disabled={!player1 || !player2}
             className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
-            onClick={ () => { navigate("/Game")}  }
+            onClick={() => {
+              var p1 = player1;
+              var p2 = player2;
+              localStorage.clear();
+
+              localStorage.setItem("player1", JSON.stringify(p1));
+              localStorage.setItem("player2", JSON.stringify(p2));
+
+              localStorage.setItem("started", JSON.stringify("yes"));
+
+              navigate("/Game");
+            }}
           >
             Start the Game!
           </button>
