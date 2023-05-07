@@ -34,8 +34,8 @@ function GamePlay() {
     "selectedColumn",
     50
   );
-  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar",2);
-  const [blackBar, setBlackBar] = useLocalStorage("blackBar", 1);
+  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar",0);
+  const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
   const [alertMessage, setAlertMessage] = useLocalStorage("alertMessage", "");

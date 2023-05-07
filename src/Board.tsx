@@ -7,7 +7,10 @@ import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "./useLocalStorage";
 import { useState } from "react";
-let audioMove = new Audio("checkerMove.mp3");
+import { restrictToWindowEdges, snapCenterToCursor } from "@dnd-kit/modifiers";
+// import { adjustScale } from "@dnd-kit/modifiers";
+
+const audioMove = new Audio("checkerMove.mp3");
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -77,6 +80,11 @@ export function Board({
     setActiveId(e.active.data.current?.title);
 
     let currentPoint = 0;
+
+    // if (parent !== "Bar" && (allowedChecker == 'White' ? whiteBar > 0 : blackBar > 0)) {
+    //   onAlert("You can't move from the board while you have checkers out");
+    //   return;
+    // }
 
     if (parent == "Bar") {
       console.log("drag from bar");
@@ -370,10 +378,11 @@ export function Board({
         ) : null}
       </DragOverlay> */}
 
-      <DragOverlay>
+      <DragOverlay modifiers={[restrictToWindowEdges]}>
         {activeId ? (
+          //select the checker with the active id
           <Checker
-            title={"${activeId}"}
+            title={activeId}
             clr={allowedChecker}
             parent={""}
             disabled={false}

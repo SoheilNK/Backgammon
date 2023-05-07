@@ -3,7 +3,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";
 import Dice3Dv4 from "./Dice3Dv4";
-let audioDice = new Audio("diceRoll3.mp3");
+const audioDice = new Audio("diceRoll3.mp3");
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
