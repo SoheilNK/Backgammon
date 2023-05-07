@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Color, TdiceRoll, PlayerNames } from "./GamePlay";
+import { useLocalStorage } from "./useLocalStorage";
 
 //define a function to return a boolean value if any move is available or not
 export function anyMoveAvailable(
@@ -24,7 +25,6 @@ export function anyMoveAvailable(
   let target2;
   let target2Length;
   let target2Color;
-
 
   if (PlayerNames.white[0] == currentPlayer) {
     allowedChecker = "White";
@@ -227,7 +227,7 @@ export function setAllowedColumns(
   currentDiceRoll: TdiceRoll,
   currentPlayer: string,
   selectedColumn: number,
-  moveLeft: number,
+  moveLeft: number
 ) {
   let allowedColumns: number[] = [];
   let allowedChecker: string;
@@ -412,5 +412,5 @@ export function togglePlayer(
     newPlayer = PlayerNames.white[0];
   }
   onPlayerChange(newPlayer);
-  return;
+  return newPlayer;
 }

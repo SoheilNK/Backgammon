@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
@@ -17,8 +17,8 @@ export function Message({
   const [p1, setPlayer1] = useLocalStorage("player1", "");
   const [p2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
-    let player1 = p1;
-    let player2 = p2;
+  let player1 = p1;
+  let player2 = p2;
 
   const navigate = useNavigate();
 
@@ -42,7 +42,16 @@ export function Message({
     winner1 = player2;
   }
 
+  useEffect(() => {
+    if (moveLeft === 0) {
+      setAnimation(true);
 
+      // Disable the animation after a delay
+      setTimeout(() => {
+        setAnimation(false);
+      }, 1000);
+    }
+  }, [moveLeft]);
 
   if (winner1 != "") {
     return (
@@ -96,14 +105,6 @@ export function Message({
       newMessage = " roll the dice";
     } else {
       newMessage = " you have " + moveLeft + " moves left";
-    }
-    if (oldPlayer !== currentPlayer) {
-      setAnimation(true);
-
-      // Disable the animation after a delay
-      setTimeout(() => {
-        setAnimation(false);
-      }, 1000);
     }
 
     if (message != newMessage) {

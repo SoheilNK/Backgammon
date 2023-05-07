@@ -259,6 +259,7 @@ export function Board({
       //change player
       togglePlayer(currentPlayer, onPlayerChange);
     }
+    
     //set Scores
     //We have a winner
     let newScores = [...scores];

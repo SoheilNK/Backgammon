@@ -1,10 +1,9 @@
-import { Color,  TdiceRoll } from "./GamePlay";
+import { Color, TdiceRoll } from "./GamePlay";
 import { useState } from "react";
 import classNames from "classnames";
 import { anyMoveAvailable, togglePlayer } from "./gameRules";
 import Dice3Dv4 from "./Dice3Dv4";
 let audioDice = new Audio("diceRoll3.mp3");
-
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
@@ -36,14 +35,13 @@ export default function Dice({
   onAlert,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
-  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
 
+  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
+  // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
     "opacity-5": disabled,
     "opacity-100": !disabled,
   });
-
-   
 
   function handleClick() {
     if (disabled) {
@@ -53,7 +51,7 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // currentDiceRoll = [1, 1]; //test
+    // currentDiceRoll = [6, 6]; //test
     onRoll(currentDiceRoll);
     setRemainingTime(2500); //reset animation time
     //play a sound
@@ -76,13 +74,13 @@ export default function Dice({
     if (!moveAllowed[0] && !moveAllowed[1]) {
       onAlert(
         currentPlayer +
-        " has no possible moves with a roll of " +
-           currentDiceRoll 
+          " has no possible moves with a roll of " +
+          currentDiceRoll
       );
       //change player
-      onRoll([0, 0]);
-      onMoveLeft(0);
       togglePlayer(currentPlayer, onPlayerChange);
+      onMoveLeft(0);
+      onRoll([0, 0]);
     }
   }
 
@@ -109,7 +107,9 @@ export default function Dice({
         className=" text-center w-full text-white hover:cursor-pointer"
         onClick={handleClick}
       >
-        <strong className={glowDice + " text-xs sm:text-base"}>&uarr; Click Me &uarr;</strong>
+        <strong className={glowDice + " text-xs sm:text-base"}>
+          &uarr; Click Me &uarr;
+        </strong>
       </span>
     </div>
   );
