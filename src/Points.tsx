@@ -5,6 +5,10 @@ import classNames from "classnames";
 import { Color, Direction, PlayerNames } from "./GamePlay";
 
 let imgUrl = "";
+let r = document.querySelector(":root") as HTMLElement;
+let rs = getComputedStyle(r);
+let checkerSize = parseInt(rs.getPropertyValue("--checkerSize"));
+let space = checkerSize * (checkerSize >= 2 ? 18 : 24); //convert rem to px
 
 interface CheckerProps {
   title: string;
@@ -22,10 +26,12 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
       parent,
     },
   });
+
+
   const style = {
     transform: CSS.Translate.toString(transform),
     touchAction: "none", //to prevent scroll on touch screens
-  };
+  };  
 
   if (clr == "White") {
     imgUrl = "Checker_W.png";
@@ -79,10 +85,6 @@ function Point({
   }
 
   let d = 0;
-  var r = document.querySelector(":root") as HTMLElement;
-  var rs = getComputedStyle(r);
-  var checkerSize = parseInt(rs.getPropertyValue("--checkerSize"));
-  var space = checkerSize * (checkerSize >= 2 ? 18 : 24); //convert rem to px
   let pointLength = items.length;
   let drcTop = "ltr" as Direction;
   return (

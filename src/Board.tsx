@@ -10,7 +10,7 @@ import { useState } from "react";
 import { restrictToWindowEdges, snapCenterToCursor } from "@dnd-kit/modifiers";
 // import { adjustScale } from "@dnd-kit/modifiers";
 
-const audioMove = new Audio("checkerMove.mp3");
+
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -55,8 +55,6 @@ export function Board({
   onAlert,
 }: BoardProps) {
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
-  // const [activeClr, setActiveClr] = useState('white' as Color);
-  const [activeId, setActiveId] = useState("");
 
   
   let allowedColumns: number[] = [];
@@ -77,7 +75,6 @@ export function Board({
 
   function handelDragStart(e: DragStartEvent) {
     const parent: string = e.active.data.current?.parent ?? "";
-    setActiveId(e.active.data.current?.title);
 
     let currentPoint = 0;
 
@@ -100,10 +97,10 @@ export function Board({
     onColumnSelect(currentPoint);
   }
 
+  const audioMove = new Audio("checkerMove.mp3");
   function handleDragEnd(e: DragEndEvent) {
-    setActiveId("");
-    let newPlayer: string;
     if (!e.over) return;
+    let newPlayer: string;
     const target = e.over.id as string;
     if (typeof e.over.id !== "string") throw new Error("id is not string");
     if (typeof e.over.id !== "string") throw new Error("id is not string");
@@ -122,7 +119,7 @@ export function Board({
     let newWhiteOut = whiteOut;
     let newBlackOut = blackOut;
     let moveOut = false;
-    let checkerMoved = false; //to check if a checker is moved or not to play the sound
+    var checkerMoved = false; //to check if a checker is moved or not to play the sound
 
     //check if checker is from bar or not to determine old color
     if (parent == "Bar") {
@@ -372,23 +369,6 @@ export function Board({
         currentPlayer={currentPlayer}
         allowedColumns={allowedColumns}
       />
-      {/* <DragOverlay>
-        {activeClr ? (
-          <Checker title={""} clr={`${activeClr}`} parent={""} disabled={false} />
-        ) : null}
-      </DragOverlay> */}
-
-      <DragOverlay modifiers={[restrictToWindowEdges]}>
-        {activeId ? (
-          //select the checker with the active id
-          <Checker
-            title={activeId}
-            clr={allowedChecker}
-            parent={""}
-            disabled={false}
-          />
-        ) : null}
-      </DragOverlay>
     </DndContext>
   );
 }

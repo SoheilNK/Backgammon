@@ -27,7 +27,7 @@ export default function Out({
   let d = 0;
   var r = document.querySelector(":root") as HTMLElement;
   var rs = getComputedStyle(r);
-  var checker = parseInt(rs.getPropertyValue("--checkerSize")) * 18; //convert rem to px
+  var checkerSize = parseInt(rs.getPropertyValue("--checkerSize")) * 18; //convert rem to px
   // r.style.setProperty("--fontSize", "40px");
   
 
@@ -40,8 +40,8 @@ export default function Out({
               Array.from(Array(whiteOut).keys()).map(
                 (i) => (
                   whiteOut <= 6
-                    ? (d = checker * i)
-                    : (d = ((checker * 6) / whiteOut) * i),
+                    ? (d = checkerSize * i)
+                    : (d = ((checkerSize * 6) / whiteOut) * i),
                   (
                     <div
                       key={"wihtOut_" + i}
@@ -71,8 +71,8 @@ export default function Out({
               Array.from(Array(blackOut).keys()).map(
                 (i) => (
                   blackOut <= 6
-                    ? (d = checker * i)
-                    : (d = ((checker * 6) / blackOut) * i),
+                    ? (d = checkerSize * i)
+                    : (d = ((checkerSize * 6) / blackOut) * i),
                   (
                     <div
                       key={"blackOut_" + i}
