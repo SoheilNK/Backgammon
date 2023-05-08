@@ -68,7 +68,7 @@ export const Intro = () => {
               htmlFor="player1"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Player1 Name
+              Player1 (White)
             </label>
             <input
               type="text"
@@ -86,7 +86,7 @@ export const Intro = () => {
               htmlFor="Player2"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Player2 Name
+              Player2 (Brown)
             </label>
             <input
               type="text"
