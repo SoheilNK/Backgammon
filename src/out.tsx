@@ -2,7 +2,6 @@ import { useDroppable } from "@dnd-kit/core";
 
 import { Checker } from "./Points";
 import classNames from "classnames";
-import { styled } from "@chakra-ui/react";
 
 interface OutProps {
   whiteOut: number;
