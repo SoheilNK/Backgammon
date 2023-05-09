@@ -19,7 +19,7 @@ export function Alert({ alertMessage, onAlert }: AlertProps) {
           </div>
           <button
             onClick={() => onAlert("")}
-            className="bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
+            className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
           >
             ok
           </button>

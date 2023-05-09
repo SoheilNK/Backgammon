@@ -45,11 +45,6 @@ function GamePlay() {
 
   return (
     <div className="flex flex-col items-center">
-      <Alert
-        alertMessage={alertMessage}
-        onAlert={(message) => setAlertMessage(message)}
-      />
-
       <div className="  players relative flex flex-col gap-1">
         <Message
           currentPlayer={currentPlayer}
@@ -64,6 +59,10 @@ function GamePlay() {
         />
       </div>
       <div className=" relative flex flex-col items-center mb-4">
+        <Alert
+          alertMessage={alertMessage}
+          onAlert={(message) => setAlertMessage(message)}
+        />
         <Board
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}

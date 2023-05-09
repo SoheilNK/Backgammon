@@ -30,7 +30,7 @@ export const Intro = () => {
           <div className="flex p-4 gap-4">
             <button
               onClick={() => navigate("/Game")}
-              className="w-1/2 bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+              className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               Keep Playing
             </button>
@@ -40,7 +40,7 @@ export const Intro = () => {
                 window.location.reload(),
                 localStorage.clear()
               )}
-              className="w-1/2 bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+              className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               Start a New Game
             </button>
@@ -99,7 +99,7 @@ export const Intro = () => {
           </div>
           <button
             disabled={!player1 || !player2}
-            className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
+            className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
             onClick={() => {
               var p1 = player1;
               var p2 = player2;

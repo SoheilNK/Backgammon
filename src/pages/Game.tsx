@@ -4,13 +4,8 @@ import { ErrorBoundary } from "react-error-boundary";
 import GamePlay from "../GamePlay";
 import Navbar from "../Navbar";
 import { Footer } from "../Footer";
-import { useLocalStorage } from "../useLocalStorage";
-import {Alert} from "../Alert";
 
 export function Game() {
-    // const [started, setStarted] = useLocalStorage("started", "yes");
-  // const [alertMessage, setAlertMessage] = useLocalStorage("alertMessage", "");
-    
 
   return (
     <div className="  w-screen bg-slate-100">

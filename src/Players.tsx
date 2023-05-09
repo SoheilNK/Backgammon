@@ -63,7 +63,7 @@ export default function Players({
               }
             >
               <span className=" underline underline-offset-auto">Score</span>
-              <span className=" ">{scores[1]}</span>
+              <span className=" ">{scores[0]}</span>
             </div>
           </div>
         </div>

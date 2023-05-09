@@ -55,7 +55,7 @@ export function Message({
 
   if (winner1 != "") {
     return (
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-20">
         <div
           style={{ backgroundColor: "#8E8268" }}
           className=" flex-col  text-lg px-8  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center "
@@ -82,7 +82,7 @@ export function Message({
                 localStorage.setItem("scores", JSON.stringify(newScores)),
                 window.location.reload()
               )}
-              className="w-1/2 bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+              className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               Continue
             </button>
@@ -92,7 +92,7 @@ export function Message({
                 navigate("/users"),
                 window.location.reload()
               )}
-              className="w-1/2 bg-blue-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+              className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               New Players
             </button>
@@ -102,9 +102,9 @@ export function Message({
     );
   } else {
     if (moveLeft === 0) {
-      newMessage = " roll the dice";
+      newMessage = "Roll the Dice!";
     } else {
-      newMessage = " you have " + moveLeft + " moves left";
+      newMessage = "You have " + moveLeft + " moves left.";
     }
 
     if (message != newMessage) {
@@ -122,9 +122,9 @@ export function Message({
           }
         >
           <div className="p-1 ">
-            <strong className=" truncate bg-yellow-200 text-black rounded-md p-1">
+            {/* <strong className=" truncate bg-yellow-200 text-black rounded-md p-1">
               {currentPlayer}
-            </strong>
+            </strong> */}
             {newMessage}
           </div>
         </div>

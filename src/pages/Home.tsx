@@ -25,7 +25,7 @@ export function Home() {
           <div className="sm:w-3/4 bg-white relative  rounded-md text-center p-8 m-auto dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
             <Link
               to="/users"
-              className="bg-blue-500 hover:bg-blue-800 text-white  font-bold py-2 px-4 rounded disabled:bg-blue-200"
+              className="bg-blue-900 hover:bg-sky-700 text-white  font-bold py-2 px-4 rounded disabled:bg-blue-200"
             >
               Alright, let's get this party started!{" "}
             </Link>
