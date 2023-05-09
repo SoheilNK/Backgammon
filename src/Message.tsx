@@ -113,18 +113,18 @@ export function Message({
     }
 
     return (
-      <div id="message" className=" container flex ">
+      <div id="message" className=" text-xs sm:text-base w-3/4  m-auto">
         <div
           style={{ backgroundColor: "#8E8268" }}
           className={
-            " scale-90 sm:scale-125  text-white py-1 px-8 max-w-sm mx-auto rounded-xl shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center " +
+            " scale-90  text-white py-1 px-2 mx-2 rounded-xl shadow-lg sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-1 text-center " +
             (animation ? " animate-spin" : "")
           }
         >
-          <div className="m-1">
-            <strong className=" bg-yellow-200 text-black rounded-md p-1">
+          <div className="p-1 ">
+            <strong className=" truncate bg-yellow-200 text-black rounded-md p-1">
               {currentPlayer}
-            </strong>{" "}
+            </strong>
             {newMessage}
           </div>
         </div>

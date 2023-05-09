@@ -46,7 +46,7 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className="checker z-auto"
+      className="checker m-auto z-auto"
       src={imgUrl}
     />
   );

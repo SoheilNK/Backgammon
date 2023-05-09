@@ -54,44 +54,33 @@
 .Travel-5-rgba { color: rgba(242, 223, 201, 1); } */
 
 .players {
-  display: flex;
-  flex-direction: row;
-  /* justify-content: center; */
-  align-items: center;
   width: calc(var(--checkerSize) * 14);
-  height: calc(var(--checkerSize) * 1.5);
-  /* margin: 4px; */
-  padding: 0;
-  list-style: none;
+  height: calc(var(--checkerSize) * 3);
   font-size: calc(var(--checkerSize) * 00.4);
-  /* color: var(--color1); */
-  text-align: center;
 }
 
-.player1 {
+.player {
   color: rgb(31 41 55);
   background-color: #86b3d1;
-  line-height: calc(var(--checkerSize) * 0.75);
-  min-width: calc(var(--checkerSize) * 3.5);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-items: center;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
-  transition: all 0.5s ease-in-out;
-}
-
-.player2 {
-  background-color: var(--blackChecker);
-  color: var(--whiteChecker);
-  line-height: calc(var(--checkerSize) * 0.75);
-  margin: calc(var(--checkerSize) / 5);
+  /* line-height: calc(var(--checkerSize) * 1.75); */
+  /* min-width: calc(var(--checkerSize) * 3); */
+  /* max-width: 100%; */
   display: flex;
   flex-direction: column;
+  /* align-items: center; */
+  /* justify-items: center; */
   border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
-  transition: all 0.5s ease-in-out;
+  transition: all 1s ease-in-out;
+}
+
+.playerActive {
+  color: rgb(255 255 255);
+  background-color: #474853;
+  /* scale: 1.3; */
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.5);
+  transition: all 1s ease-in-out;
 }
 
 .card {

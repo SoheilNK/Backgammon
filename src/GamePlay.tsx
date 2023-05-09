@@ -21,10 +21,9 @@ function GamePlay() {
     "currentPlayer",
     player1
   );
-  const [currentDiceRoll, setDiceRoll] = useLocalStorage(
-    "currentDiceRoll",
-    [0, 0] as TdiceRoll
-  ) ;
+  const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
+    0, 0,
+  ] as TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
     "currentBoardState",
     initialState
@@ -34,7 +33,7 @@ function GamePlay() {
     "selectedColumn",
     50
   );
-  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar",0);
+  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
@@ -46,23 +45,24 @@ function GamePlay() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className=" mx-auto p-4">
+      <Alert
+        alertMessage={alertMessage}
+        onAlert={(message) => setAlertMessage(message)}
+      />
+
+      <div className="  players relative flex flex-col gap-1">
         <Message
           currentPlayer={currentPlayer}
           moveLeft={moveLeft}
           whiteOut={whiteOut}
           blackOut={blackOut}
         />
+        <Players
+          currentPlayer={currentPlayer}
+          anyMoveAvailable={true}
+          scores={scores}
+        />
       </div>
-      <Alert
-        alertMessage={alertMessage}
-        onAlert={(message) => setAlertMessage(message)}
-      />
-      <Players
-        currentPlayer={currentPlayer}
-        anyMoveAvailable={true}
-        scores={scores}
-      />
       <div className=" relative flex flex-col items-center mb-4">
         <Board
           currentBoardState={currentBoardState}
