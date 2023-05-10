@@ -6,11 +6,9 @@ import { Checker, Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "./useLocalStorage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { restrictToWindowEdges, snapCenterToCursor } from "@dnd-kit/modifiers";
 // import { adjustScale } from "@dnd-kit/modifiers";
-
-
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -31,7 +29,8 @@ type BoardProps = {
   onWhiteOut: (counter: number) => void;
   blackOut: number;
   onBlackOut: (counter: number) => void;
-  onAlert: (message: string) => void;
+  alertSeen: boolean;
+  onAlertSeen: (seen: boolean) => void;
 };
 export function Board({
   currentBoardState,
@@ -52,11 +51,11 @@ export function Board({
   onWhiteOut,
   blackOut,
   onBlackOut,
-  onAlert,
+  alertSeen,
+  onAlertSeen
 }: BoardProps) {
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
 
-  
   let allowedColumns: number[] = [];
   let allowedChecker: Color;
   if (PlayerNames.white[0] == currentPlayer) {
@@ -247,24 +246,6 @@ export function Board({
       newDiceRoll[1] = 0;
     }
 
-    //******************check if any move is available */
-    let moveAllowed = anyMoveAvailable(
-      newBoardState,
-      currentPlayer,
-      newDiceRoll,
-      newWhiteBar,
-      newBlackBar
-    );
-    if (!moveAllowed[0] && !moveAllowed[1] && newMoveLeft !== 0) {
-      newMoveLeft = 0;
-      onAlert("No move available");
-    }
-
-    if (newMoveLeft == 0 && newWhiteOut !== 15 && newBlackOut !== 15) {
-      //change player
-      togglePlayer(currentPlayer, onPlayerChange);
-    }
-    
     //set Scores
     //We have a winner
     let newScores = [...scores];
@@ -278,6 +259,7 @@ export function Board({
     }
 
     //update states
+
     currentDiceRoll = [...newDiceRoll];
     currentBoardState = [...newBoardState];
     onRoll(currentDiceRoll);
@@ -292,7 +274,7 @@ export function Board({
       audioMove.play();
     }
 
-    return;
+    // return;
   }
 
   let moveAllowed = anyMoveAvailable(
@@ -302,6 +284,7 @@ export function Board({
     whiteBar,
     blackBar
   );
+
 
   return (
     <DndContext

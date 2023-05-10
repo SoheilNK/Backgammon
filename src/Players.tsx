@@ -1,21 +1,50 @@
-import { PlayerNames } from "./GamePlay";
+import { useEffect } from "react";
+import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import { Checker } from "./Points";
+import { anyMoveAvailable as moveAvailable, setAllowedColumns, togglePlayer } from "./gameRules";
+
 
 //define a players component
 interface PlayersProps {
   currentPlayer: string;
   anyMoveAvailable: boolean;
   scores: number[];
+  currentBoardState: Color[][];
+  currentDiceRoll: TdiceRoll;
+  whiteBar: number;
+  blackBar: number;
+  moveLeft: number;
+  whiteOut: number;
+  blackOut: number;
+  alertSeen: boolean;
+  onAlertSeen: (seen: boolean) => void;
+  onPlayerChange: (player: string) => void;
+  onMoveLeft: (moves: number) => void;
+  onRoll: (roll: TdiceRoll) => void;
 }
 export default function Players({
   currentPlayer,
   anyMoveAvailable,
   scores,
+  currentBoardState,
+  currentDiceRoll,
+  whiteBar,
+  blackBar,
+  moveLeft,
+  whiteOut,
+  blackOut,
+  alertSeen,
+  onAlertSeen,
+  onPlayerChange,  
+  onMoveLeft,
+  onRoll,
 }: PlayersProps): JSX.Element {
   //extract the player names from the PlayerNames object
   const player1 = PlayerNames.white[0];
   let player1Active = false;
   let player2Active = false;
+
+ 
 
   //change the background color of the player who is playing
   if (currentPlayer === player1 && anyMoveAvailable) {
@@ -35,7 +64,7 @@ export default function Players({
             className={
               player1Active
                 ? "playerActive flex "
-                : "player absolute h-fit w-1/6 top-2 left-0 p-1 "
+                : "player absolute w-1/6 top-1 left-0 p-1 "
             }
           >
             <div className={player1Active ? "w-1/4 p-1" : " h-1/3 "}>
@@ -76,7 +105,7 @@ export default function Players({
             className={
               player2Active
                 ? "playerActive flex "
-                : "player absolute h-fit w-1/6 top-2 right-0 p-1 "
+                : "player absolute  w-1/6 top-1 right-0 p-1 "
             }
           >
             <div className={player2Active ? "w-1/4 p-1" : " h-1/3 "}>
@@ -113,28 +142,4 @@ export default function Players({
   );
 }
 
-{
-  /* <div className={player2Active ? "w-4/5 " : ""}>
-          <div className={" w-3/4 "}>
-            <div className="w-1/3 p-1">
-              <Checker
-                title={"player1"}
-                clr={"Black"}
-                parent={""}
-                disabled={false}
-              />
-            </div>
-            <div className="w-1/3 truncate ">
-              <span>
-                <strong>{PlayerNames.black[0]}</strong>
-              </span>
-            </div>
-            <div className="w-1/3 flex flex-col font-serif sm:text-xs leading-none m-auto">
-              <span className=" underline underline-offset-auto">Score</span>
-              <span className=" ">{scores[1]}</span>
-            </div>
-          </div> */
-}
-//         </div>
-//   );
-// }
+

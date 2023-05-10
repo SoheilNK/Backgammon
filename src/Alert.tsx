@@ -1,9 +1,63 @@
+import { Color, TdiceRoll } from "./GamePlay";
+import { anyMoveAvailable } from "./gameRules";
+
 interface AlertProps {
-  alertMessage: string;
-  onAlert: (alertMessage: string) => void;
+  alertSeen: boolean;
+  onAlertSeen: (seen: boolean) => void;
+  currentBoardState: Color[][];
+  currentPlayer: string;
+  currentDiceRoll: TdiceRoll;
+  whiteBar: number;
+  blackBar: number;
+  rollTime: number;
+  moveLeft: number;
+  whiteOut: number;
+  blackOut: number;
+  onMoveLeft: (moves: number) => void;
 }
-export function Alert({ alertMessage, onAlert }: AlertProps) {
+export function Alert({
+  alertSeen,
+  onAlertSeen,
+  currentBoardState,
+  currentPlayer,
+  currentDiceRoll,
+  whiteBar,
+  blackBar,
+  moveLeft,
+  whiteOut,
+  blackOut,
+  onMoveLeft,
+}: AlertProps) {
+  let alertMessage: string = "";
+  let moveAllowed: boolean[] = [true, true];
+
+  
+    //******************check if any move is available */
+    moveAllowed = anyMoveAvailable(
+      currentBoardState,
+      currentPlayer,
+      currentDiceRoll,
+      whiteBar,
+      blackBar
+    );
+
+  if ((!moveAllowed[0] && !moveAllowed[1] && moveLeft !== 0) ||
+  (moveLeft == 0 && whiteOut !== 15 && blackOut !== 15 && (currentDiceRoll[0] != 0 || currentDiceRoll[1] != 0)))
+  
+  {
+      alertSeen = false;
+      // onAlertSeen(false)
+
+      alertMessage =
+        currentPlayer +
+        " has no possible moves with a roll of " +
+        currentDiceRoll;
+    }
+ 
+
   if (alertMessage === "") {
+    alertSeen = true;
+    // onAlertSeen(true);
     return null;
   } else {
     return (
@@ -18,7 +72,10 @@ export function Alert({ alertMessage, onAlert }: AlertProps) {
             </strong>{" "}
           </div>
           <button
-            onClick={() => onAlert("")}
+            onClick={() => {
+              onAlertSeen(true);
+              onMoveLeft(0);
+            }}
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
           >
             ok

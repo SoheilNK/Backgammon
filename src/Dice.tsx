@@ -1,41 +1,32 @@
-import { Color, TdiceRoll } from "./GamePlay";
 import { useState } from "react";
 import classNames from "classnames";
-import { anyMoveAvailable, togglePlayer } from "./gameRules";
 import Dice3Dv4 from "./Dice3Dv4";
+import { TdiceRoll } from "./GamePlay";
 const audioDice = new Audio("diceRoll3.mp3");
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
   onRoll: (roll: TdiceRoll) => void;
-  currentPlayer: string;
   moveLeft: number;
   onMoveLeft: (allowed: number) => void;
-  currentBoardState: Color[][];
   onPlayerChange: (player: string) => void;
-  whiteBar: number;
-  blackBar: number;
   whiteOut: number;
   blackOut: number;
-  onAlert: (message: string) => void;
+  rollTime: number;
+  onAlertSeen: (seen: boolean) => void;
 }
 
 export default function Dice({
   currentDiceRoll,
   onRoll,
-  currentPlayer,
-  onPlayerChange,
   moveLeft,
   onMoveLeft,
-  currentBoardState,
-  whiteBar,
-  blackBar,
   whiteOut,
   blackOut,
-  onAlert,
+  rollTime,
+  onAlertSeen,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
-
   let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
   // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
@@ -51,9 +42,9 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // currentDiceRoll = [6, 6]; //test
-    onRoll(currentDiceRoll);
-    setRemainingTime(2500); //reset animation time
+    // currentDiceRoll = [2,3]; //test
+
+    setRemainingTime(rollTime); //reset animation time
     //play a sound
     audioDice.play();
 
@@ -62,26 +53,13 @@ export default function Dice({
       //if the dice roll is a double, the player can move twice
       newMoveLeft = 4;
     }
-    onMoveLeft(newMoveLeft);
-    let moveAllowed = anyMoveAvailable(
-      currentBoardState,
-      currentPlayer,
-      currentDiceRoll,
-      whiteBar,
-      blackBar
-    );
-    //******************check if any move is available */
-    if (!moveAllowed[0] && !moveAllowed[1]) {
-      onAlert(
-        currentPlayer +
-          " has no possible moves with a roll of " +
-          currentDiceRoll
-      );
-      //change player
-      togglePlayer(currentPlayer, onPlayerChange);
-      onMoveLeft(0);
-      onRoll([0, 0]);
-    }
+    
+
+    setTimeout(() => {
+      onRoll(currentDiceRoll);
+      onMoveLeft(newMoveLeft);
+      onAlertSeen(true);
+    }, rollTime - 100);
   }
 
   return (

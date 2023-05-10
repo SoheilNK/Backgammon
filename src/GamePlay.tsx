@@ -4,6 +4,7 @@ import Players from "./Players";
 import { Message } from "./Message";
 import { Alert } from "./Alert";
 import { useLocalStorage } from "./useLocalStorage";
+import { togglePlayer } from "./gameRules";
 //----------------------------------------------
 export type Color = "White" | "Black" | null;
 export type Direction = "rtl" | "ltr";
@@ -37,11 +38,20 @@ function GamePlay() {
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
-  const [alertMessage, setAlertMessage] = useLocalStorage("alertMessage", "");
+  const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
+  const rollTime = 2500; // in milliseconds
+
   PlayerNames = {
     white: [player1],
     black: [player2],
   };
+
+  //change player
+  if (alertSeen && moveLeft == 0 && whiteOut !== 15 && blackOut !== 15) {
+    togglePlayer(currentPlayer, setCurrentPlayer);
+    setDiceRoll([0, 0]);
+    setAlertSeen(false);
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -56,12 +66,34 @@ function GamePlay() {
           currentPlayer={currentPlayer}
           anyMoveAvailable={true}
           scores={scores}
+          currentBoardState={currentBoardState}
+          currentDiceRoll={currentDiceRoll}
+          whiteBar={whiteBar}
+          blackBar={blackBar}
+          moveLeft={moveLeft}
+          whiteOut={whiteOut}
+          blackOut={blackOut}
+          alertSeen={alertSeen}
+          onAlertSeen={(seen) => setAlertSeen(seen)}
+          onPlayerChange={(player) => setCurrentPlayer(player)}
+          onMoveLeft={(moveLeft) => setMoveLeft(moveLeft)}
+          onRoll={(roll) => setDiceRoll(roll) as TdiceRoll}
         />
       </div>
-      <div className=" relative flex flex-col items-center mb-4">
+      <div className=" relative flex flex-col items-center mb-2 mt-6 sm:mt-3">
         <Alert
-          alertMessage={alertMessage}
-          onAlert={(message) => setAlertMessage(message)}
+          alertSeen={alertSeen}
+          onAlertSeen={(seen) => setAlertSeen(seen)}
+          currentBoardState={currentBoardState}
+          currentPlayer={currentPlayer}
+          currentDiceRoll={currentDiceRoll}
+          whiteBar={whiteBar}
+          blackBar={blackBar}
+          rollTime={rollTime}
+          moveLeft={moveLeft}
+          whiteOut={whiteOut}
+          blackOut={blackOut}
+          onMoveLeft={(moves) => setMoveLeft(moves)}
         />
         <Board
           currentBoardState={currentBoardState}
@@ -82,22 +114,20 @@ function GamePlay() {
           onWhiteOut={(counter) => setWhiteOut(counter)}
           blackOut={blackOut}
           onBlackOut={(counter) => setBlackOut(counter)}
-          onAlert={(message) => setAlertMessage(message)}
+          alertSeen={alertSeen}
+          onAlertSeen={(seen) => setAlertSeen(seen)}
         />
-        <div className="absolute top-2">
+        <div className="absolute -top-3 sm:-top-1">
           <Dice
             currentDiceRoll={currentDiceRoll}
             onRoll={(roll) => setDiceRoll(roll)}
-            currentPlayer={currentPlayer}
             moveLeft={moveLeft}
             onMoveLeft={(allowed) => setMoveLeft(allowed)}
-            currentBoardState={currentBoardState}
             onPlayerChange={(player) => setCurrentPlayer(player)}
-            whiteBar={whiteBar}
-            blackBar={blackBar}
             whiteOut={whiteOut}
             blackOut={blackOut}
-            onAlert={(message) => setAlertMessage(message)}
+            rollTime={rollTime}
+            onAlertSeen={(seen) => setAlertSeen(seen)}
           />
         </div>
       </div>
