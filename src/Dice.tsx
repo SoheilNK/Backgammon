@@ -42,7 +42,7 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // currentDiceRoll = [2,3]; //test
+    // currentDiceRoll = [2,4]; //test
 
     setRemainingTime(rollTime); //reset animation time
     //play a sound
@@ -59,7 +59,7 @@ export default function Dice({
       onRoll(currentDiceRoll);
       onMoveLeft(newMoveLeft);
       onAlertSeen(true);
-    }, rollTime - 100);
+    }, rollTime - 400);
   }
 
   return (

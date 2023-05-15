@@ -7,7 +7,7 @@ const AboutMe: React.FC = () => {
         <p className="text-center sm:text-left space-y-2">
           <img
             className=" inline h-28 float-left m-4 rounded-full ring-2 ring-white"
-            src="Profile-photo-2.jpg"
+            src="me.png"
             alt="Soheil"
           />
           <img
