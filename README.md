@@ -10,7 +10,7 @@ The primary technologies used in this project are React and Typescript. In addit
 ## Features
 
 - Two-player game mode
-- Interactive game board with drag-and-drop capabilities
+- Interactive board game with drag-and-drop capabilities
 - Animations for dice rolling and piece movements
 - Scoreboard and game history tracking
 
