@@ -5,12 +5,12 @@
 
 This project is a Backgammon game developed as part of my coursework in the second module of the Get Coding program. 
 
-The primary technologies used in this project are Vite, React, and Typescript. In addition, several libraries were utilized, including dnd kit, Tailwind, React Three Fibre, and React Router.
+The primary technologies used in this project are React and Typescript. In addition, several libraries were utilized, including dnd kit, Tailwind, React Three Fibre, and React Router.
 
 ## Features
 
 - Two-player game mode
-- Interactive game board with drag-and-drop capabilities
+- Interactive board game with drag-and-drop capabilities
 - Animations for dice rolling and piece movements
 - Scoreboard and game history tracking
 
