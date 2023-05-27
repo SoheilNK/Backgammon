@@ -1,9 +1,9 @@
 "use client";
 
 import { ErrorBoundary } from "react-error-boundary";
-import GamePlay from "../GamePlay";
-import Navbar from "../Navbar";
-import { Footer } from "../Footer";
+import GamePlay from "../components/GamePlay";
+import Navbar from "../components/Navbar";
+import { Footer } from "../components/Footer";
 
 export function Game() {
 

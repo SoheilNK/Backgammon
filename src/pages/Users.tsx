@@ -1,6 +1,6 @@
-import { Intro } from "../Intro";
-import Navbar from "../Navbar";
-import { Footer } from "../Footer";
+import { Intro } from "../components/Intro";
+import Navbar from "../components/Navbar";
+import { Footer } from "../components/Footer";
 export function Users() {
 
   return (
