@@ -7,7 +7,7 @@ import { Users } from "./pages/Users";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
 import Profile from "./components/Profile";
-import Login from "./components/Login";
+import Login from "./components/Login-form";
 import Register from "./components/Register";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -17,9 +17,21 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
         <Route path="/users" element={<Users />} errorElement={<ErrorPage />} />
         <Route path="/game" element={<Game />} errorElement={<ErrorPage />} />
-        <Route path="/profile" element={<Profile />} errorElement={<ErrorPage />} />
-        <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
-        <Route path="/register" element={<Register />} errorElement={<ErrorPage />} />
+        <Route
+          path="/profile"
+          element={<Profile />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/signin"
+          element={<Login />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/signup"
+          element={<Register />}
+          errorElement={<ErrorPage />}
+        />
       </Routes>
     </HashRouter>
   </React.StrictMode>
