@@ -1,4 +1,4 @@
-import CreatePage from "../components/PageTemplate";
+import PageClass from "../components/PageTemplate";
 import React, { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -8,6 +8,7 @@ import { login } from "../services/auth.service";
 
 type Props = {};
 const Login: React.FC<Props> = () => {
+  
   let navigate: NavigateFunction = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,7 +53,7 @@ const Login: React.FC<Props> = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className=" max-w-sm m-auto">
       <div className="bg-white shadow-md rounded-lg p-6">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -100,7 +101,7 @@ const Login: React.FC<Props> = () => {
             <div className="mb-4">
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 w-full rounded"
+                className="bg-blue-900 hover:bg-sky-700 text-white font-medium py-2 px-4 w-full rounded"
                 disabled={loading}
               >
                 {loading && (
@@ -125,6 +126,14 @@ const Login: React.FC<Props> = () => {
       </div>
     </div>
   );
-  };
+};
+  
+const LoginPage: React.FC = () => {
+  return (
+    <div className="w-1/2">
+      <PageClass inputComponent={Login} />
+    </div>
+  );
+};
 
-export default Login;
+export default LoginPage;

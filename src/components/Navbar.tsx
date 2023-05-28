@@ -7,18 +7,17 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ title }) => {
   const [open, setOpen] = useState(false);
-  const handleBurgerClick = () => {};
   return (
     <header className=" sticky top-0 z-20 flex flex-row  bg-green-900 text-white font-serif">
       <div className="container items-center text-justify m-auto">
-        <div className="flex sm:w-3/4 relative rounded-md h-16 m-auto p-1 sm:px-6">
+        <div className="flex md:w-3/4 relative rounded-md h-16 m-auto p-1 sm:px-6">
           <nav className={`${!open && "w-full"} ${open && "p-2"} my-auto`}>
             <ul
-              className={`flex flex-col sm:flex-row gap-3 px-4 py-2 ${
+              className={`flex flex-col md:flex-row gap-3 px-4 py-2 ${
                 open && "bg-green-900"
               }  m-auto `}
             >
-              <li className={`sm:hidden  ${open && "block"}`}>
+              <li className={`md:hidden  ${open && "block"}`}>
                 <div className="BurgerMenu">
                   <button
                     className="BurgerMenu__button "
@@ -44,21 +43,21 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               </li>
 
               <li
-                className={`p-2 sm:block hover:bg-green-700  ${
+                className={`p-2 md:block hover:bg-green-700  ${
                   !open && "hidden"
                 }`}
               >
                 <Link to="/">Home</Link>
               </li>
               <li
-                className={`p-2 mr-auto sm:block hover:bg-green-700 ${
+                className={`p-2 mr-auto md:block hover:bg-green-700 ${
                   !open && "hidden"
                 }`}
               >
                 <Link to="/users">Game Room</Link>
               </li>
               <li
-                className={`p-2 sm:block hover:bg-green-700 ${
+                className={`p-2 md:block hover:bg-green-700 ${
                   !open && "hidden"
                 }`}
               >

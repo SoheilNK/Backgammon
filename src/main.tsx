@@ -7,7 +7,7 @@ import { Users } from "./pages/Users";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
 import Profile from "./components/Profile";
-import Login from "./components/Login-form";
+import LoginPage from "./pages/SignIn";
 import Register from "./components/Register";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         />
         <Route
           path="/signin"
-          element={<Login />}
+          element={<LoginPage />}
           errorElement={<ErrorPage />}
         />
         <Route
