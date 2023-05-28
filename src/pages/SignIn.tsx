@@ -1,4 +1,4 @@
-import PageClass from "../components/PageTemplate";
+import PageClass from "../components/PageClass";
 import React, { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -8,7 +8,6 @@ import { login } from "../services/auth.service";
 
 type Props = {};
 const Login: React.FC<Props> = () => {
-  
   let navigate: NavigateFunction = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -127,7 +126,7 @@ const Login: React.FC<Props> = () => {
     </div>
   );
 };
-  
+
 const LoginPage: React.FC = () => {
   return (
     <div className="w-1/2">

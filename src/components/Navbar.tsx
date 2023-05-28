@@ -10,7 +10,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   return (
     <header className=" sticky top-0 z-20 flex flex-row  bg-green-900 text-white font-serif">
       <div className="container items-center text-justify m-auto">
-        <div className="flex md:w-3/4 relative rounded-md h-16 m-auto p-1 sm:px-6">
+        <div className="flex md:w-3/4 max-w-3xl relative rounded-md h-16 m-auto p-1 sm:px-6">
           <nav className={`${!open && "w-full"} ${open && "p-2"} my-auto`}>
             <ul
               className={`flex flex-col md:flex-row gap-3 px-4 py-2 ${
