@@ -5,7 +5,7 @@ const Profile: React.FC = () => {
   const currentUser = getCurrentUser();
 
   return (
-    <div className="mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto p-4 sm:px-6 lg:px-8">
       <header className="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
         <h3>
           <strong>{currentUser.username}</strong> Profile
@@ -21,13 +21,7 @@ const Profile: React.FC = () => {
       <p>
         <strong>Email:</strong> {currentUser.email}
       </p>
-      <strong>Authorities:</strong>
-      <ul>
-        {currentUser.roles &&
-          currentUser.roles.map((role: string, index: number) => (
-            <li key={index}>{role}</li>
-          ))}
-      </ul>
+      <strong>Role:</strong> {currentUser.role}
     </div>
   );
 };

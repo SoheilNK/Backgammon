@@ -6,9 +6,10 @@ import HomePage from "./pages/Home";
 import UsersPage from "./pages/Users";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
-import Profile from "./components/Profile";
-import LoginPage from "./pages/SignIn";
 import Register from "./components/Register";
+import LoginPage from "./pages/Signin";
+import MyProfile from "./pages/MyProfile";
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -22,8 +23,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         />
         <Route path="/game" element={<Game />} errorElement={<ErrorPage />} />
         <Route
-          path="/profile"
-          element={<Profile />}
+          path="/myprofile"
+          element={<MyProfile />}
           errorElement={<ErrorPage />}
         />
         <Route
