@@ -1,4 +1,6 @@
 import axios from "axios";
+import { Alert } from "../components/Alert";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://localhost:8000/api/auth/";
 
@@ -26,10 +28,16 @@ export const login = (username: string, password: string) => {
 };
 
 
-
 export const logout = () => {
-    localStorage.removeItem("user");
-};
+    const navigate = useNavigate();
+
+    if (confirm("Your going to sign out!\nAre you sure?") == true) {
+        localStorage.removeItem("user");
+        navigate("/signin");
+    };
+    return;
+
+}
 
 export const getCurrentUser = () => {
     const userStr = localStorage.getItem("user");

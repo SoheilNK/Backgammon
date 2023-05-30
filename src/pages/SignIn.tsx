@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import { login } from "../services/auth.service";
+import { Link } from "react-router-dom";
 
 type Props = {};
 const Login: React.FC<Props> = () => {
@@ -56,7 +57,7 @@ const Login: React.FC<Props> = () => {
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
-          className="profile-img-card"
+          className="bg-white rounded-lg overflow-hidden shadow-md m-auto"
         />
         <Formik
           initialValues={initialValues}
@@ -105,7 +106,7 @@ const Login: React.FC<Props> = () => {
                 {loading && (
                   <span className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900"></span>
                 )}
-                <span>Login</span>
+                <span>Sign in</span>
               </button>
             </div>
 
@@ -121,17 +122,30 @@ const Login: React.FC<Props> = () => {
             )}
           </Form>
         </Formik>
+
+        <div className="text-center">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-blue-500 hover:text-blue-600"
+          >
+            Forgot password?
+          </Link>
+        </div>
+        <div className="text-center">
+          <Link
+            to="/signup"
+            className="text-sm text-blue-500 hover:text-blue-600"
+          >
+            Don't have an account? Sign up
+          </Link>
+        </div>
       </div>
     </div>
   );
 };
 
 const LoginPage: React.FC = () => {
-  return (
-    <div className="w-1/2">
-      <PageClass inputComponent={Login} />
-    </div>
-  );
+  return <PageClass inputComponent={Login} />;
 };
 
 export default LoginPage;
