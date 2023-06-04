@@ -6,14 +6,10 @@ import HomePage from "./pages/Home";
 import UsersPage from "./pages/Users";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
-// import LoginPage from "./pages/Signin";
-// import MyProfile from "./pages/MyProfile";
-// import SignUpPage from "./pages/Signup";
-// import ForgotPassPage from "./pages/ForgotPass";
-
-import { Amplify, Auth } from "aws-amplify";
-import awsconfig from "./aws-exports";
-Amplify.configure(awsconfig);
+import LoginPage from "./pages/Signin";
+import MyProfile from "./pages/MyProfile";
+import SignUpPage from "./pages/Signup";
+import ForgotPassPage from "./pages/ForgotPass";
 
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
