@@ -4,12 +4,13 @@ import ErrorPage from "./pages/error-page";
 import Game from "./pages/Game";
 import HomePage from "./pages/Home";
 import UsersPage from "./pages/Users";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes, Link } from "react-router-dom";
 
 import LoginPage from "./pages/Signin";
 import MyProfile from "./pages/MyProfile";
 import SignUpPage from "./pages/Signup";
 import ForgotPassPage from "./pages/ForgotPass";
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           element={<LoginPage />}
           errorElement={<ErrorPage />}
         />
+        
         <Route
           path="/signup"
           element={<SignUpPage />}
