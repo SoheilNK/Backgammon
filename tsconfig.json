@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
+    "types": [
+      "node"
+    ],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,5 +20,10 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
+  "exclude": [
+    "node_modules/aws-sdk/*",
+    "node_modules/amazon-cognito-identity-js/*",
+    "node_modules/@aws-amplify/*"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

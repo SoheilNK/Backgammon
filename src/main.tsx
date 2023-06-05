@@ -11,6 +11,17 @@ import MyProfile from "./pages/MyProfile";
 import SignUpPage from "./pages/Signup";
 import ForgotPassPage from "./pages/ForgotPass";
 
+import { Amplify, Auth } from "aws-amplify";
+import awsconfig from "./aws-exports";
+Amplify.configure(awsconfig);
+
+import { Buffer } from "buffer";
+global.Buffer = Buffer;
+global.process = require("process");
+global.process.env = {};
+global.process.nextTick = require("next-tick");
+
+
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

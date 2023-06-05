@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-backgammon-dev-205726-authRole",
+      "UnauthRoleArn": "arn:aws:iam::008826581554:role/amplify-backgammon-dev-205726-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::008826581554:role/amplify-backgammon-dev-205726-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-backgammon-dev-205726-deployment",
+      "UnauthRoleName": "amplify-backgammon-dev-205726-unauthRole",
+      "StackName": "amplify-backgammon-dev-205726",
+      "StackId": "arn:aws:cloudformation:ca-central-1:008826581554:stack/amplify-backgammon-dev-205726/5f3d4060-032f-11ee-8e9d-0ef909551dfc",
+      "AmplifyAppId": "dm6a4jf2qm19q"
+    },
+    "categories": {
+      "auth": {
+        "backgammon6c268340": {}
+      }
+    }
+  }
+}
