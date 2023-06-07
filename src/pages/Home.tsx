@@ -3,6 +3,15 @@ import AboutMe from "../components/AboutMe";
 import Dice3Dv2 from "../components/Dice3Dv2";
 import { Link } from "react-router-dom";
 import PageClass from "../components/PageClass";
+import { register } from "../services/auth.service";
+import Register from "../components/Register";
+
+const searchParams = new URL(location.href).searchParams;
+
+  if (searchParams.get("code") !== null) {
+    Register();
+}
+  
 
  function Home() {
   return (

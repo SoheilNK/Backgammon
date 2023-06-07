@@ -147,9 +147,11 @@
 // const LoginPage: React.FC = () => {
 //   return <PageClass inputComponent={Login} />;
 // };
+import redirectToLogin from "../components/Register";
 
 const LoginPage: React.FC = () => {
-  window.location.href = "https://sosepbackgammon.auth.ca-central-1.amazoncognito.com/login?response_type=code&client_id=35r5v11v77trsrts6b7lmebupn&redirect_uri=http://localhost:5173/Backgammon/signup";
+  // window.location.href = "https://sosepbackgammon.auth.ca-central-1.amazoncognito.com/login?response_type=code&client_id=35r5v11v77trsrts6b7lmebupn&redirect_uri=http://localhost:5173/Backgammon/signup";
+  redirectToLogin();
   return null;
 }
 

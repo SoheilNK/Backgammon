@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../types/user.type";
 import { logout } from "../services/auth.service";
-import {LogoutButton} from "./Signout";
+import { LogoutButton } from "./Signout";
 
 interface NavbarProps {
   title: string;
@@ -74,9 +74,13 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               </li>
             </ul>
           </nav>
-          
+
           <div className="flex-shrink-0 m-auto mr-4 border border-gray-300 focus:outline-none hover:bg-green-700 focus:ring-4 focus:ring-gray-200 rounded-lg px-2 py-1  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-            <li className={`${logedin && "hidden"}`}>
+            <li
+              className={`${logedin && "hidden"}`}
+              // onClick={redirectToLogin}
+            >
+              {/* Sign in */}
               <Link to="/signin">Sign in</Link>
             </li>
             <li className={`${!logedin && "hidden"}`}>
