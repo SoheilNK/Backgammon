@@ -1,174 +1,9 @@
-// import React, { useState } from "react";
-// import { Formik, Field, Form, ErrorMessage } from "formik";
-// import * as Yup from "yup";
-
-// import { IUser } from "../types/user.type";
-// import { register } from "../services/auth.service";
-// import { useNavigate } from "react-router-dom";
-
-// const Register: React.FC = () => {
-//   const [successful, setSuccessful] = useState<boolean>(false);
-//   const [message, setMessage] = useState<string>("");
-//   const navigate = useNavigate();
-
-//   const initialValues: IUser = {
-//     username: "",
-//     email: "",
-//     password: "",
-//   };
-
-//   const validationSchema = Yup.object().shape({
-//     username: Yup.string()
-//       .test(
-//         "len",
-//         "The username must be between 3 and 20 characters.",
-//         (val: any) =>
-//           val && val.toString().length >= 3 && val.toString().length <= 20
-//       )
-//       .required("This field is required!"),
-//     email: Yup.string()
-//       .email("This is not a valid email.")
-//       .required("This field is required!"),
-//     password: Yup.string()
-//       .test(
-//         "len",
-//         "The password must be between 6 and 40 characters.",
-//         (val: any) =>
-//           val && val.toString().length >= 6 && val.toString().length <= 40
-//       )
-//       .required("This field is required!"),
-//   });
-
-//   const handleRegister = (formValue: IUser) => {
-//     const { username, email, password } = formValue;
-
-//     register(username, email, password).then(
-//       (response) => {
-//         setMessage(response.data.message);
-//         setSuccessful(true);
-//         // navigate("/signin");
-//       },
-//       (error) => {
-//         const resMessage =
-//           (error.response &&
-//             error.response.data &&
-//             error.response.data.message) ||
-//           error.message ||
-//           error.toString();
-
-//         setMessage(resMessage);
-//         setSuccessful(false);
-//       }
-//     );
-//   };
-
-//   return (
-//     <div className=" max-w-sm m-auto">
-//       <div className="bg-white shadow-md rounded-lg p-6">
-//         <img
-//           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-//           alt="profile-img"
-//           className="bg-white rounded-lg overflow-hidden shadow-md m-auto"
-//         />
-//         <Formik
-//           initialValues={initialValues}
-//           validationSchema={validationSchema}
-//           onSubmit={handleRegister}
-//         >
-//           <Form>
-//             {!successful && (
-//               <div>
-//                 <div className="mb-4">
-//                   <label htmlFor="username"> Username </label>
-//                   <Field
-//                     name="username"
-//                     type="text"
-//                     className="border border-gray-300 rounded-md p-2 w-full"
-//                   />
-//                   <ErrorMessage
-//                     name="username"
-//                     component="div"
-//                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-//                   />
-//                 </div>
-
-//                 <div className="mb-4">
-//                   <label htmlFor="email"> Email </label>
-//                   <Field
-//                     name="email"
-//                     type="email"
-//                     className="border border-gray-300 rounded-md p-2 w-full"
-//                   />
-//                   <ErrorMessage
-//                     name="email"
-//                     component="div"
-//                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-//                   />
-//                 </div>
-
-//                 <div className="mb-4">
-//                   <label htmlFor="password"> Password </label>
-//                   <Field
-//                     name="password"
-//                     type="password"
-//                     className="border border-gray-300 rounded-md p-2 w-full"
-//                   />
-//                   <ErrorMessage
-//                     name="password"
-//                     component="div"
-//                     className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-//                   />
-//                 </div>
-
-//                 <div className="mb-4">
-//                   <button
-//                     type="submit"
-//                     className="bg-blue-900 hover:bg-sky-700 text-white font-medium py-2 px-4 w-full rounded"
-//                   >
-//                     Sign Up
-//                   </button>
-//                 </div>
-//               </div>
-//             )}
-
-//             {message && (
-//               <div>
-//                 <div className="mb-4">
-//                   <div
-//                     className={
-//                       successful
-//                         ? " m-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded text-center"
-//                         : "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-//                     }
-//                     role="alert"
-//                   >
-//                     {message}
-//                   </div>
-//                 </div>
-//                 <div className="mb-4">
-//                   <button
-//                     type="button"
-//                     onClick={() => navigate("/signin")}
-//                     className={
-//                       successful
-//                         ? "bg-blue-900 hover:bg-sky-700 text-white font-medium py-2 px-4 w-full rounded" : "hidden"
-//                     }
-//                         >
-//                     Sign in
-//                   </button>
-//                 </div>
-//               </div>
-//             )}
-//           </Form>
-//         </Formik>
-//       </div>
-//     </div>
-//   );
-// };
-
 import { cognitoLoginUrl, clientId } from "../../cognitoConfig";
+import axios from "axios";
 
 const Register = async () => {
+  
+  const API_URL = "http://localhost:8000/api/user";
 
   const sha256 = async (str: string): Promise<ArrayBuffer> => {
     return await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
@@ -191,7 +26,6 @@ const Register = async () => {
       .replace(/=+$/, "");
   };
 
-
   const redirectToLogin = async (): Promise<void> => {
     const state = await generateNonce();
     const codeVerifier = await generateNonce();
@@ -210,138 +44,58 @@ const Register = async () => {
   // });
 
   const init = async (tokens: any): Promise<void> => {
-    console.log(tokens);
+    // console.log(tokens);
     const access_token = tokens.access_token;
-
+    let apiResp: any;
     try {
-      const apiRes = await fetch("/api/user", {
-        headers: new Headers({ Authorization: `Bearer ${access_token}` }),
+
+      const response = await axios.get(API_URL, {
+        headers: { Authorization: `Bearer ${access_token}` },
       });
-      if (!apiRes.ok) {
-        throw new Error(apiRes.statusText);
+      // console.log(response);
+      apiResp = response.data;
+      // console.log(apiResp);
+
+      if (apiResp.isValid) {
+        console.log(`You are signed in as ${apiResp.userName}`); //review
+        localStorage.setItem("user", JSON.stringify(apiResp.userName));
+        // setMessage(`You are signed in as ${apiResp.userName}`);
+        // reload page
+        window.location.href = "http://localhost:5173/Backgammon";
+
+      } else {
+        `Failed to get userid. Are you logged in with a valid token?`;
       }
-      const apiResp = await apiRes.json();
-      // document.querySelector(
-      //   "#user"
-      // )!.innerText = `You are signed in as ${apiResp.userId}`;
-      console.log(`You are signed in as ${apiResp.userId}`); //review
-    } catch (e) {
-      console.error(e);
-      // document.querySelector(
-      //   "#user"
-      // )!.innerText = `Failed to get userid. Are you logged in with a valid token?`;
-      console.error(
-        `Failed to get userid. Are you logged in with a valid token?`
-      );
+      // } catch (error) {
+      //   console.log(error);
+      // }
+
+      // const refreshStatus: (() => Promise<void>)[] = [];
+      // let currentId = 0;
+      // const doRefreshStatus = async (): Promise<void> => {
+      //   await refreshStatus.reduce(async (memo, fn) => {
+      //     await memo;
+      //     return fn();
+      //   }, Promise.resolve());
+      // };
+
+      // const refreshStatusButton = document.querySelector(
+      //   "#refreshStatus"
+      // ) as HTMLButtonElement;
+      // refreshStatusButton.addEventListener("click", async () => {
+      //   refreshStatusButton.disabled = true;
+      //   await doRefreshStatus();
+      //   refreshStatusButton.disabled = false;
+      // });
+
+      // await doRefreshStatus();
+    } catch (error) {
+      console.log(apiResp);
+      console.error(error);
     }
-
-    const refreshStatus: (() => Promise<void>)[] = [];
-    let currentId = 0;
-    const doRefreshStatus = async (): Promise<void> => {
-      await refreshStatus.reduce(async (memo, fn) => {
-        await memo;
-        return fn();
-      }, Promise.resolve());
-    };
-
-    const refreshStatusButton = document.querySelector(
-      "#refreshStatus"
-    ) as HTMLButtonElement;
-    refreshStatusButton.addEventListener("click", async () => {
-      refreshStatusButton.disabled = true;
-      await doRefreshStatus();
-      refreshStatusButton.disabled = false;
-    });
-
-    const insertTokens = (parent: any, id: number, tokens: any): void => {
-      const table = document.querySelector(
-        "#tokens tbody"
-      ) as HTMLTableSectionElement;
-      const row = table.insertRow();
-      row.insertCell().innerText = parent;
-      row.insertCell().innerText = id.toString();
-      row.insertCell().innerText = `${tokens.refresh_token ? "refresh_token\n" : ""
-        }${tokens.access_token ? "access_token\n" : ""}${tokens.id_token ? "id_token" : ""
-        }`;
-      const buttonsCell = row.insertCell();
-      if (tokens.refresh_token) {
-        buttonsCell.innerHTML = `
-        <button class="revoke">Revoke token</button>
-        <button class="request">Refresh token</button>
-      `;
-        const revokeButton = buttonsCell.querySelector(
-          ".revoke"
-        ) as HTMLButtonElement;
-        revokeButton.addEventListener("click", async () => {
-          revokeButton.disabled = true;
-          const res = await fetch(`${cognitoLoginUrl}/oauth2/revoke`, {
-            method: "POST",
-            headers: new Headers({
-              "content-type": "application/x-www-form-urlencoded",
-            }),
-            body: Object.entries({
-              token: tokens.refresh_token,
-              client_id: clientId,
-            })
-              .map(([k, v]) => `${k}=${v}`)
-              .join("&"),
-          });
-          if (!res.ok) {
-            throw new Error(await res.json());
-          }
-          await doRefreshStatus();
-        });
-        const requestButton = buttonsCell.querySelector(
-          ".request"
-        ) as HTMLButtonElement;
-        requestButton.addEventListener("click", async () => {
-          requestButton.disabled = true;
-          const res = await fetch(`${cognitoLoginUrl}/oauth2/token`, {
-            method: "POST",
-            headers: new Headers({
-              "content-type": "application/x-www-form-urlencoded",
-            }),
-            body: Object.entries({
-              grant_type: "refresh_token",
-              client_id: clientId,
-              redirect_uri: window.location.origin,
-              refresh_token: tokens.refresh_token,
-            })
-              .map(([k, v]) => `${k}=${v}`)
-              .join("&"),
-          });
-          if (!res.ok) {
-            throw new Error(await res.json());
-          }
-          const newTokens = await res.json();
-          insertTokens(id, currentId++, newTokens);
-          await doRefreshStatus();
-          requestButton.disabled = false;
-        });
-      }
-      const statusCell = row.insertCell();
-      refreshStatus.push(async () => {
-        statusCell.innerHTML = "";
-        const userInfoRes = await fetch(`${cognitoLoginUrl}/oauth2/userInfo`, {
-          headers: new Headers({
-            Authorization: `Bearer ${tokens.access_token}`,
-          }),
-        });
-        const apiRes = await fetch("/api/user", {
-          headers: new Headers({
-            Authorization: `Bearer ${tokens.access_token}`,
-          }),
-        });
-        const apiResIdToken = await fetch("/api/user", {
-          headers: new Headers({ Authorization: `Bearer ${tokens.id_token}` }),
-        });
-        statusCell.innerText = `userInfo: ${userInfoRes.ok}\napi access_token: ${apiRes.ok}\napi id_token: ${apiResIdToken.ok}`;
-      });
-    };
-    insertTokens(null, currentId++, tokens);
-    await doRefreshStatus();
   };
 
+  //------------------------------STARTS HERE-------------------------------------
   const searchParams = new URL(location.href).searchParams;
 
   if (searchParams.get("code") !== null) {
@@ -383,8 +137,6 @@ const Register = async () => {
       redirectToLogin();
     }
   }
-
 };
-
 
 export default Register;

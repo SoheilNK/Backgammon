@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../types/user.type";
-import { logout } from "../services/auth.service";
+// import { logout } from "../services/auth.service";
 import { LogoutButton } from "./Signout";
 
 interface NavbarProps {

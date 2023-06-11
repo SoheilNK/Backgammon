@@ -5,6 +5,7 @@ export const LogoutButton = () => {
 
   const handleLogout = () => {
     if (window.confirm("You are going to sign out!\nAre you sure?")) {
+      localStorage.removeItem("tokens");
       localStorage.removeItem("user");
       navigate("/signin");
     }
