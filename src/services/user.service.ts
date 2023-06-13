@@ -1,26 +1,193 @@
 import axios from "axios";
-import authHeader from "./auth-header";
+//creat new axios instance
+export const myApi = axios.create({
+    // baseURL: "http://localhost:8000/api/user",
+    baseURL: "http://localhost:8000/api",
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+//set up axiosApi interceptors to add the token to the request and refresh the token if it is expired
+myApi.interceptors.request.use(
+    async (config) => {
+        const token = await getAccessToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        } 
+        return config;
+    }
+    // (error) => {
+    //   return Promise.reject(error);
+    // }
+);
+//get the access token from the local storage
+const getAccessToken = async () => {
+    const tokens = localStorage.getItem("tokens");
+    const token = tokens ? JSON.parse(tokens).access_token : null;
 
-const API_URL = "http://localhost:8000/api/";
-
-// get user id after checking token
-export const getUserId = () => {
-    return axios.get(API_URL + "user", { headers: authHeader() });
-};
-
-
-export const getPublicContent = () => {
-    return axios.get(API_URL + "all");
-};
-
-export const getUserBoard = () => {
-    return axios.get(API_URL + "user", { headers: authHeader() });
-};
-
-export const getModeratorBoard = () => {
-    return axios.get(API_URL + "mod", { headers: authHeader() });
-};
-
-export const getAdminBoard = () => {
-    return axios.get(API_URL + "admin", { headers: authHeader() });
-};
+    
+    if (!token) {
+        return null;
+    }
+    const { exp } = JSON.parse(atob(token.split(".")[1]));
+    if (Date.now() >= exp * 1000) {
+        console.log("token expired");
+        return null;
+    }
+    return token;
+}
+//refresh the access token
+const refreshAccessToken = async () => {
+    const refreshToken = localStorage.getItem("refresh_token");
+    if (!refreshToken) {
+        return null;
+    }
+    const { exp } = JSON.parse(atob(refreshToken.split(".")[1]));
+    if (Date.now() >= exp * 1000) {
+        return null;
+    }
+    const { data } = await myApi.post("/refresh", { refresh_token: refreshToken });
+    localStorage.setItem("access_token", data.access_token);
+    return data.access_token;
+}
+//get the user from the local storage
+const getUser = () => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+        return null;
+    }
+    return JSON.parse(user);
+}
+//set the user to the local storage
+const setUser = (user: any) => {
+    localStorage.setItem("user", JSON.stringify(user));
+}
+//remove the user from the local storage
+const removeUser = () => {
+    localStorage.removeItem("user");
+}
+//remove the access token from the local storage
+const removeAccessToken = () => {
+    localStorage.removeItem("access_token");
+}
+//remove the refresh token from the local storage 
+const removeRefreshToken = () => {
+    localStorage.removeItem("refresh_token");
+}
+//remove the user and the tokens from the local storage
+const logout = () => {
+    removeUser();
+    removeAccessToken();
+    removeRefreshToken();
+}
+//login the user
+const login = async (email: string, password: string) => {
+    try {
+        const { data } = await myApi.post("/login", { email, password });
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+        setUser(data.user);
+        return data.user;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//register the user
+const register = async (email: string, password: string) => {
+    try {
+        const { data } = await myApi.post("/register", { email, password });
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//get the user profile
+const getProfile = async () => {
+    try {
+        const { data } = await myApi.get("/profile");
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//update the user profile
+const updateProfile = async (profile: any) => {
+    try {
+        const { data } = await myApi.put("/profile", profile);
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//delete the user profile
+const deleteProfile = async () => {
+    try {
+        const { data } = await myApi.delete("/profile");
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//get the user friends  
+const getFriends = async () => {
+    try {
+        const { data } = await myApi.get("/friends");
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//add a friend to the user friends
+const addFriend = async (friendId: string) => {
+    try {
+        const { data } = await myApi.post("/friends", { friendId });
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//remove a friend from the user friends
+const removeFriend = async (friendId: string) => {
+    try {
+        const { data } = await myApi.delete(`/friends/${friendId}`);
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//get the user friend requests
+const getFriendRequests = async () => {
+    try {
+        const { data } = await myApi.get("/friend-requests");
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//send a friend request to a user
+const sendFriendRequest = async (friendId: string) => {
+    try {
+        const { data } = await myApi.post("/friend-requests", { friendId });
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//accept a friend request from a user
+const acceptFriendRequest = async (friendId: string) => {
+    try {
+        const { data } = await myApi.put("/friend-requests", { friendId });
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+//reject a friend request from a user
+const rejectFriendRequest = async (friendId: string) => {
+    try {
+        const { data } = await myApi.delete(`/friend-requests/${friendId}`);
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
