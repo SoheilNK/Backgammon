@@ -55,7 +55,7 @@ const Register = async () => {
       // console.log(response);
       apiResp = response.data;
       // console.log(apiResp);
-
+      
       if (apiResp.isValid) {
         console.log(`You are signed in as ${apiResp.userName}`); //review
         localStorage.setItem("user", JSON.stringify(apiResp.userName));
@@ -66,32 +66,21 @@ const Register = async () => {
       } else {
         `Failed to get userid. Are you logged in with a valid token?`;
       }
-      // } catch (error) {
-      //   console.log(error);
-      // }
-
-      // const refreshStatus: (() => Promise<void>)[] = [];
-      // let currentId = 0;
-      // const doRefreshStatus = async (): Promise<void> => {
-      //   await refreshStatus.reduce(async (memo, fn) => {
-      //     await memo;
-      //     return fn();
-      //   }, Promise.resolve());
-      // };
-
-      // const refreshStatusButton = document.querySelector(
-      //   "#refreshStatus"
-      // ) as HTMLButtonElement;
-      // refreshStatusButton.addEventListener("click", async () => {
-      //   refreshStatusButton.disabled = true;
-      //   await doRefreshStatus();
-      //   refreshStatusButton.disabled = false;
-      // });
-
-      // await doRefreshStatus();
-    } catch (error) {
-      console.log(apiResp);
-      console.error(error);
+ 
+    } catch (error : any) {
+      // console.log(apiResp);
+      console.log(error.request.response);
+      // handle expired token
+      if (error.request.response.includes("Access token has expired")) {
+        console.log("Access token has expired");
+        // setMessage("Access token has expired");
+        localStorage.removeItem("tokens");
+        // reload page
+        window.location.href = "http://localhost:5173/Backgammon";
+      }
+      //use refresh token to get new access token
+      
+      
     }
   };
 

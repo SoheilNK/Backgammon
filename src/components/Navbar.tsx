@@ -14,9 +14,17 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   const [openProfile, setOpenProfile] = useState(false);
   const logedin = localStorage.getItem("user");
   const navigate = useNavigate();
-  let user: User;
+  let user: User = {
+    id: 0,
+    username: "",
+    email: "",
+    password: "",
+    role: "",
+    createdAt: Date.now() as unknown as Date,
+    updatedAt: Date.now() as unknown as Date,
+  };
   if (logedin) {
-    user = JSON.parse(logedin);
+    user.username = JSON.parse(logedin);
   }
 
   return (
@@ -87,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
           <div className="cursor-pointer flex items-center flex-shrink-0 m-2 border border-gray-300 focus:outline-none hover:bg-green-700 focus:ring-4 focus:ring-gray-200 rounded-lg px-2 py-1  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
             <button onClick={() => setOpenProfile(!openProfile)}>
               <span className={`${!logedin && "hidden"}`}>
-                {logedin ? JSON.parse(logedin).username || "Profile" : ""}
+                {logedin ? user.username || "Profile" : ""}
               </span>
               <span
                 className={`${logedin && "hidden"}`}
