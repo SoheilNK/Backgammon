@@ -2,6 +2,7 @@ import React from "react";
 import { cognitoLoginUrl, clientId } from "../../cognitoConfig";
 import {myApi} from "../services/user.service"
 import { useNavigate } from "react-router-dom";
+import { setUser } from "../services/user.service";
 
 
 
@@ -48,9 +49,12 @@ const Register = async () => {
 
   const init = async (tokens: any): Promise<void> => {
     // console.log(tokens);
-    const access_token = tokens.access_token;
+    const id_token = tokens.id_token;
     let apiResp: any;
     try {
+      //send id_token to backend to get user id
+      
+
       const response = await myApi.get("/user");
       // console.log(response);
       apiResp = response.data;
@@ -58,7 +62,8 @@ const Register = async () => {
 
       if (apiResp.id) {
         console.log(`You are signed in as ${apiResp.username}`); //review
-        localStorage.setItem("user", JSON.stringify(apiResp.username));
+        // localStorage.setItem("user", JSON.stringify(apiResp));
+        setUser(apiResp);
         // setMessage(`You are signed in as ${apiResp.username}`);
         // redirect to home page
         // navigate("/");

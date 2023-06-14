@@ -1,8 +1,7 @@
 import React from "react";
-import { getCurrentUser } from "../services/auth.service";
-
+import { getUser } from "../services/user.service";
 const Profile: React.FC = () => {
-  const currentUser = getCurrentUser();
+  const currentUser = getUser();
 
   return (
     <div className="mx-auto p-4 sm:px-6 lg:px-8">
@@ -12,8 +11,7 @@ const Profile: React.FC = () => {
         </h3>
       </header>
       <p>
-        <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
-        {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+        <strong>Created at:</strong> {currentUser.createdAt}
       </p>
       <p>
         <strong>Id:</strong> {currentUser.id}

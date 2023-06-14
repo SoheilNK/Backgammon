@@ -24,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
     updatedAt: Date.now() as unknown as Date,
   };
   if (logedin) {
-    user.username = JSON.parse(logedin);
+    user = JSON.parse(logedin);
   }
 
   return (

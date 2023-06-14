@@ -1,7 +1,6 @@
 import axios from "axios";
 //creat new axios instance
 export const myApi = axios.create({
-    // baseURL: "http://localhost:8000/api/user",
     baseURL: "http://localhost:8000/api",
     headers: {
         "Content-Type": "application/json",
@@ -11,6 +10,7 @@ export const myApi = axios.create({
 myApi.interceptors.request.use(
     async (config) => {
         const token = await getAccessToken();
+        
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         } 
@@ -51,7 +51,7 @@ const refreshAccessToken = async () => {
     return data.access_token;
 }
 //get the user from the local storage
-const getUser = () => {
+export const getUser = () => {
     const user = localStorage.getItem("user");
     if (!user) {
         return null;
@@ -59,7 +59,7 @@ const getUser = () => {
     return JSON.parse(user);
 }
 //set the user to the local storage
-const setUser = (user: any) => {
+export const setUser = (user: any) => {
     localStorage.setItem("user", JSON.stringify(user));
 }
 //remove the user from the local storage
