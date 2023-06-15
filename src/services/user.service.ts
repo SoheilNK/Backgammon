@@ -67,18 +67,13 @@ const removeUser = () => {
     localStorage.removeItem("user");
 }
 //remove the access token from the local storage
-const removeAccessToken = () => {
-    localStorage.removeItem("access_token");
-}
-//remove the refresh token from the local storage 
-const removeRefreshToken = () => {
-    localStorage.removeItem("refresh_token");
+const removeTokens = () => {
+    localStorage.removeItem("tokens");
 }
 //remove the user and the tokens from the local storage
-const logout = () => {
+export const logout = () => {
     removeUser();
-    removeAccessToken();
-    removeRefreshToken();
+    removeTokens();
 }
 //login the user
 const login = async (email: string, password: string) => {
@@ -88,24 +83,6 @@ const login = async (email: string, password: string) => {
         localStorage.setItem("refresh_token", data.refresh_token);
         setUser(data.user);
         return data.user;
-    } catch (error) {
-        return Promise.reject(error);
-    }
-}
-//register the user
-const register = async (email: string, password: string) => {
-    try {
-        const { data } = await myApi.post("/register", { email, password });
-        return data;
-    } catch (error) {
-        return Promise.reject(error);
-    }
-}
-//get the user profile
-const getProfile = async () => {
-    try {
-        const { data } = await myApi.get("/profile");
-        return data;
     } catch (error) {
         return Promise.reject(error);
     }

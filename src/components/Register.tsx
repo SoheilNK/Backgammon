@@ -1,7 +1,5 @@
-import React from "react";
 import { cognitoLoginUrl, clientId } from "../../cognitoConfig";
 import {myApi} from "../services/user.service"
-import { useNavigate } from "react-router-dom";
 import { setUser } from "../services/user.service";
 
 
@@ -35,26 +33,16 @@ const Register = async () => {
     const codeVerifier = await generateNonce();
     sessionStorage.setItem(`codeVerifier-${state}`, codeVerifier);
     const codeChallenge = base64URLEncode(await sha256(codeVerifier));
-    // const url = `${cognitoLoginUrl}/login?response_type=code&client_id=${clientId}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}&redirect_uri=${window.location.origin}`;
-    // console.log(url);
-    // alert(url);
     window.location.href = `${cognitoLoginUrl}/login?response_type=code&client_id=${clientId}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}&redirect_uri=http://localhost:5173/Backgammon`;
-    // window.location.href =
-    //   `https://sosepbackgammon.auth.ca-central-1.amazoncognito.com/login?response_type=code&client_id=35r5v11v77trsrts6b7lmebupn&redirect_uri=http://localhost:5173/Backgammon/signup&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
   };
-
-  // document.querySelector("#loginButton")?.addEventListener("click", () => {
-  //   redirectToLogin();
-  // });
 
   const init = async (tokens: any): Promise<void> => {
     // console.log(tokens);
     const id_token = tokens.id_token;
     let apiResp: any;
     try {
-      //send id_token to backend to get user id
-      
-
+      //send id_token in headers for one time to get user id
+      myApi.defaults.headers.common["x_id_token"] = id_token;   
       const response = await myApi.get("/user");
       // console.log(response);
       apiResp = response.data;
@@ -62,13 +50,9 @@ const Register = async () => {
 
       if (apiResp.id) {
         console.log(`You are signed in as ${apiResp.username}`); //review
-        // localStorage.setItem("user", JSON.stringify(apiResp));
         setUser(apiResp);
-        // setMessage(`You are signed in as ${apiResp.username}`);
-        // redirect to home page
-        // navigate("/");
-        // reload page
-        window.location.href = "http://localhost:5173/Backgammon";
+        //go to myprofile page
+        window.location.href = "http://localhost:5173/Backgammon#/myprofile";
       } else {
         console.log(
           `Failed to get userid. Are you logged in with a valid token?`
@@ -85,17 +69,6 @@ const Register = async () => {
         // reload page
         window.location.href = "http://localhost:5173/Backgammon";
       }
-      //if user not found in db, redirect to signup page
-      if (error.request.response.includes("User not found")) {
-        console.log("User not found");
-        localStorage.removeItem("tokens");
-
-        // setMessage("User not found");
-        // redirect to signup page
-        // window.location.href = "http://localhost:5173/Backgammon/signup";
-      }
-
-      //use refresh token to get new access token
     }
   };
 
@@ -120,7 +93,6 @@ const Register = async () => {
         client_id: clientId,
         code: searchParams.get("code")!,
         code_verifier: codeVerifier,
-        // redirect_uri: window.location.origin,
         redirect_uri: "http://localhost:5173/Backgammon",
       })
         .map(([k, v]) => `${k}=${v}`)

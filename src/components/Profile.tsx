@@ -14,6 +14,9 @@ const Profile: React.FC = () => {
         <strong>Created at:</strong> {currentUser.createdAt}
       </p>
       <p>
+        <strong>Last modified at:</strong> {currentUser.updatedAt}
+      </p>
+      <p>
         <strong>Id:</strong> {currentUser.id}
       </p>
       <p>
