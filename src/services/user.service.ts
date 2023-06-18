@@ -16,10 +16,8 @@ myApi.interceptors.request.use(
         } 
         return config;
     }
-    // (error) => {
-    //   return Promise.reject(error);
-    // }
 );
+
 //get the access token from the local storage
 const getAccessToken = async () => {
     const tokens = localStorage.getItem("tokens");
