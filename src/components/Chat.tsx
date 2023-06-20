@@ -1,6 +1,7 @@
 import { Component, ChangeEvent } from "react";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import { Card, Avatar, Input, Typography } from "antd";
+import {getUser} from "../services/user.service";
 
 const { Search } = Input;
 const { Text } = Typography;
@@ -27,9 +28,10 @@ interface ChatState {
 }
 
 export default class Chat extends Component<{}, ChatState> {
+  user: string = getUser().username.toString();
   state: ChatState = {
-    userName: "",
-    isLoggedIn: false,
+    userName: this.user,
+    isLoggedIn: true,
     messages: [],
     searchVal: "",
   };
@@ -75,10 +77,6 @@ export default class Chat extends Component<{}, ChatState> {
 
   handleSearchSubmit = (value: string): void => {
     this.onButtonClicked(value);
-  };
-
-  handleLoginSubmit = (value: string): void => {
-    this.setState({ isLoggedIn: true, userName: value });
   };
 
   render() {
@@ -143,12 +141,7 @@ export default class Chat extends Component<{}, ChatState> {
           </div>
         ) : (
           <div style={{ padding: "200px 40px" }}>
-            <Search
-              placeholder="Enter Username"
-              enterButton="Login"
-              size="large"
-              onSearch={this.handleLoginSubmit}
-            />
+            You are not logged in, please enter your username to start chatting
           </div>
         )}
       </div>
