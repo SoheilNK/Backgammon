@@ -60,11 +60,11 @@ export default class Chat extends Component<{}, ChatState> {
       if (dataFromServer.type === "message") {
         this.setState((prevState) => ({
           messages: [
-            ...prevState.messages,
             {
               msg: dataFromServer.msg,
               user: dataFromServer.user,
             },
+            ...prevState.messages,
           ],
         }));
       }
@@ -81,7 +81,7 @@ export default class Chat extends Component<{}, ChatState> {
 
   render() {
     return (
-      <div className="main" id="wrapper">
+      <div className=" border p-4 rounded-md border-cyan-700" id="wrapper">
         {this.state.isLoggedIn ? (
           <div>
             <div className="title">
@@ -93,6 +93,17 @@ export default class Chat extends Component<{}, ChatState> {
                 Websocket Chat: {this.state.userName}
               </Text>
             </div>
+            <div className="">
+              <Search
+                placeholder="input message and send"
+                enterButton="Send"
+                value={this.state.searchVal}
+                size="large"
+                onChange={this.handleSearchChange}
+                onSearch={this.handleSearchSubmit}
+              />
+            </div>
+
             <div
               style={{
                 display: "flex",
@@ -127,16 +138,6 @@ export default class Chat extends Component<{}, ChatState> {
                   />
                 </Card>
               ))}
-            </div>
-            <div className="bottom">
-              <Search
-                placeholder="input message and send"
-                enterButton="Send"
-                value={this.state.searchVal}
-                size="large"
-                onChange={this.handleSearchChange}
-                onSearch={this.handleSearchSubmit}
-              />
             </div>
           </div>
         ) : (

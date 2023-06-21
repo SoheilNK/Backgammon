@@ -1,14 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import Dice3Dv2 from "./Dice3Dv2";
 import { useLocalStorage } from "../services/useLocalStorage";
+import redirectToLogin from "../components/Register"
+import { StartBtn } from "./StartBtn";
 
 export const Intro = () => {
   //read data from local storage
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [started, setStarted] = useLocalStorage("started", "");
-
+  const [online, setOnline] = useLocalStorage("online", false);
+  const logedin = localStorage.getItem("user");
   const navigate = useNavigate();
+
   if (started === "yes") {
     return (
       <div className="z-10">
@@ -50,15 +54,48 @@ export const Intro = () => {
     );
   }
 
+ 
   return (
-    <div className="flex flex-col items-center justify-center p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+    <div className="flex flex-col gap-8 items-center justify-center p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
       <div>
         <Dice3Dv2 roll1={3} roll2={4} rotate={true} />
         <h1 className=" text-xl text-black text-clip font-bold  m-4  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
           Welcome to SoSep Backgammon
         </h1>
       </div>
-      <div className="py-8 px-8 max-w-sm mx-auto rounded-xl  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-white border-2 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
+      <div className="p-8 max-w-sm mx-auto rounded-xl  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-white border-2 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
+        <div className="text-center sm:text-left space-y-2">
+          <h1 className=" text-lg text-black font-semibold">
+            Please choose how you would like to play
+          </h1>
+          <div className="flex gap-0 w-full">
+            <button
+              className={`text-white font-bold ml-auto py-2 px-4 ${
+                online ? "bg-blue-900" : "bg-slate-400" //if online is true, bg-blue-900, else bg-blue-500
+              }`}
+              onClick={() => {
+                setOnline(!online);
+              }}
+            >
+              On Line
+            </button>
+            <button
+              className={`text-white font-bold mr-auto py-2 px-4  ${
+                !online ? "bg-blue-900" : "bg-slate-400" //if online is true, bg-blue-900, else bg-blue-500
+              }`}
+              onClick={() => {
+                setOnline(!online);
+              }}
+            >
+              Off Line
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {
+        !online ? 
+        <div className="py-8 px-8 max-w-sm mx-auto rounded-xl  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-white border-2 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
         <div className="text-center sm:text-left space-y-2">
           <h1 className=" text-lg text-black font-semibold">
             Please enter player's names
@@ -97,26 +134,19 @@ export const Intro = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
-          <button
-            disabled={!player1 || !player2}
-            className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
-            onClick={() => {
-              var p1 = player1;
-              var p2 = player2;
-              localStorage.clear();
-
-              localStorage.setItem("player1", JSON.stringify(p1));
-              localStorage.setItem("player2", JSON.stringify(p2));
-
-              localStorage.setItem("started", JSON.stringify("yes"));
-
-              navigate("/Game");
-            }}
-          >
-            Start the Game!
-          </button>
+          <StartBtn />
         </div>
-      </div>
+          </div>
+          :
+          <div className="py-8 px-8 max-w-sm mx-auto rounded-xl  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-white border-2 shadow-lg sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4">
+            <div className="text-center sm:text-left space-y-2">
+              {logedin ? "Please choose a game" : "Please log in"}
+              
+            </div>
+          </div>
+        
+      
+    }
     </div>
   );
 };

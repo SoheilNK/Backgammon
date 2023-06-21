@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { User } from "../types/user.type";
-// import { logout } from "../services/auth.service";
 import { LogoutButton } from "./Signout";
 import { useNavigate } from "react-router-dom";
-
+import { useLocalStorage } from "../services/useLocalStorage";
 interface NavbarProps {
   title: string;
 }
@@ -79,16 +77,8 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                   !open && "hidden"
                 }`}
               >
-                {/* <Link to="/users">Game Room</Link> */}
                 Game Room
               </li>
-              {/* <li
-                className={`p-2 ${!logedin && "md:block"} hover:bg-green-700 ${
-                  (!open || logedin) && "hidden"
-                }`}
-              >
-                <Link to="/signup">Sign up</Link>
-              </li> */}
             </ul>
           </nav>
 

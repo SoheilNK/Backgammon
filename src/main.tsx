@@ -8,7 +8,6 @@ import { HashRouter, Route, Routes, Link } from "react-router-dom";
 
 import LoginPage from "./pages/Signin";
 import MyProfile from "./pages/MyProfile";
-import SignUpPage from "./pages/Signup";
 import ForgotPassPage from "./pages/ForgotPass";
 
 
@@ -31,12 +30,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <Route
           path="/signin"
           element={<LoginPage />}
-          errorElement={<ErrorPage />}
-        />
-        
-        <Route
-          path="/signup"
-          element={<SignUpPage />}
           errorElement={<ErrorPage />}
         />
         <Route
