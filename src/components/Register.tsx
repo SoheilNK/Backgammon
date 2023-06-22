@@ -52,7 +52,7 @@ const Register = async () => {
         console.log(`You are signed in as ${apiResp.username}`); //review
         setUser(apiResp);
         //go to myprofile page
-        window.location.href = "http://localhost:5173/Backgammon#/myprofile";
+        window.location.href = "http://localhost:5173/Backgammon#/users";
       } else {
         console.log(
           `Failed to get userid. Are you logged in with a valid token?`
