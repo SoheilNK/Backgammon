@@ -13,7 +13,7 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { useEffect, useState } from "react";
 import { restrictToWindowEdges, snapCenterToCursor } from "@dnd-kit/modifiers";
 // import { adjustScale } from "@dnd-kit/modifiers";
-
+const audioMove = new Audio("checkerMove.mp3");
 type BoardProps = {
   currentBoardState: Color[][];
   onMove: (boardState: Color[][]) => void;
@@ -100,7 +100,7 @@ export function Board({
     onColumnSelect(currentPoint);
   }
 
-  const audioMove = new Audio("checkerMove.mp3");
+  // const audioMove = new Audio("checkerMove.mp3");
   function handleDragEnd(e: DragEndEvent) {
     if (!e.over) return;
     let newPlayer: string;

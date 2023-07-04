@@ -18,22 +18,6 @@ myApi.interceptors.request.use(
     }
 );
 
-//get the access token from the local storage
-const getAccessToken = async () => {
-    const tokens = localStorage.getItem("tokens");
-    const token = tokens ? JSON.parse(tokens).access_token : null;
-
-    
-    if (!token) {
-        return null;
-    }
-    const { exp } = JSON.parse(atob(token.split(".")[1]));
-    if (Date.now() >= exp * 1000) {
-        console.log("token expired");
-        return null;
-    }
-    return token;
-}
 //refresh the access token
 const refreshAccessToken = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
@@ -47,6 +31,34 @@ const refreshAccessToken = async () => {
     const { data } = await myApi.post("/refresh", { refresh_token: refreshToken });
     localStorage.setItem("access_token", data.access_token);
     return data.access_token;
+}
+
+
+//get the access token from the local storage
+export const getAccessToken = async () => {
+    const tokens = localStorage.getItem("tokens");
+    const token = tokens ? JSON.parse(tokens).access_token : null;
+
+    
+    if (!token) {
+        return null;
+    }
+    const { exp } = JSON.parse(atob(token.split(".")[1]));
+    if (Date.now() >= exp * 1000) {
+        console.log("token expired");
+        console.log("refreshing token");
+        const newToken = await refreshAccessToken();
+        if (!newToken) {
+            console.log("refresh token expired");
+            console.log("logging out");
+            logout();
+        } else {
+            console.log("token refreshed");
+            return newToken;
+        }
+        return null;
+    }
+    return token;
 }
 //get the user from the local storage
 export const getUser = () => {
