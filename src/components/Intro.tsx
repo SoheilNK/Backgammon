@@ -8,7 +8,7 @@ import { Button } from "antd";
 
 export const Intro = () => {
   //read data from local storage
-  const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const [player1, setPlayer1] = useLocalStorage("gameState",'{"player1", "", "player2", "", "started", "", "online", true, "host", true}');
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [started, setStarted] = useLocalStorage("started", "");
   const [online, setOnline] = useLocalStorage("online", true);
