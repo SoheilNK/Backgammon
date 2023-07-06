@@ -76,6 +76,18 @@ export const setUser = (user: any) => {
 const removeUser = () => {
     localStorage.removeItem("user");
 }
+export const getTokens = () => {
+    const tokens = localStorage.getItem("tokens");
+    if (!tokens) {
+        return null;
+    }
+    return JSON.parse(tokens);
+}
+//set the tokens to the local storage
+export const setTokens = (tokens: any) => {
+    localStorage.setItem("tokens", JSON.stringify(tokens));
+}
+
 //remove the access token from the local storage
 const removeTokens = () => {
     localStorage.removeItem("tokens");
@@ -85,6 +97,18 @@ export const logout = () => {
     removeUser();
     removeTokens();
 }
+//clear game data from the local storage
+export const clearGameData = () => {
+    //save tokens and user
+    const user = getUser();
+    const tokens = getTokens();
+    //clear local storage
+    localStorage.clear();
+    //restore tokens and user
+    setUser(user);
+    setTokens(tokens);
+}
+
 //login the user
 const login = async (email: string, password: string) => {
     try {

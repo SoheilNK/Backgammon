@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../services/useLocalStorage";
+import { clearGameData } from "../services/user.service";
 
 interface MessageProps {
   currentPlayer: string;
@@ -76,7 +77,7 @@ export function Message({
           <div className="flex w-full p-4 gap-4">
             <button
               onClick={() => (
-                localStorage.clear(),
+                clearGameData(),
                 localStorage.setItem("player1", JSON.stringify(player1)),
                 localStorage.setItem("player2", JSON.stringify(player2)),
                 localStorage.setItem("scores", JSON.stringify(newScores)),
@@ -88,9 +89,7 @@ export function Message({
             </button>
             <button
               onClick={() => (
-                localStorage.clear(),
-                navigate("/users"),
-                window.location.reload()
+                clearGameData(), navigate("/users"), window.location.reload()
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >

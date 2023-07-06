@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 import Register from "../components/Register";
 import Signin from "../pages/Signin";
 import { Button } from "antd";
+import { clearGameData } from "../services/user.service";
 
 export const Intro = () => {
   //read data from local storage
-  const [player1, setPlayer1] = useLocalStorage("gameState",'{"player1", "", "player2", "", "started", "", "online", true, "host", true}');
+  const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [started, setStarted] = useLocalStorage("started", "");
   const [online, setOnline] = useLocalStorage("online", true);
@@ -43,9 +44,7 @@ export const Intro = () => {
             </button>
             <button
               onClick={() => (
-                navigate("/users"),
-                window.location.reload(),
-                localStorage.clear()
+                navigate("/users"), window.location.reload(), clearGameData()
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
@@ -144,7 +143,7 @@ export const Intro = () => {
                   onClick={() => {
                     var p1 = player1;
                     var p2 = player2;
-                    localStorage.clear();
+                    clearGameData();
 
                     localStorage.setItem("player1", JSON.stringify(p1));
                     localStorage.setItem("player2", JSON.stringify(p2));
@@ -210,7 +209,7 @@ export const Intro = () => {
             onClick={() => {
               var p1 = player1;
               var p2 = player2;
-              localStorage.clear();
+              clearGameData();
 
               localStorage.setItem("player1", JSON.stringify(p1));
               localStorage.setItem("player2", JSON.stringify(p2));
