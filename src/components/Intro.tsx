@@ -137,24 +137,6 @@ export const Intro = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
                 </div>
-                {/* <button
-                  disabled={!player1 || !player2}
-                  className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
-                  onClick={() => {
-                    var p1 = player1;
-                    var p2 = player2;
-                    clearGameData();
-
-                    localStorage.setItem("player1", JSON.stringify(p1));
-                    localStorage.setItem("player2", JSON.stringify(p2));
-
-                    localStorage.setItem("started", JSON.stringify("yes"));
-
-                    navigate("/Game");
-                  }}
-                >
-                  Start the Game!
-                </button> */}
               </div>
             </div>
           ) : (
@@ -204,7 +186,7 @@ export const Intro = () => {
           )}
           <button
             id="startGame"
-            disabled={!player1 || !player2}
+            disabled={(!online && (!player1 || !player2)) || (online && !logedin)}
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
             onClick={() => {
               var p1 = player1;

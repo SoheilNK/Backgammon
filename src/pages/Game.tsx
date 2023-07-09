@@ -2,18 +2,28 @@
 
 import { ErrorBoundary } from "react-error-boundary";
 import GamePlay from "../components/GamePlay";
-import Navbar from "../components/Navbar";
-import { Footer } from "../components/Footer";
 import PageClass from "../components/PageClass";
+import { useLocalStorage } from "../services/useLocalStorage";
+import { GameRoom } from "../components/GameRoom";
 
 function Game() {
-
-  return (
-            <ErrorBoundary fallback={<div>Something went wrong</div>}>
-              {" "}
-              <GamePlay />
-            </ErrorBoundary>
-  );
+  const [online, setOnline] = useLocalStorage("online", true);
+  if (online === false) {
+    //offline mode
+    return (
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        {" "}
+        <GamePlay />
+      </ErrorBoundary>
+    );
+  } else {
+    return (
+      //online mode
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        <GameRoom />
+      </ErrorBoundary>
+    );
+  }
 }
 
 const GamePage: React.FC = () => {
