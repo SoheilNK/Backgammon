@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getAccessToken } from "../services/user.service";
 import { useEffect, useState } from "react";
+import { useLocalStorage } from "../services/useLocalStorage";
 
 //call the api to get the list of online games
 export const getOnlineGames = async () => {
@@ -47,7 +48,11 @@ export function GameRoom() {
                 Authorization: `Bearer ${token}`
             }
         }
-        const { data } = await axios.post(`http://localhost:8000/api/games/${gameId}/join`, {}, config);
+        const { data } = await axios.post(
+          `http://localhost:8000/api/games/join/?gameId=${gameId}`,
+          {},
+          config
+        );
         console.log(data);
     }
 

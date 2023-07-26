@@ -1,11 +1,11 @@
 import { cognitoLoginUrl, clientId } from "../../cognitoConfig";
-import {myApi} from "../services/user.service"
+import { myApi } from "../services/user.service";
 import { setUser } from "../services/user.service";
-
-
-
+import { useLocalStorage } from "../services/useLocalStorage";
 
 const Register = async () => {
+  let isLoggedIn: boolean =
+    JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
 
   const sha256 = async (str: string): Promise<ArrayBuffer> => {
     return await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
@@ -42,7 +42,7 @@ const Register = async () => {
     let apiResp: any;
     try {
       //send id_token in headers for one time to get user id
-      myApi.defaults.headers.common["x_id_token"] = id_token;   
+      myApi.defaults.headers.common["x_id_token"] = id_token;
       const response = await myApi.get("/user");
       // console.log(response);
       apiResp = response.data;
@@ -50,6 +50,7 @@ const Register = async () => {
 
       if (apiResp.id) {
         console.log(`You are signed in as ${apiResp.username}`); //review
+        localStorage.setItem("isLoggedIn", JSON.stringify(true));
         setUser(apiResp);
         //go to myprofile page
         window.location.href = "http://localhost:5173/Backgammon#/users";
@@ -106,7 +107,7 @@ const Register = async () => {
 
     init(tokens);
   } else {
-    if (localStorage.getItem("tokens")) {
+    if (localStorage.getItem("tokens") !== null && (isLoggedIn )) {
       const tokens = JSON.parse(localStorage.getItem("tokens")!);
       init(tokens);
     } else {

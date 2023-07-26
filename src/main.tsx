@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import ErrorPage from "./pages/error-page";
-import Game from "./pages/Game";
+import GamePage from "./pages/Game";
 import HomePage from "./pages/Home";
 import UsersPage from "./pages/Users";
 import { HashRouter, Route, Routes, Link } from "react-router-dom";
@@ -21,7 +21,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           element={<UsersPage />}
           errorElement={<ErrorPage />}
         />
-        <Route path="/game" element={<Game />} errorElement={<ErrorPage />} />
+        <Route path="/game" element={<GamePage />} errorElement={<ErrorPage />} />
         <Route
           path="/myprofile"
           element={<MyProfile />}

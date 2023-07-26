@@ -7,7 +7,7 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { GameRoom } from "../components/GameRoom";
 
 function Game() {
-  const [online, setOnline] = useLocalStorage("online", true);
+  const [online, setOnline] = useLocalStorage("online", false);
   if (online === false) {
     //offline mode
     return (

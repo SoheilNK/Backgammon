@@ -12,9 +12,8 @@ export const Intro = () => {
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [started, setStarted] = useLocalStorage("started", "");
-  const [online, setOnline] = useLocalStorage("online", true);
-  const [host, setHost] = useLocalStorage("host", true);
-  const logedin = localStorage.getItem("user");
+  const [online, setOnline] = useLocalStorage("online", false);
+  let isLoggedIn: boolean = JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
   const navigate = useNavigate();
 
   if (started === "yes") {
@@ -94,6 +93,7 @@ export const Intro = () => {
               Off Line
             </button>
           </div>
+
           {!online ? (
             <div
               id="offline"
@@ -145,34 +145,7 @@ export const Intro = () => {
               className="py-8 px-8 w-full max--w-sm mx-auto rounded-xl  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-white sm:flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 sm:py-4"
             >
               <div className="text-center m-auto sm:text-left space-y-2">
-                {logedin ? (
-                  <div id="onlineGame" className="flex gap-0 w-full">
-                    <button
-                      className={`text-white font-bold ml-auto py-2 px-4 rounded-s-md ${
-                        host
-                          ? "bg-green-900"
-                          : "bg-slate-300  hover:bg-green-700"
-                      }`}
-                      onClick={() => {
-                        setHost(!host);
-                      }}
-                    >
-                      Host a Game
-                    </button>
-                    <button
-                      className={`text-white font-bold mr-auto py-2 px-4  rounded-e-md ${
-                        !host
-                          ? "bg-green-900"
-                          : "bg-slate-300  hover:bg-green-700"
-                      }`}
-                      onClick={() => {
-                        setHost(!host);
-                      }}
-                    >
-                      Join a Game
-                    </button>
-                  </div>
-                ) : (
+                {!isLoggedIn ? (
                   <button
                     id="signin"
                     className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
@@ -180,13 +153,17 @@ export const Intro = () => {
                   >
                     Log in Please
                   </button>
+                ) : (
+                  <div></div>
                 )}
               </div>
             </div>
           )}
           <button
             id="startGame"
-            disabled={(!online && (!player1 || !player2)) || (online && !logedin)}
+            disabled={
+              (!online && (!player1 || !player2)) || (online && !isLoggedIn)
+            }
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
             onClick={() => {
               var p1 = player1;
@@ -198,7 +175,7 @@ export const Intro = () => {
 
               localStorage.setItem("started", JSON.stringify("yes"));
 
-              navigate("/Game");
+              navigate("/game");
             }}
           >
             Start the Game!

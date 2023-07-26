@@ -10,8 +10,11 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ title }) => {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  const logedin = localStorage.getItem("user");
+  const userString = localStorage.getItem("user");
+  let isLoggedIn: boolean =
+    JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
   const navigate = useNavigate();
+
   let user: User = {
     id: 0,
     username: "",
@@ -21,8 +24,14 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
     createdAt: Date.now() as unknown as Date,
     updatedAt: Date.now() as unknown as Date,
   };
-  if (logedin) {
-    user = JSON.parse(logedin);
+  if (
+    isLoggedIn &&
+    userString !== "null" &&
+    userString !== null &&
+    userString !== undefined &&
+    userString !== ""
+  ) {
+    user = JSON.parse(userString!);
   }
 
   return (
@@ -84,11 +93,11 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
 
           <div className="cursor-pointer flex items-center flex-shrink-0 m-2 border border-gray-300 focus:outline-none hover:bg-green-700 focus:ring-4 focus:ring-gray-200 rounded-lg px-2 py-1  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
             <button onClick={() => setOpenProfile(!openProfile)}>
-              <span className={`${!logedin && "hidden"}`}>
-                {logedin ? user.username || "Profile" : ""}
+              <span className={`${!isLoggedIn && "hidden"}`}>
+                {isLoggedIn ? user.username || "Profile" : ""}
               </span>
               <span
-                className={`${logedin && "hidden"}`}
+                className={`${isLoggedIn && "hidden"}`}
                 onClick={() => navigate("/signin")}
               >
                 Sign in/Register
