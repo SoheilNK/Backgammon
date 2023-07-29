@@ -13,7 +13,8 @@ export const Intro = () => {
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [started, setStarted] = useLocalStorage("started", "");
   const [online, setOnline] = useLocalStorage("online", false);
-  let isLoggedIn: boolean = JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
+  // let isLoggedIn: boolean = JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
   const navigate = useNavigate();
 
   if (started === "yes") {
@@ -166,14 +167,14 @@ export const Intro = () => {
             }
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded disabled:bg-blue-200"
             onClick={() => {
+              clearGameData();
               var p1 = player1;
               var p2 = player2;
-              clearGameData();
 
               localStorage.setItem("player1", JSON.stringify(p1));
               localStorage.setItem("player2", JSON.stringify(p2));
 
-              localStorage.setItem("started", JSON.stringify("yes"));
+              // localStorage.setItem("started", JSON.stringify("yes"));
 
               navigate("/game");
             }}

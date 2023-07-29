@@ -13,7 +13,10 @@ myApi.interceptors.request.use(
         
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-        } 
+        } else {
+            delete config.headers.Authorization;
+        }
+        
         return config;
     }
 );
@@ -77,17 +80,17 @@ const removeUser = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
 }
-export const getTokens = () => {
-    const tokens = localStorage.getItem("tokens");
-    if (!tokens) {
-        return null;
-    }
-    return JSON.parse(tokens);
-}
-//set the tokens to the local storage
-export const setTokens = (tokens: any) => {
-    localStorage.setItem("tokens", JSON.stringify(tokens));
-}
+// export const getTokens = () => {
+//     const tokens = localStorage.getItem("tokens");
+//     if (!tokens) {
+//         return null;
+//     }
+//     return JSON.parse(tokens);
+// }
+// //set the tokens to the local storage
+// export const setTokens = (tokens: any) => {
+//     localStorage.setItem("tokens", JSON.stringify(tokens));
+// }
 
 //remove the access token from the local storage
 const removeTokens = () => {
@@ -132,17 +135,17 @@ export const clearGameData = () => {
 // }
 
 //login the user
-const login = async (email: string, password: string) => {
-    try {
-        const { data } = await myApi.post("/login", { email, password });
-        localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("refresh_token", data.refresh_token);
-        setUser(data.user);
-        return data.user;
-    } catch (error) {
-        return Promise.reject(error);
-    }
-}
+// const login = async (email: string, password: string) => {
+//     try {
+//         const { data } = await myApi.post("/login", { email, password });
+//         localStorage.setItem("access_token", data.access_token);
+//         localStorage.setItem("refresh_token", data.refresh_token);
+//         setUser(data.user);
+//         return data.user;
+//     } catch (error) {
+//         return Promise.reject(error);
+//     }
+// }
 //update the user profile
 const updateProfile = async (profile: any) => {
     try {

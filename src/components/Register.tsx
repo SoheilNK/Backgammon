@@ -4,6 +4,7 @@ import { setUser } from "../services/user.service";
 import { useLocalStorage } from "../services/useLocalStorage";
 
 const Register = async () => {
+  // const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
   let isLoggedIn: boolean =
     JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
 
@@ -51,6 +52,8 @@ const Register = async () => {
       if (apiResp.id) {
         console.log(`You are signed in as ${apiResp.username}`); //review
         localStorage.setItem("isLoggedIn", JSON.stringify(true));
+        // setIsLoggedIn(true);
+
         setUser(apiResp);
         //go to myprofile page
         window.location.href = "http://localhost:5173/Backgammon#/users";

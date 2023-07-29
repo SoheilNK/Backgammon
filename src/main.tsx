@@ -4,6 +4,7 @@ import ErrorPage from "./pages/error-page";
 import GamePage from "./pages/Game";
 import HomePage from "./pages/Home";
 import UsersPage from "./pages/Users";
+import OnlineGamePage from "./pages/OnlineGame";
 import { HashRouter, Route, Routes, Link } from "react-router-dom";
 
 import LoginPage from "./pages/Signin";
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           errorElement={<ErrorPage />}
         />
         <Route path="/game" element={<GamePage />} errorElement={<ErrorPage />} />
+        <Route path="/onlinegame" element={<OnlineGamePage />} errorElement={<ErrorPage />} />
         <Route
           path="/myprofile"
           element={<MyProfile />}

@@ -4,12 +4,13 @@ import { ErrorBoundary } from "react-error-boundary";
 import GamePlay from "../components/GamePlay";
 import PageClass from "../components/PageClass";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { GameRoom } from "../components/GameRoom";
+import { GameList } from "../components/GameList";
 
 function Game() {
   const [online, setOnline] = useLocalStorage("online", false);
   if (online === false) {
     //offline mode
+    localStorage.setItem("started", JSON.stringify("yes"));
     return (
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
         {" "}
@@ -20,7 +21,7 @@ function Game() {
     return (
       //online mode
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
-        <GameRoom />
+        <GameList />
       </ErrorBoundary>
     );
   }
