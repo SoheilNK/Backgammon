@@ -100,15 +100,36 @@ export const logout = () => {
 }
 //clear game data from the local storage
 export const clearGameData = () => {
-    //save tokens and user
-    const user = getUser();
-    const tokens = getTokens();
-    //clear local storage
-    localStorage.clear();
-    //restore tokens and user
-    setUser(user);
-    setTokens(tokens);
+    // let allItems = getAllLocalStorageItems();
+    // console.log("All items: ", allItems);
+    // for (let key in allItems) {
+    //     if (key !== "user" && key !== "tokens" && key !== "isLoggedIn" && key !== "online") {
+    //         localStorage.removeItem(key);
+    //     }
+    // }
+    const whitelistKeys = ["user", "tokens", "isLoggedIn", "online"];
+
+    for (const key in localStorage) {
+        if (!whitelistKeys.includes(key)) {
+            localStorage.removeItem(key);
+        }
+    }
+
 }
+//Using a loop to iterate through all keys in localStorage and return an object with all key/value pairs
+// function getAllLocalStorageItems(): { [key: string]: string } {
+//     const allItems: { [key: string]: string } = {};
+
+//     for (let i = 0; i < localStorage.length; i++) {
+//         const key = localStorage.key(i);
+//         if (key !== null) {
+//             const value = localStorage.getItem(key);
+//             allItems[key] = value || '';
+//         }
+//     }
+
+//     return allItems;
+// }
 
 //login the user
 const login = async (email: string, password: string) => {
