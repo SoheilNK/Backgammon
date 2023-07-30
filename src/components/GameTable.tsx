@@ -9,7 +9,7 @@ interface GameTableProps {
   games: Game[];
   isLoggedIn: boolean;
   createGame: () => void;
-  joinGame: (matchId: string) => void;
+  joinGame: (matchId: string, hostName: string) => void;
 }
 
 const GameTable: React.FC<GameTableProps> = ({
@@ -44,7 +44,7 @@ const GameTable: React.FC<GameTableProps> = ({
                 <td>{game.guestName}</td>
                 <td>{game.status}</td>
                 <td>
-                  <button onClick={() => joinGame(game.matchId)}>
+                  <button onClick={() => joinGame(game.matchId, game.hostName)}>
                     Join Game
                   </button>
                 </td>

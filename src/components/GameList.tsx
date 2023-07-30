@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken } from "../services/user.service";
+import { getAccessToken, getUser } from "../services/user.service";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { myApi } from "../services/user.service";
@@ -42,9 +42,16 @@ export function GameList() {
   };
 
   //join a game room
-  const joinGame = async (gameId: string) => {
+  const joinGame = async (matchId: string, hostName: string) => {
+    console.log("joinGame", matchId, hostName);
+    const user = getUser();
+    if (user.username === hostName) {
+      alert("You cannot join your own game!");
+      return;
+    } 
+
     const { data } = await myApi.post(
-      `http://localhost:8000/api/games/join?gameId=${gameId}`,
+      `http://localhost:8000/api/games/join?gameId=${matchId}`,
       {}
     );
     console.log(data);

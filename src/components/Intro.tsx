@@ -37,7 +37,7 @@ export const Intro = () => {
           <div></div>
           <div className="flex p-4 gap-4">
             <button
-              onClick={() => navigate("/Game")}
+              onClick={() => online ?navigate("/onlinegame") : navigate("/Game")}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               Keep Playing

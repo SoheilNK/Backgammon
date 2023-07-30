@@ -1,37 +1,80 @@
 import PageClass from "../components/PageClass";
 import { useSearchParams } from "react-router-dom";
+import { getUser } from "../services/user.service";
+import GamePlay from "../components/GamePlay";
+
 
 function OnlineGame() {
-//   const url =
-//     "http://localhost:5173/Backgammon#/onlinegame/?matchID=1690659596342";
+  const [searchParams, setSearchParams] = useSearchParams();
 
-//   // Create a URL object with the given URL
-//   const urlObj = new URL(url);
-
-//   // Get the searchParams object from the URL
-//   const searchParams = urlObj.searchParams;
-
-//   // Retrieve the matchID parameter
-//   const matchID = searchParams.get("matchID");
-
-//   console.log(matchID); // Output: 1690659596342
-    const [searchParams, setSearchParams] = useSearchParams();
-    
-//   const searchParams = new URL(location.href).searchParams;
   const matchID = searchParams.get("matchID");
-  console.log(matchID);
 
   if (matchID !== null) {
     window.history.replaceState({}, document.title, "/Backgammon/");
     console.log(matchID);
-  }
+    }
+    
+  //get username from local storage
+  const user = getUser();
+  var p1 = user.username;
+    var p2 = "Guest";
+    
+    //establish connection with the server
+    var socket = new WebSocket("ws://localhost:8001/ws/game/" + matchID + "/");
+    socket.onopen = function (e) {
+        console.log("Connection established!");
+    };
+    socket.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        console.log(data);
+        if (data.type === "player2") {
+            p2 = data.message;
+        }
+        if (data.type === "player1") {
+            p1 = data.message;
+        }
+        if (data.type === "start") {    
+            console.log("Game started!");
+        }
+        if (data.type === "move") {
+            console.log("Move made!");
+        }
+        if (data.type === "turn") {
+            console.log("Turn changed!");
+        }
+        if (data.type === "winner") {
+            console.log("Winner declared!");
+        }
+        if (data.type === "error") {
+            console.log("Error!");
+        }
+    };
+    socket.onclose = function (event) {
+        if (event.wasClean) {
+            console.log("Connection closed cleanly!");
+        } else {
+            console.log("Connection died!");
+        }
+        console.log("Code: " + event.code + " Reason: " + event.reason);
+    };
+    socket.onerror = function (error) {
+        console.log("Error: " + error);
+    };
+
+
+
+  localStorage.setItem("player1", JSON.stringify(p1));
+  localStorage.setItem("player2", JSON.stringify(p2));
+  localStorage.setItem("started", JSON.stringify("yes"));
 
   return (
     <div>
       <div className="container m-auto p-1">
         <div className="  bg-white relative  rounded-md p-8 m-auto dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-          <div></div>
-          <h1>Online game with matchID ${matchID}</h1>
+          <div>
+            <h1>Game ID: ${matchID}</h1>
+            <GamePlay />
+          </div>
         </div>
       </div>
     </div>
