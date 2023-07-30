@@ -26,9 +26,7 @@ const Profile: React.FC = () => {
         </p>
         <strong>Role:</strong> {currentUser.role}
       </div>
-      <div className="mx-auto p-4 sm:px-6 lg:px-8">
-        <Chat />
-      </div>
+      
     </div>
   );
 };

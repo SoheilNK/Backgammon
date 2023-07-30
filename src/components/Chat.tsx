@@ -1,13 +1,12 @@
 import { Component, ChangeEvent } from "react";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import { Card, Avatar, Input, Typography } from "antd";
-import {getUser} from "../services/user.service";
+import { getUser } from "../services/user.service";
+import { getWebSocketClient } from "../services/websocketService";
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
-
-const client = new W3CWebSocket("ws://localhost:8001");
 
 interface Message {
   msg: string;
@@ -27,7 +26,7 @@ interface ChatState {
   searchVal: string;
 }
 
-export default class Chat extends Component<{}, ChatState> {
+class Chat extends Component<{}, ChatState> {
   user: string = getUser().username.toString();
   state: ChatState = {
     userName: this.user,
@@ -36,23 +35,15 @@ export default class Chat extends Component<{}, ChatState> {
     searchVal: "",
   };
 
-  onButtonClicked = (value: string): void => {
-    client.send(
-      JSON.stringify({
-        type: "message",
-        msg: value,
-        user: this.state.userName,
-      })
-    );
-    this.setState({ searchVal: "" });
-  };
+  webSocketClient: W3CWebSocket | null = null;
 
   componentDidMount(): void {
-    client.onopen = (): void => {
+    this.webSocketClient = getWebSocketClient();
+    this.webSocketClient.onopen = (): void => {
       console.log("WebSocket Client Connected");
     };
 
-    client.onmessage = (message: IMessageEvent): void => {
+    this.webSocketClient.onmessage = (message: IMessageEvent): void => {
       const dataFromServer: DataFromServer = JSON.parse(
         message.data.toString()
       );
@@ -78,6 +69,29 @@ export default class Chat extends Component<{}, ChatState> {
   handleSearchSubmit = (value: string): void => {
     this.onButtonClicked(value);
   };
+
+  onButtonClicked = (value: string): void => {
+    if (this.webSocketClient) {
+      this.webSocketClient.send(
+        JSON.stringify({
+          type: "message",
+          msg: value,
+          user: this.state.userName,
+        })
+      );
+      this.setState({ searchVal: "" });
+    }
+  };
+
+  componentWillUnmount(): void {
+    // Clean up WebSocket event listeners here (if needed)
+    if (this.webSocketClient) {
+      this.webSocketClient.onmessage = () => {};
+      this.webSocketClient.onerror = () => {};
+      // Close the WebSocket connection when the component unmounts (optional)
+      this.webSocketClient.close();
+    }
+  }
 
   render() {
     return (
@@ -149,3 +163,5 @@ export default class Chat extends Component<{}, ChatState> {
     );
   }
 }
+
+export default Chat;
