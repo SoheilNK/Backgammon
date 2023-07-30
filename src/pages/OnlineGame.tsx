@@ -1,30 +1,29 @@
 import PageClass from "../components/PageClass";
-
+import { useSearchParams } from "react-router-dom";
 
 function OnlineGame() {
-  const url =
-    "http://localhost:5173/Backgammon#/onlinegame?matchID=1690659596342";
+//   const url =
+//     "http://localhost:5173/Backgammon#/onlinegame/?matchID=1690659596342";
 
-  // Create a URL object with the given URL
-  const urlObj = new URL(url);
+//   // Create a URL object with the given URL
+//   const urlObj = new URL(url);
 
-  // Get the searchParams object from the URL
-  const searchParams = urlObj.searchParams;
+//   // Get the searchParams object from the URL
+//   const searchParams = urlObj.searchParams;
 
-  // Retrieve the matchID parameter
-  const matchId = searchParams.get("matchID");
+//   // Retrieve the matchID parameter
+//   const matchID = searchParams.get("matchID");
 
-  console.log(matchId); // Output: 1690659596342
-
-    
+//   console.log(matchID); // Output: 1690659596342
+    const [searchParams, setSearchParams] = useSearchParams();
     
 //   const searchParams = new URL(location.href).searchParams;
-//   const matchId = searchParams.get("matchId");
-//   console.log(matchId);
+  const matchID = searchParams.get("matchID");
+  console.log(matchID);
 
-  if (matchId !== null) {
+  if (matchID !== null) {
     window.history.replaceState({}, document.title, "/Backgammon/");
-    console.log(matchId);
+    console.log(matchID);
   }
 
   return (
@@ -32,7 +31,7 @@ function OnlineGame() {
       <div className="container m-auto p-1">
         <div className="  bg-white relative  rounded-md p-8 m-auto dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
           <div></div>
-          <h1>Online game with matchID ${matchId}</h1>
+          <h1>Online game with matchID ${matchID}</h1>
         </div>
       </div>
     </div>

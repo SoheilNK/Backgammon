@@ -44,7 +44,7 @@ export function GameList() {
   //join a game room
   const joinGame = async (gameId: string) => {
     const { data } = await myApi.post(
-      `http://localhost:8000/api/games/join/?gameId=${gameId}`,
+      `http://localhost:8000/api/games/join?gameId=${gameId}`,
       {}
     );
     console.log(data);
