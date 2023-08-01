@@ -1,13 +1,13 @@
-// websocketService.ts
+// // websocketService.ts
 
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const WebSocketURL = "ws://localhost:8001";
+const WebSocketURL = "ws://localhost:";
 let client: W3CWebSocket | null = null;
 
-export const getWebSocketClient = () => {
+export const getWebSocketClient = (port: number) => {
     if (!client || client.readyState === client.CLOSED) {
-        client = new W3CWebSocket(WebSocketURL);
+        client = new W3CWebSocket(WebSocketURL + port);
     }
     return client;
 };

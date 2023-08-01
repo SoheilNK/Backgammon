@@ -14,6 +14,26 @@ export let PlayerNames = {
   black: ["Player 2"],
 };
 
+//-------------web socket client-----------------
+// import { getWebSocketClient } from "../services/websocketService";
+
+interface Message {
+  msg: string;
+  user: string;
+  matchId: string;
+}
+
+interface DataFromServer {
+  type: string;
+  msg: string;
+  user: string;
+  matchId: string;
+}
+// //-------------web socket client-----------------
+// const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+// const matchID = onlineGame.matchId;
+
+
 function GamePlay() {
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
@@ -52,6 +72,8 @@ function GamePlay() {
     setDiceRoll([0, 0]);
     setAlertSeen(false);
   }
+
+  
 
   return (
     <div className="flex flex-col items-center">

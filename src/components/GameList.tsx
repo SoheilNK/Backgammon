@@ -34,27 +34,41 @@ export function GameList() {
       "http://localhost:8000/api/games/add/",
       {}
     );
-    console.log("Created Game data", data);
-    let matchId = data.matchId;
-    // window.location.reload();
+    const onlineGame = data;
+    //store onlineGame objrct in local storage
+    localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+
     //goto the game room
-    navigate(`/onlinegame?matchID=${matchId}`);
+    navigate(`/onlinegame`);
   };
 
   //join a game room
   const joinGame = async (matchId: string, hostName: string) => {
-    console.log("joinGame", matchId, hostName);
+    console.log("joining game id :", matchId, " hosted by: ", hostName);
     const user = getUser();
     if (user.username === hostName) {
       alert("You cannot join your own game!");
       return;
-    } 
+    } else {
+      try {
+        const { data } = await myApi.post(
+          "http://localhost:8000/api/games/join",
+          { matchId: matchId } // Set the matchId in the request body
+        );
+        console.log("Response:", data);
+        const onlineGame = data
 
-    const { data } = await myApi.post(
-      `http://localhost:8000/api/games/join?gameId=${matchId}`,
-      {}
-    );
-    console.log(data);
+        //store onlineGame objrct in local storage
+        localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+
+        console.log("Response:", onlineGame);
+      } catch (error) {
+        // Handle the error here
+        console.error("Error:", error);
+      }
+      //goto the game room
+      navigate(`/onlinegame?matchID=${matchId}`);
+    }
   };
 
   return (

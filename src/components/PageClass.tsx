@@ -15,8 +15,8 @@ class PageClass extends React.Component<PageClassProps> {
       <div className="  w-screen flex flex-col min-h-screen bg-slate-100 ">
         <Navbar title={"SoSep Backgammon"} />
         <div className=" w-screen  bg-slate-100  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-          <div className="container m-auto p-4 flex-grow">
-            <div className=" relative md:w-3/4 md:p-4 max-w-3xl bg-white  rounded-md  m-auto  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+          <div className="xl:container mx-auto px-4 flex-grow">
+            <div className=" relative xl:w-3/4 md:p-4 mmax-w-3xl bg-white  rounded-md  m-auto  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
               <InputComponent />
             </div>
           </div>
