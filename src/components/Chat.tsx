@@ -31,6 +31,7 @@ interface ChatState {
 }
 let chatWebSocketClient: W3CWebSocket | null = null;
 
+
 const Chat = () => {
   const user = getUser().username.toString();
   const [userName] = useState(user);
@@ -40,7 +41,6 @@ const Chat = () => {
 
 
 useEffect(() => {
-  // let chatWebSocketClient: W3CWebSocket | null = null;
 
   const fetchData = async () => {
     chatWebSocketClient = await getWebSocketClient(8001);
@@ -55,6 +55,7 @@ useEffect(() => {
       );
       console.log("got reply! ", dataFromServer);
       if (dataFromServer.type === "message") {
+        console.log("got reply for Chat! ", dataFromServer);
         setMessages((prevState) => [
           {
             msg: dataFromServer.msg,
@@ -63,6 +64,11 @@ useEffect(() => {
           ...prevState,
         ]);
       }
+      if (dataFromServer.type === "game") {
+        console.log("got reply for Game! ", dataFromServer);
+        alert(dataFromServer.msg);
+      }
+
     };
   };
 

@@ -83,9 +83,11 @@ function GamePlay() {
   const user = getUser().username.toString();
   console.log("user: ", user);
 
+
+
   useEffect(() => {
     const fetchData = async () => {
-      gameWebSocketClient = getWebSocketClient(8002);
+      gameWebSocketClient = getWebSocketClient(8001);
       gameWebSocketClient.onopen = () => {
         console.log("gameWebSocketClient  Connected");
       };
@@ -95,9 +97,6 @@ function GamePlay() {
           message.data.toString()
         );
         console.log("got reply! gameWebSocketClient : ", dataFromServer);
-        if (dataFromServer.type === "message") {
-          alert(dataFromServer.msg);
-        }
       };
     };
 
@@ -116,6 +115,7 @@ function GamePlay() {
   const handelClick = () => {
     console.log("handelClick");
     const message: WsMessage = {
+      type: "game",
       msg: "test",
       user: user,
       matchId: matchID,
