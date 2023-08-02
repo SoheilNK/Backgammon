@@ -29,7 +29,7 @@ interface ChatState {
   messages: Message[];
   searchVal: string;
 }
-  let chatWebSocketClient: W3CWebSocket | null = null;
+let chatWebSocketClient: W3CWebSocket | null = null;
 
 const Chat = () => {
   const user = getUser().username.toString();
@@ -39,8 +39,12 @@ const Chat = () => {
   const [searchVal, setSearchVal] = useState("");
 
 
-  useEffect(() => {
-    chatWebSocketClient = getWebSocketClient(8001);
+useEffect(() => {
+  // let chatWebSocketClient: W3CWebSocket | null = null;
+
+  const fetchData = async () => {
+    chatWebSocketClient = await getWebSocketClient(8001);
+
     chatWebSocketClient.onopen = () => {
       console.log("chatWebSocket Client Connected");
     };
@@ -60,16 +64,19 @@ const Chat = () => {
         ]);
       }
     };
+  };
 
-    // Cleanup function to close the WebSocket connection on unmount
-    return () => {
-      if (chatWebSocketClient) {
-        chatWebSocketClient.onmessage = () => {};
-        chatWebSocketClient.onerror = () => {};
-        // chatWebSocketClient.close();
-      }
-    };
-  }, []);
+  fetchData();
+
+  // Cleanup function to close the WebSocket connection on unmount
+  return () => {
+    if (chatWebSocketClient) {
+      chatWebSocketClient.onmessage = () => {};
+      chatWebSocketClient.onerror = () => {};
+      // chatWebSocketClient.close();
+    }
+  };
+}, []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchVal(e.target.value);
