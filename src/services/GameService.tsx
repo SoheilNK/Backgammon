@@ -14,6 +14,22 @@ export const getOnlineGames = async () => {
   return data;
 };
 
+  //update the game room
+  export const updateOnlineGame = async (onlineGame: any) => {
+    console.log("updating game id :", onlineGame.matchId);
+    try {
+      const { data } = await myApi.post(
+        "http://localhost:8000/api/games/update",
+        { onlineGame: onlineGame }
+      );
+      console.log("Response:", data);
+    } catch (error) {
+      // Handle the error here
+      console.error("Error:", error);
+    }
+  };
+
+
 //create a component for online users to create a game room and join a game room
 export function GameList() {
   const navigate = useNavigate();
@@ -71,20 +87,6 @@ export function GameList() {
     }
   };
 
-  //update the game room
-  const updateGame = async (onlineGame: any) => {
-    console.log("updating game id :", onlineGame.matchId);
-    try {
-      const { data } = await myApi.post(
-        "http://localhost:8000/api/games/update",
-        { onlineGame: onlineGame }
-      );
-      console.log("Response:", data);
-    } catch (error) {
-      // Handle the error here
-      console.error("Error:", error);
-    }
-  };
 
   
 
