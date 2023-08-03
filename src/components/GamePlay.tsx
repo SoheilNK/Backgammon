@@ -18,7 +18,13 @@ export let PlayerNames = {
   white: ["Player 1"],
   black: ["Player 2"],
 };
-
+// Define an interface for the OnlineGame object
+interface OnlineGame {
+    matchId: string;
+    hostName: string;
+    guestName: string;
+    status: string;
+}
 //-------------web socket client-----------------
 interface WsMessage {
   msg: string;
@@ -32,8 +38,8 @@ interface DataFromServer {
   user: string;
   matchId: string;
 }
-let gameWebSocketClient: W3CWebSocket | null = null;
 
+let gameWebSocketClient: W3CWebSocket | null = null;
 // //-------------web socket client-----------------
 
 function GamePlay() {
@@ -76,28 +82,23 @@ function GamePlay() {
   }
 
   // //-------------web socket client-----------------
-  const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-  console.log("GWSC onlineGame: ", onlineGame);
-  const matchID = onlineGame.matchId || "";
-  console.log("matchID: ", matchID);
-  const user = getUser().username.toString();
-  console.log("user: ", user);
+
+    //get onlineGame from local storage
+    const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+    const matchID = onlineGame.matchId;
+    const userName = getUser().username.toString();
+    if (userName === onlineGame.hostName) {
+      var msgFor = "guest";
+    } else {
+      var msgFor = "host";
+    }
+
 
 
 
   useEffect(() => {
     const fetchData = async () => {
       gameWebSocketClient = getWebSocketClient(8001);
-      gameWebSocketClient.onopen = () => {
-        console.log("gameWebSocketClient  Connected");
-      };
-
-      gameWebSocketClient.onmessage = (message: IMessageEvent) => {
-        const dataFromServer: DataFromServer = JSON.parse(
-          message.data.toString()
-        );
-        console.log("got reply! gameWebSocketClient : ", dataFromServer);
-      };
     };
 
     fetchData();
@@ -117,8 +118,9 @@ function GamePlay() {
     const message: WsMessage = {
       type: "game",
       msg: "test",
-      user: user,
+      user: userName,
       matchId: matchID,
+      msgFor: msgFor,
     };
     console.log("message: ", message);
     if (gameWebSocketClient) {

@@ -3,7 +3,7 @@ import { getAccessToken, getUser } from "../services/user.service";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { myApi } from "../services/user.service";
-import GameTable from "./GameTable";
+import GameTable from "../components/GameTable";
 import { useNavigate } from "react-router-dom";
 
 //call the api to get the list of online games
@@ -70,6 +70,23 @@ export function GameList() {
       navigate(`/onlinegame?matchID=${matchId}`);
     }
   };
+
+  //update the game room
+  const updateGame = async (onlineGame: any) => {
+    console.log("updating game id :", onlineGame.matchId);
+    try {
+      const { data } = await myApi.post(
+        "http://localhost:8000/api/games/update",
+        { onlineGame: onlineGame }
+      );
+      console.log("Response:", data);
+    } catch (error) {
+      // Handle the error here
+      console.error("Error:", error);
+    }
+  };
+
+  
 
   return (
     <div>
