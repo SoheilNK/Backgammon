@@ -88,6 +88,14 @@ const Chat = () => {
           //send onlineGame to server to update
           updateOnlineGame(onlineGame);
         }
+        //************************************************************ */
+        //check for joinOnlineGame
+        if (dataFromServer.type === "joinOnlineGame") {
+          //update localstorage
+          localStorage.setItem("onlineGame", JSON.stringify(dataFromServer)); 
+          //update state
+        }
+
 
         if (dataFromServer.type === "message") {
           console.log("got reply for Chat! ", dataFromServer);
