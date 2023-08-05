@@ -9,6 +9,7 @@ import { getUser } from "../services/user.service";
 import { useEffect } from "react";
 import { getWebSocketClient } from "../services/websocketService";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
+import * as type from "../types";
 
 //----------------------------------------------
 export type Color = "White" | "Black" | null;
@@ -18,26 +19,7 @@ export let PlayerNames = {
   white: ["Player 1"],
   black: ["Player 2"],
 };
-// Define an interface for the OnlineGame object
-interface OnlineGame {
-    matchId: string;
-    hostName: string;
-    guestName: string;
-    status: string;
-}
-//-------------web socket client-----------------
-interface WsMessage {
-  msg: string;
-  user: string;
-  matchId: string;
-}
 
-interface DataFromServer {
-  type: string;
-  msg: string;
-  user: string;
-  matchId: string;
-}
 
 let gameWebSocketClient: W3CWebSocket | null = null;
 // //-------------web socket client-----------------
@@ -98,7 +80,7 @@ function GamePlay() {
 
   useEffect(() => {
     const fetchData = async () => {
-      gameWebSocketClient = getWebSocketClient(8001);
+      gameWebSocketClient = getWebSocketClient();
     };
 
     fetchData();
@@ -115,7 +97,7 @@ function GamePlay() {
 
   const handelClick = () => {
     console.log("handelClick");
-    const message: WsMessage = {
+    const message: type.WsMessage = {
       type: "game",
       msg: "test",
       user: userName,

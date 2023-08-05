@@ -66,18 +66,22 @@ function OnlineGame() {
         localStorage.setItem("started", JSON.stringify("yes"));
     } else {
         localStorage.setItem("started", JSON.stringify("no"));
-    }
+  }
+  
+  const [player1, setPlayer1] = useLocalStorage("player1", null);
+  const [player2, setPlayer2] = useLocalStorage("player2", null);
+  const [started, setStarted] = useLocalStorage("started", null);
 
 
   return (
     <div>
       <div className="flex">
         <GamePlay />
-        <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
-          <Chat />
-          <p>Game ID: ${onlineGame.matchId}</p>
-        </div>
+      <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
+        <Chat />
+        <p>Game ID: ${onlineGame.matchId}</p>
       </div>
+    </div>
     </div>
   );
 }

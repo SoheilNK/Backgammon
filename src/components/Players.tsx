@@ -6,6 +6,7 @@ import {
   setAllowedColumns,
   togglePlayer,
 } from "../services/gameRules";
+import { useLocalStorage } from "../services/useLocalStorage";
 
 //define a players component
 interface PlayersProps {
@@ -42,8 +43,11 @@ export default function Players({
   onMoveLeft,
   onRoll,
 }: PlayersProps): JSX.Element {
+  // const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  
   //extract the player names from the PlayerNames object
-  const player1 = PlayerNames.white[0];
+  let player1 = PlayerNames.white[0];
   let player1Active = false;
   let player2Active = false;
 

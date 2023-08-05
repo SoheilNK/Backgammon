@@ -1,57 +1,26 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
+import { w3cwebsocket as W3CWebSocket, Message } from "websocket";
 import { Card, Avatar, Input, Typography } from "antd";
 import { getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { updateOnlineGame } from "../services/gameService";
+import { useNavigate } from "react-router-dom";
+import * as type from "../types";
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
-// const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-// const matchID = onlineGame.matchId;
-
-interface Message {
-  msg: string;
-  user: string;
-  matchId: string;
-  msgFor: string;
-}
-
-interface DataFromServer {
-  type: string;
-  msg: string;
-  user: string;
-  matchId: string;
-  msgFor: string;
-}
-
-interface ChatState {
-  userName: string;
-  isLoggedIn: boolean;
-  messages: Message[];
-  searchVal: string;
-}
-
-// Define an interface for the OnlineGame object
-export interface OnlineGame {
-  matchId: string;
-  hostName: string;
-  guestName: string;
-  hostId: string;
-  guestId: string;
-  status: string;
-}
-
 let chatWebSocketClient: W3CWebSocket | null = null;
 
 const Chat = () => {
+  const [started, setStarted] = useLocalStorage("started", "");
+  const navigate = useNavigate();
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const user = getUser().username.toString();
   const [isLoggedIn] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<type.WsMessage[]>([]);
   const [searchVal, setSearchVal] = useState("");
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
@@ -65,14 +34,14 @@ const Chat = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      chatWebSocketClient = await getWebSocketClient(8001);
+      chatWebSocketClient = await getWebSocketClient();
 
       chatWebSocketClient.onopen = () => {
         console.log("chatWebSocket Client Connected");
       };
 
-      chatWebSocketClient.onmessage = (message: IMessageEvent) => {
-        const dataFromServer: DataFromServer = JSON.parse(
+      chatWebSocketClient.onmessage = (message: Message) => {
+        const dataFromServer: type.DataFromServer = JSON.parse(
           message.data.toString()
         );
         console.log("got reply! ", dataFromServer);
@@ -81,25 +50,34 @@ const Chat = () => {
         if (dataFromServer.type === "userID") {
           //add userID to onlineGame
           if (userName === onlineGame.hostName) {
-            onlineGame.hostId = dataFromServer.data;
+            onlineGame.hostId = dataFromServer.msg;
           } else {
-            onlineGame.guestId = dataFromServer.data;
+            onlineGame.guestId = dataFromServer.msg;
           }
 
           localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
           //send onlineGame to server to update
           updateOnlineGame(onlineGame);
+          navigate(`/onlinegame`);
         }
 
         //************************************************************ */
         //check for joinOnlineGame
         if (dataFromServer.type === "gameJoined") {
           //update localstorage
-          localStorage.setItem("onlineGame", JSON.stringify(dataFromServer));
+          localStorage.setItem(
+            "onlineGame",
+            JSON.stringify(dataFromServer.data)
+          );
           //update state
-          setPlayer2(dataFromServer.data.guestName);
+          if (started === "no") {
+            setPlayer2(dataFromServer.data.guestName);
+            navigate(`/onlinegame`);
+            window.location.reload();
+          }
+          setStarted("yes");
+          
         }
-
 
         if (dataFromServer.type === "message") {
           console.log("got reply for Chat! ", dataFromServer);
@@ -119,7 +97,6 @@ const Chat = () => {
     };
 
     fetchData();
-
     // Cleanup function to close the WebSocket connection on unmount
     return () => {
       if (chatWebSocketClient) {
