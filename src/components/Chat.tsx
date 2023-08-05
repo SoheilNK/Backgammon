@@ -48,6 +48,7 @@ export interface OnlineGame {
 let chatWebSocketClient: W3CWebSocket | null = null;
 
 const Chat = () => {
+  const [player2, setPlayer2] = useLocalStorage("player2", "");
   const user = getUser().username.toString();
   const [isLoggedIn] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -75,6 +76,7 @@ const Chat = () => {
           message.data.toString()
         );
         console.log("got reply! ", dataFromServer);
+
         //check for userID
         if (dataFromServer.type === "userID") {
           //add userID to onlineGame
@@ -88,12 +90,14 @@ const Chat = () => {
           //send onlineGame to server to update
           updateOnlineGame(onlineGame);
         }
+
         //************************************************************ */
         //check for joinOnlineGame
-        if (dataFromServer.type === "joinOnlineGame") {
+        if (dataFromServer.type === "gameJoined") {
           //update localstorage
-          localStorage.setItem("onlineGame", JSON.stringify(dataFromServer)); 
+          localStorage.setItem("onlineGame", JSON.stringify(dataFromServer));
           //update state
+          setPlayer2(dataFromServer.data.guestName);
         }
 
 
