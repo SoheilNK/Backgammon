@@ -1,0 +1,56 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-backgammon-dev-205726-authRole",
+      "UnauthRoleArn": "arn:aws:iam::008826581554:role/amplify-backgammon-dev-205726-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::008826581554:role/amplify-backgammon-dev-205726-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-backgammon-dev-205726-deployment",
+      "UnauthRoleName": "amplify-backgammon-dev-205726-unauthRole",
+      "StackName": "amplify-backgammon-dev-205726",
+      "StackId": "arn:aws:cloudformation:ca-central-1:008826581554:stack/amplify-backgammon-dev-205726/5f3d4060-032f-11ee-8e9d-0ef909551dfc",
+      "AmplifyAppId": "dm6a4jf2qm19q"
+    }
+  },
+  "auth": {
+    "backgammon6c268340": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-backgammon-dev-205726-deployment/amplify-cfn-templates/auth/backgammon6c268340-cloudformation-template.json",
+        "logicalId": "authbackgammon6c268340"
+      },
+      "lastPushTimeStamp": "2023-06-04T23:45:17.572Z",
+      "output": {
+        "UserPoolId": "ca-central-1_DjVKLcJeE",
+        "AppClientIDWeb": "4tgob8jruvp13qc5mtpksp6rik",
+        "AppClientID": "35r5v11v77trsrts6b7lmebupn",
+        "IdentityPoolId": "ca-central-1:496600e9-6f51-469f-8095-c3a84da79926",
+        "UserPoolArn": "arn:aws:cognito-idp:ca-central-1:008826581554:userpool/ca-central-1_DjVKLcJeE",
+        "IdentityPoolName": "backgammon6c268340_identitypool_6c268340__dev",
+        "UserPoolName": "backgammon6c268340_userpool_6c268340"
+      },
+      "lastPushDirHash": "InI8nb9ohZ62VZ0r05O/pQpYfDw="
+    }
+  }
+}
