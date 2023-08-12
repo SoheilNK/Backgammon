@@ -10,6 +10,12 @@ import { useEffect } from "react";
 import { getWebSocketClient } from "../services/websocketService";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import * as type from "../types";
+import { useNavigate } from "react-router-dom";
+import { updateOnlineGame } from "../services/GameService";
+import {
+  useWebSocketSendMessage,
+  useWebSocketMessageHandler,
+} from "../services/WebSocketContext";
 
 //----------------------------------------------
 export type Color = "White" | "Black" | null;
@@ -20,11 +26,8 @@ export let PlayerNames = {
   black: ["Player 2"],
 };
 
-
-let gameWebSocketClient: W3CWebSocket | null = null;
-// //-------------web socket client-----------------
-
 function GamePlay() {
+  console.log("GamePlay component");
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
@@ -51,6 +54,11 @@ function GamePlay() {
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   const rollTime = 2500; // in milliseconds
 
+  const [online, setOnline] = useLocalStorage("online", false);
+  const [started, setStarted] = useLocalStorage("started", "");
+  const navigate = useNavigate();
+  const [messages, setMessages] = useLocalStorage("messages", []);
+
   PlayerNames = {
     white: [player1],
     black: [player2],
@@ -63,9 +71,11 @@ function GamePlay() {
     setAlertSeen(false);
   }
 
-  // //-------------web socket client-----------------
+  let handelClick = () => {};
 
-    //get onlineGame from local storage
+  if (online === true) {
+    //------------It is an online game---------------
+    //get onlineGame data from local storage
     const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
     const matchID = onlineGame.matchId;
     const userName = getUser().username.toString();
@@ -75,43 +85,66 @@ function GamePlay() {
       var msgFor = "host";
     }
 
+    //-------------web socket client-----------------
+    const handleIncomingMessage = (message: IMessageEvent) => {
+      // Handle the incoming message for Component B
+      console.log("Received message in Component B:", message.data);
+            const dataFromServer: type.DataFromServer = JSON.parse(
+          message.data.toString()
+        );
+        console.log("got reply! from GamePlay", dataFromServer);
+        //check for userID
+        if (dataFromServer.type === "userID") {
+          //add userID to onlineGame
+          if (userName === onlineGame.hostName) {
+            onlineGame.hostId = dataFromServer.msg;
+          } else {
+            onlineGame.guestId = dataFromServer.msg;
+          }
+          localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+          //send onlineGame to server to update
+          updateOnlineGame(onlineGame);
+          navigate(`/onlinegame`);
+        }
+        //check for joinOnlineGame
+        if (dataFromServer.type === "gameJoined") {
+          let newOnlineData = JSON.parse(dataFromServer.msg);
+          //update localstorage
+          localStorage.setItem("onlineGame", JSON.stringify(newOnlineData));
+          //update state
+          if (started === "no") {
+            setPlayer2(newOnlineData.guestName);
+            navigate(`/onlinegame`);
+            window.location.reload();
+          }
+          setStarted("yes");
+        }
+        if (dataFromServer.type === "game") {
+          console.log("got reply for Game! ", dataFromServer);
+          alert(dataFromServer.msg);
+        }
 
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      gameWebSocketClient = getWebSocketClient();
     };
 
-    fetchData();
+    useWebSocketMessageHandler(handleIncomingMessage);
 
-    // Cleanup function to close the WebSocket connection on unmount
-    return () => {
-      if (gameWebSocketClient) {
-        gameWebSocketClient.onmessage = () => {};
-        gameWebSocketClient.onerror = () => {};
-        // chatWebSocketClient.close();
-      }
-    };
-  }, []);
-
-  const handelClick = () => {
-    console.log("handelClick");
-    const message: type.WsMessage = {
-      type: "game",
-      msg: "test",
-      user: userName,
-      matchId: matchID,
-      msgFor: msgFor,
-    };
-    console.log("message: ", message);
-    if (gameWebSocketClient) {
-      gameWebSocketClient.send(JSON.stringify(message));
-    }
-  };
-
-  // //-------------web socket client-----------------
-
+    handelClick = () => {
+        console.log("handelClick");
+        const message: type.WsMessage = {
+          type: "game",
+          msg: "test",
+          user: userName,
+          matchId: matchID,
+          msgFor: msgFor,
+        };
+        console.log("message: ", message);
+        useWebSocketSendMessage(JSON.stringify(message));
+      };
+    
+    //-------------web socket client-----------------
+  } else {
+    //------------It is a local game-----------------
+  }
 
   return (
     <div className="flex flex-col items-center">

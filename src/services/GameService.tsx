@@ -5,6 +5,7 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { myApi } from "../services/user.service";
 import GameTable from "../components/GameTable";
 import { useNavigate } from "react-router-dom";
+import * as type from "../types";
 
 //call the api to get the list of online games
 export const getOnlineGames = async () => {
@@ -15,7 +16,7 @@ export const getOnlineGames = async () => {
 };
 
   //update the game room
-  export const updateOnlineGame = async (onlineGame: any) => {
+  export const updateOnlineGame = async (onlineGame: type.OnlineGame) => {
     console.log("updating game id :", onlineGame.matchId);
     try {
       const { data } = await myApi.post(
