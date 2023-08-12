@@ -1,21 +1,18 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { Card, Avatar, Input, Typography } from "antd";
 import { getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
-import {
-  useWebSocketSendMessage,
-  useWebSocketMessageHandler,
-} from "../services/WebSocketContext";
+import { useWebSocket } from "../services/WebSocketContext";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
-const Chat = () => {
+function Chat() {
   const [isLoggedIn] = useState(true);
   // const [messages, setMessages] = useState<type.WsMessage[]>([]);
   const [messages, setMessages] = useLocalStorage("messages", []);
@@ -31,36 +28,39 @@ const Chat = () => {
     var msgFor = "host";
   }
 
-  const handleIncomingMessage = (message: IMessageEvent) => {
-    // Handle the incoming message for Component A
-    console.log("Received message in Component A:", message.data);
-    const dataFromServer: type.DataFromServer = JSON.parse(
-      message.data.toString()
-    );
-    console.log("got reply! From Chat ", dataFromServer);
-    if (dataFromServer.type === "message") {
-      setMessages((prevState: any) => [
-        {
-          msg: dataFromServer.msg,
-          user: dataFromServer.user,
-        },
-        ...prevState,
-      ]);
-    }
+  const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+
+  const sendMessage = (value: string) => {
+    sendWebSocketMessage(value);
   };
 
-  useWebSocketMessageHandler(handleIncomingMessage);
+  useEffect(() => {
+    handleWebSocketMessage((message) => {
+      // Handle the incoming message for Component A
+      console.log("Received message in Component A:", message.data);
+      const dataFromServer: type.DataFromServer = JSON.parse(
+        message.data.toString()
+      );
+      console.log("got reply! From Chat ", dataFromServer);
+      if (dataFromServer.type === "message") {
+        setMessages((prevState: any) => [
+          {
+            msg: dataFromServer.msg,
+            user: dataFromServer.user,
+          },
+          ...prevState,
+        ]);
+      }
+    });
+  }, [handleWebSocketMessage]);
+  //--------------------------------------------------------------------------------
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchVal(e.target.value);
   };
 
   const handleSearchSubmit = (value: string): void => {
-    onButtonClicked(value);
-  };
-
-  const onButtonClicked = (value: string): void => {
-    useWebSocketSendMessage(
+    sendMessage(
       JSON.stringify({
         type: "message",
         msg: value,
@@ -69,7 +69,6 @@ const Chat = () => {
         msgFor: msgFor,
       })
     );
-
     setSearchVal("");
   };
 
@@ -138,6 +137,6 @@ const Chat = () => {
       )}
     </div>
   );
-};
+}
 
 export default Chat;

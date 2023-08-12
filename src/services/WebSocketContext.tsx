@@ -1,60 +1,52 @@
-import { createContext, useContext, useEffect } from "react";
-import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
+// WebSocketContext.tsx
 
-const WebSocketContext = createContext<W3CWebSocket | null>(null);
+import React, { createContext, useContext, useCallback } from "react";
+import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
+import { getWebSocketClient } from "../services/websocketService";
+
+type WebSocketContextType = {
+  webSocketClient: W3CWebSocket | null;
+  sendWebSocketMessage: (message: string) => void;
+  handleWebSocketMessage: (handler: (message: IMessageEvent) => void) => void;
+};
+
+const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
 export function useWebSocket() {
-  return useContext(WebSocketContext);
-}
-
-// Utility function for sending messages
-export function useWebSocketSendMessage(message: string) {
-  const webSocketClient = useWebSocket();
-
-  if (webSocketClient) {
-    webSocketClient.send(message);
+  const context = useContext(WebSocketContext);
+  if (!context) {
+    throw new Error("useWebSocket must be used within a WebSocketProvider");
   }
+  return context;
 }
 
-// Utility function for handling incoming messages and sending messages
-export function useWebSocketMessageHandler(
-  onMessage: (message: IMessageEvent) => void
-) {
-  const webSocketClient = useWebSocket();
-
-  useEffect(() => {
-    if (webSocketClient) {
-      const handleMessage = (message: IMessageEvent) => {
-        onMessage(message);
-      };
-
-      webSocketClient.onmessage = handleMessage;
-
-      return () => {
-        webSocketClient.onmessage = () => {};
-      };
-    }
-  }, [webSocketClient, onMessage]);
-}
-
-
-let webSocketClient: W3CWebSocket | null = null;
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-//   const webSocketClient = getWebSocketClient(); // Initialize WebSocket client here
-    
-    const WebSocketURL = `ws://localhost:8001`;
-  if (
-    !webSocketClient ||
-    webSocketClient.readyState === webSocketClient.CLOSED
-  ) {
-    webSocketClient = new W3CWebSocket(WebSocketURL);
-    console.log("New client created for: ", WebSocketURL);
-  }
+  const webSocketClient = getWebSocketClient(); // Initialize WebSocket client here
+
+  const sendWebSocketMessage = (message: string) => {
+    if (webSocketClient) {
+      webSocketClient.send(message);
+    }
+  };
+
+  const handleWebSocketMessage = (
+    handler: (message: IMessageEvent) => void
+  ) => {
+    if (webSocketClient) {
+      webSocketClient.onmessage = handler;
+    }
+  };
+
+  const contextValue: WebSocketContextType = {
+    webSocketClient,
+    sendWebSocketMessage,
+    handleWebSocketMessage,
+  };
 
   return (
-    <WebSocketContext.Provider value={webSocketClient}>
+    <WebSocketContext.Provider value={contextValue}>
       {children}
     </WebSocketContext.Provider>
   );

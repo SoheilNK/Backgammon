@@ -12,10 +12,7 @@ import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import * as type from "../types";
 import { useNavigate } from "react-router-dom";
 import { updateOnlineGame } from "../services/GameService";
-import {
-  useWebSocketSendMessage,
-  useWebSocketMessageHandler,
-} from "../services/WebSocketContext";
+import { useWebSocket } from "../services/WebSocketContext";
 
 //----------------------------------------------
 export type Color = "White" | "Black" | null;
@@ -86,10 +83,17 @@ function GamePlay() {
     }
 
     //-------------web socket client-----------------
-    const handleIncomingMessage = (message: IMessageEvent) => {
-      // Handle the incoming message for Component B
-      console.log("Received message in Component B:", message.data);
-            const dataFromServer: type.DataFromServer = JSON.parse(
+    const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+
+    const sendMessage = (value: string) => {
+      sendWebSocketMessage(value);
+    };
+
+    useEffect(() => {
+      handleWebSocketMessage((message) => {
+        // Handle the incoming message for Component B
+        console.log("Received message in Component B:", message.data);
+        const dataFromServer: type.DataFromServer = JSON.parse(
           message.data.toString()
         );
         console.log("got reply! from GamePlay", dataFromServer);
@@ -124,23 +128,20 @@ function GamePlay() {
           alert(dataFromServer.msg);
         }
 
-    };
-
-    useWebSocketMessageHandler(handleIncomingMessage);
-
-    handelClick = () => {
-        console.log("handelClick");
-        const message: type.WsMessage = {
-          type: "game",
-          msg: "test",
-          user: userName,
-          matchId: matchID,
-          msgFor: msgFor,
+        handelClick = () => {
+          console.log("handelClick");
+          const message: type.WsMessage = {
+            type: "game",
+            msg: "test",
+            user: userName,
+            matchId: matchID,
+            msgFor: msgFor,
+          };
+          console.log("message: ", message);
+          sendMessage(JSON.stringify(message));
         };
-        console.log("message: ", message);
-        useWebSocketSendMessage(JSON.stringify(message));
-      };
-    
+      });
+    }, [handleWebSocketMessage]);
     //-------------web socket client-----------------
   } else {
     //------------It is a local game-----------------
