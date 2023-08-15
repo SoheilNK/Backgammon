@@ -41,7 +41,7 @@ class Chat extends Component<{}, ChatState> {
   chatWebSocketClient: W3CWebSocket | null = null;
 
   componentDidMount(): void {
-    this.chatWebSocketClient = getWebSocketClient(8001);
+    this.chatWebSocketClient = getWebSocketClient();
     this.chatWebSocketClient.onopen = (): void => {
       console.log("chatWebSocket Client Connected");
     };
@@ -51,7 +51,7 @@ class Chat extends Component<{}, ChatState> {
         message.data.toString()
       );
       console.log("got reply! ", dataFromServer);
-      if (dataFromServer.type === "message") {
+      if (dataFromServer.type === "chat") {
         this.setState((prevState) => ({
           messages: [
             {
@@ -77,7 +77,7 @@ class Chat extends Component<{}, ChatState> {
     if (this.chatWebSocketClient) {
       this.chatWebSocketClient.send(
         JSON.stringify({
-          type: "message",
+          type: "chat",
           msg: value,
           user: this.state.userName,
         })

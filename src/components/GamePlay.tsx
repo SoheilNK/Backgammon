@@ -93,49 +93,17 @@ function GamePlay() {
       handleWebSocketMessage((message) => {
         // Handle the incoming message for Component B
         console.log("Received message in Component B:", message.data);
-        const dataFromServer: type.DataFromServer = JSON.parse(
-          message.data.toString()
-        );
-        console.log("got reply! from GamePlay", dataFromServer);
-        //check for userID
-        if (dataFromServer.type === "userID") {
-          //add userID to onlineGame
-          if (userName === onlineGame.hostName) {
-            onlineGame.hostId = dataFromServer.msg;
-          } else {
-            onlineGame.guestId = dataFromServer.msg;
-          }
-          localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
-          //send onlineGame to server to update
-          updateOnlineGame(onlineGame);
-          navigate(`/onlinegame`);
-        }
-        //check for joinOnlineGame
-        if (dataFromServer.type === "gameJoined") {
-          let newOnlineData = JSON.parse(dataFromServer.msg);
-          //update localstorage
-          localStorage.setItem("onlineGame", JSON.stringify(newOnlineData));
-          //update state
-          if (started === "no") {
-            setPlayer2(newOnlineData.guestName);
-            navigate(`/onlinegame`);
-            window.location.reload();
-          }
-          setStarted("yes");
-        }
-        if (dataFromServer.type === "game") {
-          console.log("got reply for Game! ", dataFromServer);
-          alert(dataFromServer.msg);
-        }
+        const wsMessage: type.WsData = JSON.parse(message.data.toString());
+        console.log("got reply! from GamePlay", wsMessage);
 
         handelClick = () => {
           console.log("handelClick");
-          const message: type.WsMessage = {
+          const message: type.WsData = {
             type: "game",
             msg: "test",
             user: userName,
             matchId: matchID,
-            msgFor: msgFor,
+            msgFor: msgFor as "host" | "guest",
           };
           console.log("message: ", message);
           sendMessage(JSON.stringify(message));

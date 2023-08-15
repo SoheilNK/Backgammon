@@ -112,7 +112,7 @@ export function Message({
     }
 
     return (
-      <div id="message" className=" text-xs sm:text-base w-3/4  m-auto">
+      <div id="chat" className=" text-xs sm:text-base w-3/4  m-auto">
         <div
           style={{ backgroundColor: "#8E8268" }}
           className={

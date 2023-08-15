@@ -3,20 +3,25 @@ import { Card, Avatar, Input, Typography } from "antd";
 import { getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { useNavigate } from "react-router-dom";
 import * as type from "../types";
 import { useWebSocket } from "../services/WebSocketContext";
-import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
+import { useNavigate } from "react-router-dom";
+import { updateOnlineGame } from "../services/GameService";
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
 function Chat() {
+  const navigate = useNavigate();
   const [isLoggedIn] = useState(true);
+  //----------------game states----------------
+  const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  const [started, setStarted] = useLocalStorage("started", "");
+
   // const [messages, setMessages] = useState<type.WsMessage[]>([]);
   const [messages, setMessages] = useLocalStorage("messages", []);
-
   const [searchVal, setSearchVal] = useState("");
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
@@ -37,19 +42,48 @@ function Chat() {
   useEffect(() => {
     handleWebSocketMessage((message) => {
       // Handle the incoming message for Component A
-      console.log("Received message in Component A:", message.data);
-      const dataFromServer: type.DataFromServer = JSON.parse(
-        message.data.toString()
-      );
-      console.log("got reply! From Chat ", dataFromServer);
-      if (dataFromServer.type === "message") {
+      console.log("Received message in Component A:", message);
+      const wsMessage: type.WsData = JSON.parse(message.data.toString());
+      console.log("got reply! From Chat ", wsMessage);
+      if (wsMessage.type === "chat") {
         setMessages((prevState: any) => [
           {
-            msg: dataFromServer.msg,
-            user: dataFromServer.user,
+            msg: wsMessage.msg,
+            user: wsMessage.user,
           },
           ...prevState,
         ]);
+      }
+      //----------------game messages----------------
+      //check for userID
+      if (wsMessage.type === "userID") {
+        //add userID to onlineGame
+        if (userName === onlineGame.hostName) {
+          onlineGame.hostId = wsMessage.msg;
+        } else {
+          onlineGame.guestId = wsMessage.msg;
+        }
+        localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+        //send onlineGame to server to update
+        updateOnlineGame(onlineGame);
+        navigate(`/onlinegame`);
+      }
+      //check for joinOnlineGame
+      if (wsMessage.type === "gameJoined") {
+        let newOnlineData: type.OnlineGame = JSON.parse(wsMessage.msg);
+        //update localstorage
+        localStorage.setItem("onlineGame", wsMessage.msg);
+        //update state
+        if (started === "no") {
+          setPlayer2(newOnlineData.guestName);
+          navigate(`/onlinegame`);
+          window.location.reload();
+        }
+        setStarted("yes");
+      }
+      if (wsMessage.type === "game") {
+        console.log("got reply for Game! ", wsMessage);
+        alert(wsMessage.msg);
       }
     });
   }, [handleWebSocketMessage]);
@@ -62,7 +96,7 @@ function Chat() {
   const handleSearchSubmit = (value: string): void => {
     sendMessage(
       JSON.stringify({
-        type: "message",
+        type: "chat",
         msg: value,
         user: userName,
         matchId: matchID,
@@ -104,7 +138,7 @@ function Chat() {
             }}
             id="messages"
           >
-            {messages.map((message: type.WsMessage) => (
+            {messages.map((message: type.WsData) => (
               <Card
                 key={message.msg}
                 style={{
