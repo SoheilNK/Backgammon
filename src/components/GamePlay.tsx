@@ -15,16 +15,12 @@ import { updateOnlineGame } from "../services/GameService";
 import { useWebSocket } from "../services/WebSocketContext";
 
 //----------------------------------------------
-export type Color = "White" | "Black" | null;
-export type Direction = "rtl" | "ltr";
-export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
 export let PlayerNames = {
   white: ["Player 1"],
   black: ["Player 2"],
 };
 
 function GamePlay() {
-  console.log("GamePlay component");
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
@@ -34,7 +30,7 @@ function GamePlay() {
   );
   const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
     0, 0,
-  ] as TdiceRoll);
+  ] as type.TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
     "currentBoardState",
     initialState
@@ -88,28 +84,19 @@ function GamePlay() {
     const sendMessage = (value: string) => {
       sendWebSocketMessage(value);
     };
+    handelClick = () => {
+      console.log("handelClick");
+      const message: type.WsData = {
+        type: "game",
+        msg: "test",
+        user: userName,
+        matchId: matchID,
+        msgFor: msgFor as "host" | "guest",
+      };
+      console.log("message: ", message);
+      sendMessage(JSON.stringify(message));
+    };
 
-    useEffect(() => {
-      handleWebSocketMessage((message) => {
-        // Handle the incoming message for Component B
-        console.log("Received message in Component B:", message.data);
-        const wsMessage: type.WsData = JSON.parse(message.data.toString());
-        console.log("got reply! from GamePlay", wsMessage);
-
-        handelClick = () => {
-          console.log("handelClick");
-          const message: type.WsData = {
-            type: "game",
-            msg: "test",
-            user: userName,
-            matchId: matchID,
-            msgFor: msgFor as "host" | "guest",
-          };
-          console.log("message: ", message);
-          sendMessage(JSON.stringify(message));
-        };
-      });
-    }, [handleWebSocketMessage]);
     //-------------web socket client-----------------
   } else {
     //------------It is a local game-----------------
@@ -143,7 +130,7 @@ function GamePlay() {
           onAlertSeen={(seen) => setAlertSeen(seen)}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           onMoveLeft={(moveLeft) => setMoveLeft(moveLeft)}
-          onRoll={(roll) => setDiceRoll(roll) as TdiceRoll}
+          onRoll={(roll) => setDiceRoll(roll) as type.TdiceRoll}
         />
       </div>
       <div className=" relative flex flex-col items-center mb-2 mt-6 sm:mt-3">
@@ -165,7 +152,7 @@ function GamePlay() {
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}
           currentDiceRoll={currentDiceRoll}
-          onRoll={(roll) => setDiceRoll(roll) as TdiceRoll}
+          onRoll={(roll) => setDiceRoll(roll) as type.TdiceRoll}
           currentPlayer={currentPlayer}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           selectedColumn={selectedColumn}
@@ -203,7 +190,7 @@ function GamePlay() {
 
 export default GamePlay;
 
-let initialState: Color[][] = [
+let initialState: type.Color[][] = [
   ["White", "White"],
   [],
   [],
@@ -230,7 +217,7 @@ let initialState: Color[][] = [
   ["Black", "Black"],
 ];
 
-let initialState1: Color[][] = [
+let initialState1: type.Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],
@@ -257,7 +244,7 @@ let initialState1: Color[][] = [
   [],
   [],
 ];
-let initialState2: Color[][] = [
+let initialState2: type.Color[][] = [
   //test state for move out
   ["Black", "Black", "Black", "Black", "Black"],
   ["Black", "Black", "Black", "Black", "Black", "Black"],
@@ -284,7 +271,7 @@ let initialState2: Color[][] = [
   ["White", "White"],
   ["White", "White", "White", "White"],
 ];
-let winState: Color[][] = [
+let winState: type.Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],

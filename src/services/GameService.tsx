@@ -7,6 +7,8 @@ import GameTable from "../components/GameTable";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
 
+const onlineUser = localStorage.getItem("onlineUser");
+
 //call the api to get the list of online games
 export const getOnlineGames = async () => {
   console.log("getOnlineGames...");
@@ -47,10 +49,16 @@ export function GameList() {
 
   //add a game room
   const createGame = async () => {
-    const { data } = await myApi.post(
-      "http://localhost:8000/api/games/add/",
-      {}
-    );
+    console.log("creating game...");
+    //check websocket connection
+    if (onlineUser === null) {
+      //******************* */
+      navigate(`/login`);
+    }
+      
+    const { data } = await myApi.post("http://localhost:8000/api/games/add/", {
+      onlineUser,
+    });
     const onlineGame = data;
     //store onlineGame objrct in local storage
     localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
@@ -68,12 +76,17 @@ export function GameList() {
       return;
     } else {
       try {
+        let updatedOnlineUser: type.OnlineUser = JSON.parse(onlineUser!);
+        updatedOnlineUser.userName = user.username;
+        localStorage.setItem("onlineUser", JSON.stringify(updatedOnlineUser));
+
         const { data } = await myApi.post(
           "http://localhost:8000/api/games/join",
-          { matchId: matchId } // Set the matchId in the request body
+          { matchId: matchId, onlineUser: JSON.stringify(updatedOnlineUser) } // Set the matchId and user in the request body
         );
         console.log("Response:", data);
         const onlineGame = data
+
 
         //store onlineGame objrct in local storage
         localStorage.setItem("onlineGame", JSON.stringify(onlineGame));

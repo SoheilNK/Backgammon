@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "../types/user.type";
 import { LogoutButton } from "./Signout";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../services/useLocalStorage";
 import Test from "./test";
+import * as type from "../types";
+import { useWebSocket } from "../services/WebSocketContext";
+import { updateOnlineGame } from "../services/GameService";
+import { getUser } from "../services/user.service";
+
 interface NavbarProps {
   title: string;
 }
@@ -11,12 +16,13 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ title }) => {
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  const userString = localStorage.getItem("user");
+  
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
 
-  // let isLoggedIn: boolean =
-  //   JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
   const navigate = useNavigate();
+  //-----------for websocket----------------
+  const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+  const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
 
   let user: User = {
     id: 0,
@@ -28,14 +34,37 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
     updatedAt: Date.now() as unknown as Date,
   };
   if (
-    isLoggedIn &&
-    userString !== "null" &&
-    userString !== null &&
-    userString !== undefined &&
-    userString !== ""
+    isLoggedIn
+    // userString !== "null" &&
+    // userString !== null &&
+    // userString !== undefined &&
+    // userString !== ""
   ) {
-    user = JSON.parse(userString!);
+    user = getUser()
+    // user = JSON.parse(userString!);
   }
+
+  useEffect(() => {
+    handleWebSocketMessage((message) => {
+      // Handle the incoming message in Navbar
+      const wsMessage: type.WsData = JSON.parse(message.data.toString());
+      console.log("got reply! in Navbar: ", wsMessage);
+      //check for userID
+      if (wsMessage.type === "userID") {
+        //add userID to onlineuser
+        const userId = wsMessage.msg;
+        const onlineUser: type.OnlineUser = {
+          userId: userId,
+          userName: user.username,
+          status: "online",
+        }
+        console.log("onlineUser: ", onlineUser);
+        localStorage.setItem("onlineUser", JSON.stringify(onlineUser));
+        
+      }
+    });      
+  }, [handleWebSocketMessage]);
+  //--------------------------------------------------------------------------------
 
   return (
     <>
@@ -138,9 +167,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
           </div>
         </div>
       </header>
-      <div className=" bg-slate-400">
-        {/* <Test /> */}
-      </div>
+      <div className=" bg-slate-400">{/* <Test /> */}</div>
     </>
   );
 };

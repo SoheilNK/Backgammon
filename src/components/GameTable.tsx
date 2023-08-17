@@ -1,15 +1,10 @@
-interface Game {
-  matchId: string;
-  hostName: string;
-  guestName: string;
-  status: string;
-}
+import * as type from "../types";
 
 interface GameTableProps {
-  games: Game[];
+  games: type.OnlineGame[];
   isLoggedIn: boolean;
   createGame: () => void;
-  joinGame: (matchId: string, hostName: string) => void;
+  joinGame: (matchId: string, hostName: string, hostId: string) => void;
 }
 
 const GameTable: React.FC<GameTableProps> = ({
@@ -37,14 +32,14 @@ const GameTable: React.FC<GameTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {games.map((game: Game) => (
+            {games.map((game: type.OnlineGame) => (
               <tr key={game.matchId}>
                 <td>{game.matchId}</td>
                 <td>{game.hostName}</td>
                 <td>{game.guestName}</td>
                 <td>{game.status}</td>
                 <td>
-                  <button onClick={() => joinGame(game.matchId, game.hostName)}>
+                  <button onClick={() => joinGame(game.matchId, game.hostName, game.hostId)}>
                     Join Game
                   </button>
                 </td>

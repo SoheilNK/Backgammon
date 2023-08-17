@@ -1,3 +1,9 @@
+//game types ................................................
+export type Color = "White" | "Black" | null;
+export type Direction = "rtl" | "ltr";
+export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
+
+//websocket types ................................................
 //online game user
 export type OnlineUser = {
   userId: string;

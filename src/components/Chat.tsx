@@ -55,19 +55,19 @@ function Chat() {
         ]);
       }
       //----------------game messages----------------
-      //check for userID
-      if (wsMessage.type === "userID") {
-        //add userID to onlineGame
-        if (userName === onlineGame.hostName) {
-          onlineGame.hostId = wsMessage.msg;
-        } else {
-          onlineGame.guestId = wsMessage.msg;
-        }
-        localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
-        //send onlineGame to server to update
-        updateOnlineGame(onlineGame);
-        navigate(`/onlinegame`);
-      }
+      // //check for userID
+      // if (wsMessage.type === "userID") {
+      //   //add userID to onlineGame *****update in onlineGame
+      //   if (userName === onlineGame.hostName) {
+      //     onlineGame.hostId = wsMessage.msg;
+      //   } else {
+      //     onlineGame.guestId = wsMessage.msg;
+      //   }
+      //   localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+      //   //send onlineGame to server to update
+      //   updateOnlineGame(onlineGame);
+      //   navigate(`/onlinegame`);
+      // }
       //check for joinOnlineGame
       if (wsMessage.type === "gameJoined") {
         let newOnlineData: type.OnlineGame = JSON.parse(wsMessage.msg);
