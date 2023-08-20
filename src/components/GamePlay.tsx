@@ -11,7 +11,6 @@ import { getWebSocketClient } from "../services/websocketService";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import * as type from "../types";
 import { useNavigate } from "react-router-dom";
-import { updateOnlineGame } from "../services/GameService";
 import { useWebSocket } from "../services/WebSocketContext";
 
 //----------------------------------------------

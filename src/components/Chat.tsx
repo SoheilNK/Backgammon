@@ -6,7 +6,6 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import * as type from "../types";
 import { useWebSocket } from "../services/WebSocketContext";
 import { useNavigate } from "react-router-dom";
-import { updateOnlineGame } from "../services/GameService";
 
 const { Search } = Input;
 const { Text } = Typography;
@@ -39,54 +38,6 @@ function Chat() {
     sendWebSocketMessage(value);
   };
 
-  useEffect(() => {
-    handleWebSocketMessage((message) => {
-      // Handle the incoming message for Component A
-      console.log("Received message in Component A:", message);
-      const wsMessage: type.WsData = JSON.parse(message.data.toString());
-      console.log("got reply! From Chat ", wsMessage);
-      if (wsMessage.type === "chat") {
-        setMessages((prevState: any) => [
-          {
-            msg: wsMessage.msg,
-            user: wsMessage.user,
-          },
-          ...prevState,
-        ]);
-      }
-      //----------------game messages----------------
-      // //check for userID
-      // if (wsMessage.type === "userID") {
-      //   //add userID to onlineGame *****update in onlineGame
-      //   if (userName === onlineGame.hostName) {
-      //     onlineGame.hostId = wsMessage.msg;
-      //   } else {
-      //     onlineGame.guestId = wsMessage.msg;
-      //   }
-      //   localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
-      //   //send onlineGame to server to update
-      //   updateOnlineGame(onlineGame);
-      //   navigate(`/onlinegame`);
-      // }
-      //check for joinOnlineGame
-      if (wsMessage.type === "gameJoined") {
-        let newOnlineData: type.OnlineGame = JSON.parse(wsMessage.msg);
-        //update localstorage
-        localStorage.setItem("onlineGame", wsMessage.msg);
-        //update state
-        if (started === "no") {
-          setPlayer2(newOnlineData.guestName);
-          navigate(`/onlinegame`);
-          window.location.reload();
-        }
-        setStarted("yes");
-      }
-      if (wsMessage.type === "game") {
-        console.log("got reply for Game! ", wsMessage);
-        alert(wsMessage.msg);
-      }
-    });
-  }, [handleWebSocketMessage]);
   //--------------------------------------------------------------------------------
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
