@@ -192,6 +192,7 @@ function GamePlay() {
             blackOut={blackOut}
             rollTime={rollTime}
             onAlertSeen={(seen) => setAlertSeen(seen)}
+            currentPlayer={currentPlayer}
           />
         </div>
       </div>

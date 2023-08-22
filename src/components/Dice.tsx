@@ -16,6 +16,7 @@ interface DiceProps {
   blackOut: number;
   rollTime: number;
   onAlertSeen: (seen: boolean) => void;
+  currentPlayer: string;
 }
 
 export default function Dice({
@@ -27,16 +28,40 @@ export default function Dice({
   blackOut,
   rollTime,
   onAlertSeen,
+  currentPlayer,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
 
   const [online, setOnline] = useLocalStorage("online", false);
   const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
   const userName = getUser().username.toString();
-  const currentPlayer = onlineGame?.currentPlayer;
-  
-  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15 ||
-    (online && currentPlayer !== userName) || (onlineGame.status !== "Playing");
+
+  let disabled =
+    moveLeft > 0 ||
+    whiteOut === 15 ||
+    blackOut === 15 ||
+    (online && currentPlayer !== userName) ||
+    onlineGame.status !== "Playing";
+  console.log(
+    "disabled: ",
+    disabled,
+    "moveLeft: ",
+    moveLeft,
+    "online: ",
+    online,
+    "currentPlayer: ",
+    currentPlayer,
+    "userName: ",
+    userName,
+    "onlineGame.status: ",
+    onlineGame.status,
+    "whiteOut: ",
+    whiteOut,
+    "blackOut: ",
+    blackOut,
+    "onlineGame: ",
+    onlineGame
+  );
   // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
     "opacity-5": disabled,
@@ -62,7 +87,6 @@ export default function Dice({
       //if the dice roll is a double, the player can move twice
       newMoveLeft = 4;
     }
-    
 
     setTimeout(() => {
       onRoll(currentDiceRoll);
