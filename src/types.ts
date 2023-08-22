@@ -8,9 +8,7 @@ export interface WsMessage {
 
 export interface DataFromServer {
   type: string;
-  msg: string;
-  user: string;
-  matchId: string;
+  data: string;
 }
 
 export interface ChatState {

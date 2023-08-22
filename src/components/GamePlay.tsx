@@ -108,7 +108,7 @@ function GamePlay() {
     if (gameWebSocketClient) {
       gameWebSocketClient.send(JSON.stringify(message));
     }
-  };
+  }; 
 
   // //-------------web socket client-----------------
 

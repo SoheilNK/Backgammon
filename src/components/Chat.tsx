@@ -40,7 +40,7 @@ const Chat = () => {
         console.log("chatWebSocket Client Connected");
       };
 
-      chatWebSocketClient.onmessage = (message: Message) => {
+      chatWebSocketClient.onmessage = (message) => {
         const dataFromServer: type.DataFromServer = JSON.parse(
           message.data.toString()
         );
@@ -50,9 +50,9 @@ const Chat = () => {
         if (dataFromServer.type === "userID") {
           //add userID to onlineGame
           if (userName === onlineGame.hostName) {
-            onlineGame.hostId = dataFromServer.msg;
+            onlineGame.hostId = dataFromServer.data;
           } else {
-            onlineGame.guestId = dataFromServer.msg;
+            onlineGame.guestId = dataFromServer.data;
           }
 
           localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
@@ -71,27 +71,22 @@ const Chat = () => {
           );
           //update state
           if (started === "no") {
-            setPlayer2(dataFromServer.data.guestName);
+            let msg = dataFromServer.data as unknown as type.OnlineGame;
+            setPlayer2(msg.guestName);
             navigate(`/onlinegame`);
             window.location.reload();
           }
           setStarted("yes");
-          
         }
 
-        if (dataFromServer.type === "message") {
+        if (dataFromServer.type === "chat") {
+          let wsMessage = dataFromServer.data as unknown as type.WsMessage;
           console.log("got reply for Chat! ", dataFromServer);
-          setMessages((prevState) => [
-            {
-              msg: dataFromServer.msg,
-              user: dataFromServer.user,
-            },
-            ...prevState,
-          ]);
+          setMessages((prevState) => [wsMessage, ...prevState]);
         }
         if (dataFromServer.type === "game") {
           console.log("got reply for Game! ", dataFromServer);
-          alert(dataFromServer.msg);
+          alert(dataFromServer.data);
         }
       };
     };
@@ -119,7 +114,7 @@ const Chat = () => {
     if (chatWebSocketClient) {
       chatWebSocketClient.send(
         JSON.stringify({
-          type: "message",
+          type: "chat",
           msg: value,
           user: userName,
           matchId: matchID,
