@@ -2,6 +2,8 @@ import { useState } from "react";
 import classNames from "classnames";
 import Dice3Dv4 from "./Dice3Dv4";
 import { TdiceRoll } from "./GamePlay";
+import { useLocalStorage } from "../services/useLocalStorage";
+import { getUser } from "../services/user.service";
 const audioDice = new Audio("diceRoll3.mp3");
 
 interface DiceProps {
@@ -27,7 +29,14 @@ export default function Dice({
   onAlertSeen,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
-  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
+
+  const [online, setOnline] = useLocalStorage("online", false);
+  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  const userName = getUser().username.toString();
+  const currentPlayer = onlineGame?.currentPlayer;
+  
+  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15 ||
+    (online && currentPlayer !== userName) || (onlineGame.status !== "Playing");
   // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
     "opacity-5": disabled,

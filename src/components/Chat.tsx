@@ -4,7 +4,7 @@ import { Card, Avatar, Input, Typography } from "antd";
 import { getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { updateOnlineGame } from "../services/gameService";
+import { updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
 

@@ -68,10 +68,6 @@ function OnlineGame() {
         localStorage.setItem("started", JSON.stringify("no"));
   }
   
-  const [player1, setPlayer1] = useLocalStorage("player1", null);
-  const [player2, setPlayer2] = useLocalStorage("player2", null);
-  const [started, setStarted] = useLocalStorage("started", null);
-
 
   return (
     <div>
