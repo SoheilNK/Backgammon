@@ -35,33 +35,36 @@ export default function Dice({
   const [online, setOnline] = useLocalStorage("online", false);
   const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
   const userName = getUser().username.toString();
+  
+  let onlineGameStauts = "Playing";
+  if (onlineGame)  onlineGameStauts = onlineGame.status;
 
   let disabled =
     moveLeft > 0 ||
     whiteOut === 15 ||
     blackOut === 15 ||
     (online && currentPlayer !== userName) ||
-    onlineGame.status !== "Playing";
-  console.log(
-    "disabled: ",
-    disabled,
-    "moveLeft: ",
-    moveLeft,
-    "online: ",
-    online,
-    "currentPlayer: ",
-    currentPlayer,
-    "userName: ",
-    userName,
-    "onlineGame.status: ",
-    onlineGame.status,
-    "whiteOut: ",
-    whiteOut,
-    "blackOut: ",
-    blackOut,
-    "onlineGame: ",
-    onlineGame
-  );
+    onlineGameStauts !== "Playing";
+  // console.log(
+  //   "disabled: ",
+  //   disabled,
+  //   "moveLeft: ",
+  //   moveLeft,
+  //   "online: ",
+  //   online,
+  //   "currentPlayer: ",
+  //   currentPlayer,
+  //   "userName: ",
+  //   userName,
+  //   "onlineGame.status: ",
+  //   onlineGame.status,
+  //   "whiteOut: ",
+  //   whiteOut,
+  //   "blackOut: ",
+  //   blackOut,
+  //   "onlineGame: ",
+  //   onlineGame
+  // );
   // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
     "opacity-5": disabled,

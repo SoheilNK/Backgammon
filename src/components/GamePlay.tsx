@@ -63,63 +63,10 @@ function GamePlay() {
     setAlertSeen(false);
   }
 
-  // //-------------web socket client-----------------
-
-    //get onlineGame from local storage
-    const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-    const matchID = onlineGame.matchId;
-    const userName = getUser().username.toString();
-    if (userName === onlineGame.hostName) {
-      var msgFor = "guest";
-    } else {
-      var msgFor = "host";
-    }
-
-
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      gameWebSocketClient = getWebSocketClient();
-    };
-
-    fetchData();
-
-    // Cleanup function to close the WebSocket connection on unmount
-    return () => {
-      if (gameWebSocketClient) {
-        gameWebSocketClient.onmessage = () => {};
-        gameWebSocketClient.onerror = () => {};
-        // chatWebSocketClient.close();
-      }
-    };
-  }, []);
-
-  const handelClick = () => {
-    console.log("handelClick");
-    const message: type.WsMessage = {
-      type: "game",
-      msg: "test",
-      user: userName,
-      matchId: matchID,
-      msgFor: msgFor,
-    };
-    console.log("message: ", message);
-    if (gameWebSocketClient) {
-      gameWebSocketClient.send(JSON.stringify(message));
-    }
-  }; 
-
-  // //-------------web socket client-----------------
-
 
   return (
     <div className="flex flex-col items-center">
       <div className="  players relative flex flex-col gap-1">
-        <div className="testWS">
-          <button onClick={handelClick}>testWS</button>
-        </div>
-
         <Message
           currentPlayer={currentPlayer}
           moveLeft={moveLeft}
