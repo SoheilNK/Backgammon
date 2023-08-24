@@ -6,10 +6,11 @@ import { Alert } from "./Alert";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { togglePlayer } from "../services/gameRules";
 import { getUser } from "../services/user.service";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getWebSocketClient } from "../services/websocketService";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import * as type from "../types";
+import { sendWsMessage } from "./Chat";
 
 //----------------------------------------------
 export type Color = "White" | "Black" | null;
@@ -19,10 +20,6 @@ export let PlayerNames = {
   white: ["Player 1"],
   black: ["Player 2"],
 };
-
-
-let gameWebSocketClient: W3CWebSocket | null = null;
-// //-------------web socket client-----------------
 
 function GamePlay() {
   const [player1, setPlayer1] = useLocalStorage("player1", "");
@@ -63,6 +60,43 @@ function GamePlay() {
     setAlertSeen(false);
   }
 
+  //manage state for online game
+  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+
+  useEffect(() => {
+    // const fetchData = async () => {
+    console.log("currentPlayer has changed:", currentPlayer);
+    //send the state to the server
+    if (onlineGame !== null) {
+      const username = getUser().username;
+      const matchId = onlineGame.matchId;
+      const hostName = onlineGame.hostName;
+      const wsMessage: type.WsMessage = {
+        type: "state",
+        msg: {
+          currentPlayer: currentPlayer,
+          currentDiceRoll: currentDiceRoll,
+          currentBoardState: currentBoardState,
+          moveLeft: moveLeft,
+          selectedColumn: selectedColumn,
+          whiteBar: whiteBar,
+          blackBar: blackBar,
+          whiteOut: whiteOut,
+          blackOut: blackOut,
+          alertSeen: alertSeen,
+        },
+        user: username,
+        matchId: matchId,
+        msgFor: hostName === username ? "guest" : "host",
+      };
+
+      sendWsMessage(wsMessage);
+      }
+    // };
+    // fetchData();
+
+  }, [currentPlayer]);
+  
 
   return (
     <div className="flex flex-col items-center">
@@ -149,7 +183,7 @@ function GamePlay() {
 
 export default GamePlay;
 
-let initialState: Color[][] = [
+export let initialState: Color[][] = [
   ["White", "White"],
   [],
   [],

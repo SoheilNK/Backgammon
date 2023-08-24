@@ -7,17 +7,49 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
+import { TdiceRoll, initialState } from "./GamePlay";
 
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
 
 let chatWebSocketClient: W3CWebSocket | null = null;
+export const sendWsMessage = (wsMessage: type.WsMessage) => {
+  if (chatWebSocketClient) {
+    chatWebSocketClient.send(JSON.stringify(wsMessage));
+  }
+};
 
 const Chat = () => {
+  //GamePlay state
+    const [player1, setPlayer1] = useLocalStorage("player1", "");
+    const [player2, setPlayer2] = useLocalStorage("player2", "");
+    const [scores, setScores] = useLocalStorage("scores", [0, 0]);
+    const [currentPlayer, setCurrentPlayer] = useLocalStorage(
+      "currentPlayer",
+      player1
+    );
+    const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
+      0, 0,
+    ] as TdiceRoll);
+    const [currentBoardState, setCurrentBoardState] = useLocalStorage(
+      "currentBoardState",
+      initialState
+    );
+    const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
+    const [selectedColumn, setSelectedColumn] = useLocalStorage(
+      "selectedColumn",
+      50
+    );
+    const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
+    const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
+    const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
+    const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
+    const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
+//--------------------------
   const [started, setStarted] = useLocalStorage("started", "");
   const navigate = useNavigate();
-  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  // const [player2, setPlayer2] = useLocalStorage("player2", "");
   const user = getUser().username.toString();
   const [isLoggedIn] = useState(true);
   const [messages, setMessages] = useState<type.WsMessage[]>([]);
@@ -45,6 +77,24 @@ const Chat = () => {
           message.data.toString()
         );
         console.log("got reply! ", dataFromServer);
+
+        //handle state updates
+        if (dataFromServer.type === "state") {
+          console.log("got reply for State! ", dataFromServer);
+          const wsMessage = dataFromServer.data as unknown as type.WsMessage;
+          const newState = wsMessage.msg as any;
+          //update GamePlay state
+          setCurrentPlayer(newState.currentPlayer);
+          setDiceRoll(newState.currentDiceRoll);
+          setCurrentBoardState(newState.currentBoardState);
+          setMoveLeft(newState.moveLeft);
+          setSelectedColumn(newState.selectedColumn);
+          setWhiteBar(newState.whiteBar);
+          setBlackBar(newState.blackBar);
+          setWhiteOut(newState.whiteOut);
+          setBlackOut(newState.blackOut);
+          setAlertSeen(newState.alertSeen);
+        }
 
         //check for userID
         if (dataFromServer.type === "userID") {

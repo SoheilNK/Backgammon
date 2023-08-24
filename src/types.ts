@@ -1,6 +1,6 @@
 export interface WsMessage {
   type: string;
-  msg: string;
+  msg: any;
   user: string;
   matchId: string;
   msgFor: string;

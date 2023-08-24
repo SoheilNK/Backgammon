@@ -5,14 +5,15 @@ import GamePlay from "../components/GamePlay";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
+import { useEffect } from "react";
 
 function OnlineGame() {
   //get the match id from local storage
   const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
-  if (onlineGame !== null) {
-    window.history.replaceState({}, document.title, "/Backgammon/");
-    console.log(onlineGame);
-  }
+  // if (onlineGame !== null) {
+  //   window.history.replaceState({}, document.title, "/Backgammon/");
+  //   console.log(onlineGame);
+  // }
 
   //set the player names
   var p1 = onlineGame?.hostName;
