@@ -51,7 +51,7 @@ class Chat extends Component<{}, ChatState> {
         message.data.toString()
       );
       console.log("got reply! ", dataFromServer);
-      if (dataFromServer.type === "message") {
+      if (dataFromServer.type === "chat") {
         this.setState((prevState) => ({
           messages: [
             {
@@ -77,7 +77,7 @@ class Chat extends Component<{}, ChatState> {
     if (this.chatWebSocketClient) {
       this.chatWebSocketClient.send(
         JSON.stringify({
-          type: "message",
+          type: "chat",
           msg: value,
           user: this.state.userName,
         })
