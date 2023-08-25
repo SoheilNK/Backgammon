@@ -1,6 +1,6 @@
 export interface WsMessage {
   type: string;
-  msg: string;
+  msg: any;
   user: string;
   matchId: string;
   msgFor: string;
@@ -8,9 +8,7 @@ export interface WsMessage {
 
 export interface DataFromServer {
   type: string;
-  msg: string;
-  user: string;
-  matchId: string;
+  data: string;
 }
 
 export interface ChatState {

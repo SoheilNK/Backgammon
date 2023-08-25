@@ -2,6 +2,8 @@ import { useState } from "react";
 import classNames from "classnames";
 import Dice3Dv4 from "./Dice3Dv4";
 import { TdiceRoll } from "./GamePlay";
+import { useLocalStorage } from "../services/useLocalStorage";
+import { getUser } from "../services/user.service";
 const audioDice = new Audio("diceRoll3.mp3");
 
 interface DiceProps {
@@ -14,6 +16,7 @@ interface DiceProps {
   blackOut: number;
   rollTime: number;
   onAlertSeen: (seen: boolean) => void;
+  currentPlayer: string;
 }
 
 export default function Dice({
@@ -25,9 +28,43 @@ export default function Dice({
   blackOut,
   rollTime,
   onAlertSeen,
+  currentPlayer,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
-  let disabled = moveLeft > 0 || whiteOut === 15 || blackOut === 15;
+
+  const [online, setOnline] = useLocalStorage("online", false);
+  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  const userName = getUser().username.toString();
+  
+  let onlineGameStauts = "Playing";
+  if (onlineGame)  onlineGameStauts = onlineGame.status;
+
+  let disabled =
+    moveLeft > 0 ||
+    whiteOut === 15 ||
+    blackOut === 15 ||
+    (online && currentPlayer !== userName) ||
+    onlineGameStauts !== "Playing";
+  // console.log(
+  //   "disabled: ",
+  //   disabled,
+  //   "moveLeft: ",
+  //   moveLeft,
+  //   "online: ",
+  //   online,
+  //   "currentPlayer: ",
+  //   currentPlayer,
+  //   "userName: ",
+  //   userName,
+  //   "onlineGame.status: ",
+  //   onlineGame.status,
+  //   "whiteOut: ",
+  //   whiteOut,
+  //   "blackOut: ",
+  //   blackOut,
+  //   "onlineGame: ",
+  //   onlineGame
+  // );
   // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
     "opacity-5": disabled,
@@ -53,7 +90,6 @@ export default function Dice({
       //if the dice roll is a double, the player can move twice
       newMoveLeft = 4;
     }
-    
 
     setTimeout(() => {
       onRoll(currentDiceRoll);

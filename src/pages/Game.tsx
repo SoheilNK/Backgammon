@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import GamePlay from "../components/GamePlay";
 import PageClass from "../components/PageClass";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { GameList } from "../services/gameService";
+import { GameList } from "../services/GameService";
 
 function Game() {
   const [online, setOnline] = useLocalStorage("online", false);
