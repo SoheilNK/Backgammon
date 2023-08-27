@@ -85,19 +85,19 @@ function GamePlay({
     black: [player2],
   };
 
-  //change player
-  if (alertSeen && moveLeft == 0 && whiteOut !== 15 && blackOut !== 15) {
-    togglePlayer(currentPlayer, setCurrentPlayer);
-    setDiceRoll([0, 0]);
-    setAlertSeen(false);
-  }
-
   //manage state for online game
   const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
 
   useEffect(() => {
+    //change player
+    if (alertSeen && moveLeft == 0 && whiteOut !== 15 && blackOut !== 15) {
+      togglePlayer(currentPlayer, setCurrentPlayer);
+      setDiceRoll([0, 0]);
+      setAlertSeen(false);
+    }
+
     // const fetchData = async () => {
-    console.log("currentPlayer has changed:", currentPlayer);
+    console.log("state has changed:", currentPlayer);
     //send the state to the server
     if (onlineGame !== null) {
       const username = getUser().username;
@@ -122,12 +122,13 @@ function GamePlay({
         matchId: matchId,
         msgFor: hostName === username ? "guest" : "host",
       };
-
-      sendWsMessage(wsMessage);
+      if (currentPlayer === username) {
+        sendWsMessage(wsMessage);
+      }
     }
     // };
     // fetchData();
-  }, [currentPlayer]);
+  }, [scores, currentPlayer, currentDiceRoll, currentBoardState, moveLeft]);
 
   return (
     <div className="flex flex-col items-center">

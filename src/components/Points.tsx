@@ -3,6 +3,8 @@ import { CSS } from "@dnd-kit/utilities";
 
 import classNames from "classnames";
 import { Color, Direction, PlayerNames } from "./GamePlay";
+import { getUser } from "../services/user.service";
+import { useLocalStorage } from "../services/useLocalStorage";
 
 let imgUrl = "";
 let r = document.querySelector(":root") as HTMLElement;
@@ -27,11 +29,10 @@ export function Checker({ title, clr, parent, disabled }: CheckerProps) {
     },
   });
 
-
   const style = {
     transform: CSS.Translate.toString(transform),
     touchAction: "none", //to prevent scroll on touch screens
-  };  
+  };
 
   if (clr == "White") {
     imgUrl = "Checker_W.png";
@@ -68,6 +69,15 @@ function Point({
   currentPlayer,
   moveAllowed, //moveAllowed is true if the player can move checkers
 }: PointProps) {
+  //disable checker if it is not the allowed online player
+  const [online, setOnline] = useLocalStorage("online", null);
+  const username = getUser().username;
+  if (online !== null) {
+    if (currentPlayer != username) {
+      moveAllowed = false;
+    }
+  }
+  //--------------------------
   const { setNodeRef } = useDroppable({
     id: colName,
   });

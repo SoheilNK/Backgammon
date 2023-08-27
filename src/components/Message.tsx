@@ -101,9 +101,9 @@ export function Message({
     );
   } else {
     if (moveLeft === 0) {
-      newMessage = "Roll the Dice!";
+      newMessage = currentPlayer + " Roll the Dice!";
     } else {
-      newMessage = "You have " + moveLeft + " moves left.";
+      newMessage = currentPlayer + " You have " + moveLeft + " moves left.";
     }
 
     if (message != newMessage) {
