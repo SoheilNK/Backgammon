@@ -3,7 +3,7 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import redirectToLogin from "../components/Register";
 import { useNavigate } from "react-router-dom";
 import Register from "../components/Register";
-import Signin from "../pages/Signin";
+import Signin from "../pages/SignIn";
 import { Button } from "antd";
 import { clearGameData } from "../services/user.service";
 

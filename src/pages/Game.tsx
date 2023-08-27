@@ -5,6 +5,7 @@ import GamePlay from "../components/GamePlay";
 import PageClass from "../components/PageClass";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { GameList } from "../services/GameService";
+import OfflineGame from "./OfflineGame";
 
 function Game() {
   const [online, setOnline] = useLocalStorage("online", false);
@@ -13,8 +14,7 @@ function Game() {
     localStorage.setItem("started", JSON.stringify("yes"));
     return (
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
-        {" "}
-        <GamePlay />
+        <OfflineGame />
       </ErrorBoundary>
     );
   } else {

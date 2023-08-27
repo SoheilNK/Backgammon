@@ -19,13 +19,17 @@ const GameTable: React.FC<GameTableProps> = ({
   joinGame,
 }) => {
   return (
-    <div>
-      <button onClick={createGame} disabled={!isLoggedIn}>
+    <div className="flex flex-col gap-4">
+      <button
+        onClick={createGame}
+        disabled={!isLoggedIn}
+        className="w-1/4 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+      >
         Create a New Game
       </button>
 
-      <div id="gameList" className="flex flex-col mr-auto">
-        <h1 className=" text-center">Game List</h1>
+      <div id="gameList" className="flex flex-col gap-2">
+        <h1 className=" text-center bg-slate-300">Game List</h1>
         <table className="table-auto">
           <thead>
             <tr>
@@ -39,12 +43,16 @@ const GameTable: React.FC<GameTableProps> = ({
           <tbody>
             {games.map((game: Game) => (
               <tr key={game.matchId}>
-                <td>{game.matchId}</td>
-                <td>{game.hostName}</td>
-                <td>{game.guestName}</td>
-                <td>{game.status}</td>
-                <td>
-                  <button onClick={() => joinGame(game.matchId, game.hostName)}>
+                <td className="text-center">{game.matchId}</td>
+                <td className="text-center">{game.hostName}</td>
+                <td className="text-center">{game.guestName}</td>
+                <td className="text-center">{game.status}</td>
+                <td className="text-center">
+                  <button
+                    className=" m--1 bg-blue-900 hover:bg-sky-700 disabled:bg-slate-300 text-white font-bold px-4 rounded"
+                    onClick={() => joinGame(game.matchId, game.hostName)}
+                    disabled={game.status == "Playing"}
+                  >
                     Join Game
                   </button>
                 </td>
