@@ -101,7 +101,11 @@ function OnlineGame() {
           setAlertSeen={setAlertSeen}
         />
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
-          <Chat onNewState={updateState} />
+          <Chat
+            onNewState={updateState}
+            player2={player2}
+            setPlayer2={setPlayer2}
+          />
           <p>Game ID: ${onlineGame.matchId}</p>
         </div>
       </div>

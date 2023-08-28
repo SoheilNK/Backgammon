@@ -14,13 +14,13 @@ export const getOnlineGames = async () => {
   return data;
 };
 
-  //update the game room
-  export const updateOnlineGame = async (onlineGame: any) => {
+  //update online game 
+  export const updateOnlineGame = async (onlineGame: any, roll: string) => {
     console.log("updating game id :", onlineGame.matchId);
     try {
       const { data } = await myApi.post(
         "http://localhost:8000/api/games/update",
-        { onlineGame: onlineGame }
+        { onlineGame: onlineGame, roll: roll }
       );
       console.log("Response:", data);
     } catch (error) {
@@ -91,14 +91,14 @@ export function GameList() {
   
 
   return (
-    <div>
+    
       <GameTable
         games={games}
         isLoggedIn={isLoggedIn}
         createGame={createGame}
         joinGame={joinGame}
       />
-    </div>
+    
   );
 }
 

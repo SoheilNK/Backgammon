@@ -11,7 +11,6 @@ import * as type from "../types";
 const { Search } = Input;
 const { Text } = Typography;
 const { Meta } = Card;
-
 let chatWebSocketClient: W3CWebSocket | null = null;
 export const sendWsMessage = (wsMessage: type.WsMessage) => {
   if (chatWebSocketClient) {
@@ -19,11 +18,13 @@ export const sendWsMessage = (wsMessage: type.WsMessage) => {
   }
 };
 
-interface Props {
+interface chatProps {
   onNewState: (newState: any) => void;
+  player2: string;
+  setPlayer2: (player: string) => void;
 }
 
-const Chat: React.FC<Props> = (props) => {
+const Chat: React.FC<chatProps> = (props) => {
   const [started, setStarted] = useLocalStorage("started", "");
   const navigate = useNavigate();
   const [player2, setPlayer2] = useLocalStorage("player2", "");
@@ -55,6 +56,13 @@ const Chat: React.FC<Props> = (props) => {
         );
         console.log("got reply! ", dataFromServer);
 
+        //gameUpdate
+        if (dataFromServer.type === "gameUpdate") {
+          console.log("got reply for GameUpdate! ", dataFromServer);
+          const newOnlineGame = dataFromServer.data as unknown as type.WsMessage;
+          localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
+        }
+
         //handle state updates
         if (dataFromServer.type === "state") {
           console.log("got reply for State! ", dataFromServer);
@@ -68,13 +76,16 @@ const Chat: React.FC<Props> = (props) => {
           //add userID to onlineGame
           if (userName === onlineGame.hostName) {
             onlineGame.hostId = dataFromServer.data;
+            //send onlineGame to server to update
+            updateOnlineGame(onlineGame, "host");
           } else {
             onlineGame.guestId = dataFromServer.data;
+            //send onlineGame to server to update
+            updateOnlineGame(onlineGame, "guest");
           }
 
           localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
-          //send onlineGame to server to update
-          updateOnlineGame(onlineGame);
+          
           navigate(`/onlinegame`);
         }
 
@@ -89,9 +100,9 @@ const Chat: React.FC<Props> = (props) => {
           //update state
           if (started === "no") {
             let msg = dataFromServer.data as unknown as type.OnlineGame;
-            setPlayer2(msg.guestName);
+            props.setPlayer2(msg.guestName);
             navigate(`/onlinegame`);
-            window.location.reload();
+            // window.location.reload();
           }
           setStarted("yes");
         }
@@ -114,7 +125,7 @@ const Chat: React.FC<Props> = (props) => {
       if (chatWebSocketClient) {
         chatWebSocketClient.onmessage = () => {};
         chatWebSocketClient.onerror = () => {};
-        // chatWebSocketClient.close();
+        chatWebSocketClient.close();
       }
     };
   }, []);

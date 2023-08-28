@@ -19,11 +19,11 @@ const GameTable: React.FC<GameTableProps> = ({
   joinGame,
 }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4">
       <button
         onClick={createGame}
         disabled={!isLoggedIn}
-        className="w-1/4 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+        className="m-auto bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
       >
         Create a New Game
       </button>
