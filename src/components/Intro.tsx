@@ -179,7 +179,7 @@ export const Intro = () => {
               navigate("/game");
             }}
           >
-            Start the Game!
+            {online ? "Show Online Games Table" : "Start the Game!"}
           </button>
         </div>
       </div>
