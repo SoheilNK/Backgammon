@@ -48,6 +48,8 @@ interface GamePlayProps {
   setBlackOut: (counter: number) => void;
   alertSeen: boolean;
   setAlertSeen: (seen: boolean) => void;
+  started: string;
+  setStarted: (started: string) => void;
 }
 
 function GamePlay({
@@ -77,6 +79,8 @@ function GamePlay({
   setBlackOut,
   alertSeen,
   setAlertSeen,
+  started,
+  setStarted,
 }: GamePlayProps) {
   const rollTime = 2500; // in milliseconds
 
@@ -206,6 +210,7 @@ function GamePlay({
             rollTime={rollTime}
             onAlertSeen={(seen) => setAlertSeen(seen)}
             currentPlayer={currentPlayer}
+            started={started}
           />
         </div>
       </div>

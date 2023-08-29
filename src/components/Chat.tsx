@@ -22,10 +22,12 @@ interface chatProps {
   onNewState: (newState: any) => void;
   player2: string;
   setPlayer2: (player: string) => void;
+  started: string;
+  setStarted: (started: string) => void;
 }
 
 const Chat: React.FC<chatProps> = (props) => {
-  const [started, setStarted] = useLocalStorage("started", "");
+  const [started, setStarted] = useLocalStorage("started", "no");
   const navigate = useNavigate();
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const user = getUser().username.toString();
@@ -59,7 +61,8 @@ const Chat: React.FC<chatProps> = (props) => {
         //gameUpdate
         if (dataFromServer.type === "gameUpdate") {
           console.log("got reply for GameUpdate! ", dataFromServer);
-          const newOnlineGame = dataFromServer.data as unknown as type.WsMessage;
+          const newOnlineGame =
+            dataFromServer.data as unknown as type.WsMessage;
           localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
         }
 
@@ -85,7 +88,7 @@ const Chat: React.FC<chatProps> = (props) => {
           }
 
           localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
-          
+
           navigate(`/onlinegame`);
         }
 
@@ -101,10 +104,10 @@ const Chat: React.FC<chatProps> = (props) => {
           if (started === "no") {
             let msg = dataFromServer.data as unknown as type.OnlineGame;
             props.setPlayer2(msg.guestName);
-            navigate(`/onlinegame`);
+            // navigate(`/onlinegame`);
             // window.location.reload();
           }
-          setStarted("yes");
+          props.setStarted("yes");
         }
 
         if (dataFromServer.type === "chat") {

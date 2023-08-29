@@ -34,6 +34,7 @@ function OnlineGame() {
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
+  const [started, setStarted] = useLocalStorage("started", "no");
   //--------------------------
   const updateState = (newState: any) => {
     //update GamePlay state
@@ -99,12 +100,16 @@ function OnlineGame() {
           setBlackOut={setBlackOut}
           alertSeen={alertSeen}
           setAlertSeen={setAlertSeen}
+          started={started}
+          setStarted={setStarted}
         />
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
           <Chat
             onNewState={updateState}
             player2={player2}
             setPlayer2={setPlayer2}
+            started={started}
+            setStarted={setStarted}
           />
           <p>Game ID: ${onlineGame.matchId}</p>
         </div>
