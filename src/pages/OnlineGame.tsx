@@ -72,7 +72,7 @@ function OnlineGame() {
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row">
         <GamePlay
           player1={player1}
           setPlayer1={setPlayer1}

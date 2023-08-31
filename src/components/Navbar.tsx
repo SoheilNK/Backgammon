@@ -40,17 +40,17 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   return (
     <>
       <header className=" sticky top-0 z-20 flex flex-row  bg-green-900 text-white font-serif">
-        <div className="container items-center text-justify m-auto">
-          <div className="flex mx-4 md:w-3/4 max-w-3xl relative rounded-md h-16 md:m-auto p-1 sm:px-6">
+        <div className="xl:container mx-auto px-4 flex-grow">
+          <div className="relative flex xl:w-3/4 rounded-md h-16 md:m-auto p-1 sm:px-6">
             <nav
               className={`${!open && "w-full"} ${
                 open && "p-2"
               } my-auto mr-auto`}
             >
               <ul
-                className={`flex flex-col md:flex-row gap-3 px-4 py-2 ${
+                className={`flex flex-col justify-between xl:w-3/4 md:flex-row gap-3 px-4 py-2 ${
                   open && "bg-green-900"
-                }  m-auto `}
+                }  m-auuto `}
               >
                 <li className={`md:hidden  ${open && "block"}`}>
                   <div className="BurgerMenu">
@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                   {isLoggedIn ? user.username || "Profile" : ""}
                 </span>
                 <span
-                  className={`${isLoggedIn && "hidden"}`}
+                  className={` text-xs sm:text-base  ${isLoggedIn && "hidden"}`}
                   onClick={() => navigate("/signin")}
                 >
                   Sign in/Register
@@ -138,9 +138,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
           </div>
         </div>
       </header>
-      <div className=" bg-slate-400">
-        {/* <Test /> */}
-      </div>
+      <div className=" bg-slate-400">{/* <Test /> */}</div>
     </>
   );
 };

@@ -157,14 +157,14 @@ const Chat: React.FC<chatProps> = (props) => {
   };
 
   return (
-    <div className="border p-4 rounded-md border-cyan-700" id="wrapper">
+    <div className="border p-2 min-w-min rounded-md border-cyan-700" id="wrapper">
       {isLoggedIn ? (
         <div>
           <div className="title">
             <Text
               id="main-heading"
               type="secondary"
-              style={{ fontSize: "18px" }}
+              style={{ fontSize: "14px" }}
             >
               In Game Chat: <strong>{userName}</strong>
             </Text>
@@ -174,7 +174,7 @@ const Chat: React.FC<chatProps> = (props) => {
               placeholder="input message and send"
               enterButton="Send"
               value={searchVal}
-              size="large"
+              style={{ fontSize: "14px" }}
               onChange={handleSearchChange}
               onSearch={handleSearchSubmit}
             />
@@ -192,7 +192,7 @@ const Chat: React.FC<chatProps> = (props) => {
               <Card
                 key={message.msg}
                 style={{
-                  width: 300,
+                  width: 150,
                   margin: "16px 4px 0 4px",
                   alignSelf:
                     userName === message.user ? "flex-end" : "flex-start",
