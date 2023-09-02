@@ -247,7 +247,7 @@ export let initialState: Color[][] = [
   ["Black", "Black"],
 ];
 
-let initialState1: Color[][] = [
+export let initialState1: Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],
@@ -274,7 +274,7 @@ let initialState1: Color[][] = [
   [],
   [],
 ];
-let initialState2: Color[][] = [
+export let initialState2: Color[][] = [
   //test state for move out
   ["Black", "Black", "Black", "Black", "Black"],
   ["Black", "Black", "Black", "Black", "Black", "Black"],
@@ -301,7 +301,7 @@ let initialState2: Color[][] = [
   ["White", "White"],
   ["White", "White", "White", "White"],
 ];
-let winState: Color[][] = [
+export let winState: Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],

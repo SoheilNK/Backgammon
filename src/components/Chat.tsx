@@ -192,7 +192,7 @@ const Chat: React.FC<chatProps> = (props) => {
               <Card
                 key={message.msg}
                 style={{
-                  width: 150,
+                  maxWidth: "80%",
                   margin: "16px 4px 0 4px",
                   alignSelf:
                     userName === message.user ? "flex-end" : "flex-start",

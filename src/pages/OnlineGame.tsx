@@ -6,7 +6,7 @@ import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { useEffect } from "react";
-import { TdiceRoll, initialState } from "../components/GamePlay";
+import { TdiceRoll, winState as initialState } from "../components/GamePlay";
 
 function OnlineGame() {
   //GamePlay state----------------
@@ -31,8 +31,8 @@ function OnlineGame() {
   );
   const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
-  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
-  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
+  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 12); //0
+  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //0
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   const [started, setStarted] = useLocalStorage("started", "no");
   //--------------------------

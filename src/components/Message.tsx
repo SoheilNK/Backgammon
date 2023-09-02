@@ -81,6 +81,7 @@ export function Message({
                 localStorage.setItem("player1", JSON.stringify(player1)),
                 localStorage.setItem("player2", JSON.stringify(player2)),
                 localStorage.setItem("scores", JSON.stringify(newScores)),
+                localStorage.setItem("currentPlayer", JSON.stringify(winner1)), //winner starts next game
                 window.location.reload()
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
@@ -93,7 +94,7 @@ export function Message({
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
-              New Players
+              New Game
             </button>
           </div>
         </div>
