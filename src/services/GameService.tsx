@@ -51,7 +51,7 @@ export function GameList() {
       {}
     );
     const onlineGame = data;
-    //store onlineGame objrct in local storage
+    //store onlineGame object in local storage
     localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
 
     //goto the game room

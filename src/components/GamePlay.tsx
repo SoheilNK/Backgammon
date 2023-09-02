@@ -90,7 +90,8 @@ function GamePlay({
   };
 
   //manage state for online game
-  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
 
   useEffect(() => {
     //change player
@@ -132,7 +133,19 @@ function GamePlay({
     }
     // };
     // fetchData();
-  }, [scores, currentPlayer, currentDiceRoll, currentBoardState, moveLeft]);
+  }, [
+    scores,
+    currentPlayer,
+    currentDiceRoll,
+    currentBoardState,
+    moveLeft,
+    selectedColumn,
+    whiteBar,
+    blackBar,
+    whiteOut,
+    blackOut,
+    alertSeen,
+  ]);
 
   return (
     <div className="flex flex-col items-center">

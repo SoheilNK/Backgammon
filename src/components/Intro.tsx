@@ -21,6 +21,7 @@ export const Intro = () => {
     return (
       <div className="z-10">
         <div
+          id="startMessage"
           style={{ backgroundColor: "#8E8268" }}
           className=" flex-col  m-auto text-lg px-8  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center "
         >

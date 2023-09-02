@@ -35,7 +35,8 @@ export default function Dice({
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
 
   const [online, setOnline] = useLocalStorage("online", false);
-  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
   // const [started, setStarted] = useLocalStorage("started", "no");
   const userName = getUser().username.toString();
 
