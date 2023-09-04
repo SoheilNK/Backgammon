@@ -110,7 +110,7 @@ export const clearGameData = () => {
     //         localStorage.removeItem(key);
     //     }
     // }
-    const whitelistKeys = ["user", "tokens", "isLoggedIn", "online", "onlineGame", ];
+    const whitelistKeys = ["user", "tokens", "isLoggedIn", "online", "onlineGame", "onlineUser" ];
 
     for (const key in localStorage) {
         if (!whitelistKeys.includes(key)) {

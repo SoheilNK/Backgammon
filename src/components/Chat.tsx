@@ -74,23 +74,6 @@ const Chat: React.FC<chatProps> = (props) => {
           props.onNewState(newState);
         }
 
-        //check for userID
-        if (dataFromServer.type === "userID") {
-          //add userID to onlineGame
-          if (userName === onlineGame.hostName) {
-            onlineGame.hostId = dataFromServer.data;
-            //send onlineGame to server to update
-            updateOnlineGame(onlineGame, "host");
-          } else {
-            onlineGame.guestId = dataFromServer.data;
-            //send onlineGame to server to update
-            updateOnlineGame(onlineGame, "guest");
-          }
-
-          localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
-
-          navigate(`/onlinegame`);
-        }
 
         //************************************************************ */
         //check for joinOnlineGame
