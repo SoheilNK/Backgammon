@@ -1,10 +1,10 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { w3cwebsocket as W3CWebSocket, Message } from "websocket";
 import { Card, Avatar, Input, Typography } from "antd";
-import { getUser } from "../services/user.service";
+import { clearGameData, getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { updateOnlineGame } from "../services/GameService";
+import { leaveOnlineGame, updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
 
@@ -40,81 +40,97 @@ const Chat: React.FC<chatProps> = (props) => {
   const userName = getUser().username.toString();
   if (userName === onlineGame.hostName) {
     var msgFor = "guest";
+    var msgFrom = "host";
   } else {
     var msgFor = "host";
+    var msgFrom = "guest";
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      chatWebSocketClient = await getWebSocketClient();
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        chatWebSocketClient = await getWebSocketClient();
 
-      chatWebSocketClient.onopen = () => {
-        console.log("chatWebSocket Client Connected");
-      };
+        chatWebSocketClient.onopen = () => {
+          console.log("chatWebSocket Client Connected");
+        };
 
-      chatWebSocketClient.onmessage = (message) => {
-        const dataFromServer: type.DataFromServer = JSON.parse(
-          message.data.toString()
-        );
-        console.log("got reply! ", dataFromServer);
-
-        //gameUpdate
-        if (dataFromServer.type === "gameUpdate") {
-          console.log("got reply for GameUpdate! ", dataFromServer);
-          const newOnlineGame =
-            dataFromServer.data as unknown as type.WsMessage;
-          localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
-        }
-
-        //handle state updates
-        if (dataFromServer.type === "state") {
-          console.log("got reply for State! ", dataFromServer);
-          const wsMessage = dataFromServer.data as unknown as type.WsMessage;
-          const newState = wsMessage.msg as any;
-          props.onNewState(newState);
-        }
-
-
-        //************************************************************ */
-        //check for joinOnlineGame
-        if (dataFromServer.type === "gameJoined") {
-          //update localstorage
-          localStorage.setItem(
-            "onlineGame",
-            JSON.stringify(dataFromServer.data)
+        chatWebSocketClient.onmessage = (message) => {
+          const dataFromServer: type.DataFromServer = JSON.parse(
+            message.data.toString()
           );
-          //update state
-          if (started === "no") {
-            let msg = dataFromServer.data as unknown as type.OnlineGame;
-            props.setPlayer2(msg.guestName);
-            // navigate(`/onlinegame`);
-            // window.location.reload();
-          }
-          props.setStarted("yes");
-        }
+          console.log("got reply! ", dataFromServer);
 
-        if (dataFromServer.type === "chat") {
-          let wsMessage = dataFromServer.data as unknown as type.WsMessage;
-          console.log("got reply for Chat! ", dataFromServer);
-          setMessages((prevState) => [wsMessage, ...prevState]);
-        }
-        if (dataFromServer.type === "game") {
-          console.log("got reply for Game! ", dataFromServer);
-          alert(dataFromServer.data);
+          //gameUpdate
+          if (dataFromServer.type === "gameUpdate") {
+            console.log("got reply for GameUpdate! ", dataFromServer);
+            const newOnlineGame =
+              dataFromServer.data as unknown as type.WsMessage;
+            localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
+          }
+
+          //handle state updates
+          if (dataFromServer.type === "state") {
+            console.log("got reply for State! ", dataFromServer);
+            const wsMessage = dataFromServer.data as unknown as type.WsMessage;
+            const newState = wsMessage.msg as any;
+            props.onNewState(newState);
+          }
+
+          //************************************************************ */
+          //check for joinOnlineGame
+          if (dataFromServer.type === "gameJoined") {
+            //update localstorage
+            localStorage.setItem(
+              "onlineGame",
+              JSON.stringify(dataFromServer.data)
+            );
+            //update state
+            if (started === "no") {
+              let msg = dataFromServer.data as unknown as type.OnlineGame;
+              props.setPlayer2(msg.guestName);
+              // navigate(`/onlinegame`);
+              // window.location.reload();
+            }
+            props.setStarted("yes");
+          }
+
+          if (dataFromServer.type === "chat") {
+            let wsMessage = dataFromServer.data as unknown as type.WsMessage;
+            console.log("got reply for Chat! ", dataFromServer);
+            setMessages((prevState) => [wsMessage, ...prevState]);
+          }
+          if (dataFromServer.type === "game") {
+            console.log("got reply for Game! ", dataFromServer);
+            alert(dataFromServer.data);
+          }
+        };
+      };
+
+      fetchData();
+      // Cleanup function when leaving the component
+      return () => {
+        console.log(
+          "Leaving the game... , Clearing Game Data... Match Id: " + matchID
+        );
+        clearGameData();
+        //leave the game
+        leaveOnlineGame(onlineGame, msgFrom);
+        if (chatWebSocketClient) {
+          chatWebSocketClient.onmessage = () => {};
+          chatWebSocketClient.onerror = () => {};
+          chatWebSocketClient.close();
+          console.log(
+            "chatWebSocket Client Disconnected, online user: " + getUser()
+          );
         }
       };
-    };
 
-    fetchData();
-    // Cleanup function to close the WebSocket connection on unmount
-    return () => {
-      if (chatWebSocketClient) {
-        chatWebSocketClient.onmessage = () => {};
-        chatWebSocketClient.onerror = () => {};
-        chatWebSocketClient.close();
-      }
-    };
-  }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSearchVal(e.target.value);
@@ -140,7 +156,10 @@ const Chat: React.FC<chatProps> = (props) => {
   };
 
   return (
-    <div className="border p-2 min-w-min rounded-md border-cyan-700" id="wrapper">
+    <div
+      className="border p-2 min-w-min rounded-md border-cyan-700"
+      id="wrapper"
+    >
       {isLoggedIn ? (
         <div>
           <div className="title">

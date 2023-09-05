@@ -34,6 +34,20 @@ export const updateOnlineGame = async (onlineGame: any, roll: string) => {
   }
 };
 
+export const leaveOnlineGame = async (onlineGame: any, roll: string) => {
+  console.log("leaving game id :", onlineGame.matchId);
+  try {
+    const { data } = await myApi.post(
+      "http://localhost:8000/api/games/leave",
+      { onlineGame: onlineGame, roll: roll }
+    );
+    console.log("Response:", data);
+  } catch (error) {
+    // Handle the error here
+    console.error("Error:", error);
+  }
+};
+
 //create a component for online users to create a game room and join a game room
 export function GameList() {
   const navigate = useNavigate();
@@ -110,9 +124,17 @@ export function GameList() {
       };
     };
     fetchData();
+    //cleanup function to disconnect the websocket client
     // return () => {
     //   if (chatWebSocketClient) {
+    //     chatWebSocketClient.onmessage = () => {};
+    //     chatWebSocketClient.onerror = () => {};
     //     chatWebSocketClient.close();
+    //     console.log(
+    //       "chatWebSocket Client Disconnected, online user: " +
+    //         getOnlineUser()
+    //     );
+        
     //   }
     // };
   }, []);

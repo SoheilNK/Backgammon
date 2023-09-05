@@ -31,19 +31,19 @@ const GameTable: React.FC<GameTableProps> = ({
       <div id="gameList" className="flex flex-col gap-2">
         <h1 className=" text-center bg-slate-300">Game List</h1>
         <table className="table-auto">
-          <thead>
+          <thead className=" text-xs sm:text-base">
             <tr>
-              <th>Match ID</th>
+              <th className="text-center hidden sm:block">Match ID</th>
               <th>Host Name</th>
               <th>Guest Name</th>
               <th>Status</th>
               <th>Join Game</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className=" text-xs sm:text-base">
             {games.map((game: Game) => (
               <tr key={game.matchId}>
-                <td className="text-center">{game.matchId}</td>
+                <td className="text-center hidden sm:block">{game.matchId}</td>
                 <td className="text-center">{game.hostName}</td>
                 <td className="text-center">{game.guestName}</td>
                 <td className="text-center">{game.status}</td>
