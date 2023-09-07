@@ -1,51 +1,27 @@
 import PageClass from "../components/PageClass";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useSearchParams, useLocation, prompt } from "react-router-dom";
 import { clearGameData, getUser } from "../services/user.service";
 import GamePlay from "../components/GamePlay";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TdiceRoll, winState as initialState } from "../components/GamePlay";
 import { leaveOnlineGame } from "../services/GameService";
 
+//get onlineGame from local storage
+const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+const matchID = onlineGame.matchId;
+const userName = getUser().username.toString();
+if (userName === onlineGame.hostName) {
+  var msgFor = "guest";
+  var msgFrom = "host";
+} else {
+  var msgFor = "host";
+  var msgFrom = "guest";
+}
+
 function OnlineGame() {
-  //get onlineGame from local storage
-  const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-  const matchID = onlineGame.matchId;
-  const userName = getUser().username.toString();
-  if (userName === onlineGame.hostName) {
-    var msgFor = "guest";
-    var msgFrom = "host";
-  } else {
-    var msgFor = "host";
-    var msgFrom = "guest";
-  }
-
-  // let location = useLocation();
-
-  useEffect(() => {
-    console.log("location changed");
-    //ask if the user wants to leave the game
-    if (location.hash !== "#/onlinegame") {
-      if (window.confirm("Do you want to leave the game?")) {
-        //leave the game
-        console.log(
-          "Leaving the game... , Clearing Game Data... Match Id: " + matchID
-        );
-        clearGameData();
-        //leave the game
-        leaveOnlineGame(onlineGame, msgFrom);
-      } else {
-        //stay in the game
-        window.history.replaceState(
-          {},
-          document.title,
-          "/Backgammon/OnlineGame"
-        );
-      }
-    }
-  }, [location]);
   //GamePlay state----------------
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
@@ -157,6 +133,59 @@ function OnlineGame() {
 }
 
 const OnlineGamePage: React.FC = () => {
-  return <PageClass inputComponent={OnlineGame} />;
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  // This effect will set isNavigating to true when the user tries to navigate away
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+      setIsNavigating(true);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  return (
+    <>
+      <Prompt
+        when={isNavigating}
+        message="Are you sure you want to leave this page? Your progress may be lost."
+      />
+      <PageClass inputComponent={OnlineGame} />;
+    </>
+  );
 };
+
 export default OnlineGamePage;
+
+// let location = useLocation();
+
+// console.log("location: ", location);
+// useEffect(() => {
+//   console.log("location changed");
+//   //ask if the user wants to leave the game
+//   if (location.pathname !== "/onlinegame") {
+//     if (window.confirm("Do you want to leave the game room?")) {
+//       //leave the game
+//       console.log(
+//         "Leaving the OnlineGame... , Clearing Game Data... Match Id: " +
+//           matchID
+//       );
+//       clearGameData();
+//       //leave the game
+//       leaveOnlineGame(onlineGame, msgFrom);
+//     } else {
+//       //stay in the game
+//       window.history.replaceState(
+//         {},
+//         document.title,
+//         "/Backgammon/OnlineGame"
+//       );
+//     }
+//   }
+// }, [location]);

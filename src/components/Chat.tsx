@@ -49,8 +49,8 @@ const Chat: React.FC<chatProps> = (props) => {
   }
 
   useEffect(() => {
-    window.addEventListener("beforeunload", alertUser);
-    window.addEventListener("unload", handleEndGame);
+    // window.addEventListener("beforeunload", alertUser);
+    // window.addEventListener("unload", handleEndGame);
     const fetchData = async () => {
       chatWebSocketClient = await getWebSocketClient();
 
@@ -110,11 +110,11 @@ const Chat: React.FC<chatProps> = (props) => {
       };
     };
     fetchData();
-    return () => {
-      window.removeEventListener("beforeunload", alertUser);
-      window.removeEventListener("unload", handleEndGame);
-      handleEndGame();
-    };
+    // return () => {
+    //   window.removeEventListener("beforeunload", alertUser);
+    //   window.removeEventListener("unload", handleEndGame);
+    //   handleEndGame();
+    // };
 
     // Cleanup function when leaving the component
     // return () => {
