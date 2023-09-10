@@ -1,15 +1,10 @@
-interface Game {
-  matchId: string;
-  hostName: string;
-  guestName: string;
-  status: string;
-}
+import * as type from "../types";
 
 interface GameTableProps {
-  games: Game[];
+  games: type.OnlineGame[];
   isLoggedIn: boolean;
   createGame: () => void;
-  joinGame: (matchId: string, hostName: string) => void;
+  joinGame: (matchId: string, hostName: string, hostId: string) => void;
 }
 
 const GameTable: React.FC<GameTableProps> = ({
@@ -41,18 +36,14 @@ const GameTable: React.FC<GameTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {games.map((game: Game) => (
+            {games.map((game: type.OnlineGame) => (
               <tr key={game.matchId}>
-                <td className="text-center">{game.matchId}</td>
-                <td className="text-center">{game.hostName}</td>
-                <td className="text-center">{game.guestName}</td>
-                <td className="text-center">{game.status}</td>
-                <td className="text-center">
-                  <button
-                    className=" m--1 bg-blue-900 hover:bg-sky-700 disabled:bg-slate-300 text-white font-bold px-4 rounded"
-                    onClick={() => joinGame(game.matchId, game.hostName)}
-                    disabled={game.status == "Playing"}
-                  >
+                <td>{game.matchId}</td>
+                <td>{game.hostName}</td>
+                <td>{game.guestName}</td>
+                <td>{game.status}</td>
+                <td>
+                  <button onClick={() => joinGame(game.matchId, game.hostName, game.hostId)}>
                     Join Game
                   </button>
                 </td>

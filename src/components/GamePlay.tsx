@@ -10,75 +10,46 @@ import { useEffect, useState } from "react";
 import { getWebSocketClient } from "../services/websocketService";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import * as type from "../types";
-import { sendWsMessage } from "./Chat";
+import { useNavigate } from "react-router-dom";
+import { useWebSocket } from "../services/WebSocketContext";
 
 //----------------------------------------------
-export type Color = "White" | "Black" | null;
-export type Direction = "rtl" | "ltr";
-export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
 export let PlayerNames = {
   white: ["Player 1"],
   black: ["Player 2"],
 };
 
-interface GamePlayProps {
-  player1: string;
-  setPlayer1: (player: string) => void;
-  player2: string;
-  setPlayer2: (player: string) => void;
-  scores: number[];
-  setScores: (scores: number[]) => void;
-  currentPlayer: string;
-  setCurrentPlayer: (player: string) => void;
-  currentDiceRoll: TdiceRoll;
-  setDiceRoll: (roll: TdiceRoll) => void;
-  currentBoardState: Color[][];
-  setCurrentBoardState: (boardState: Color[][]) => void;
-  moveLeft: number;
-  setMoveLeft: (moves: number) => void;
-  selectedColumn: number;
-  setSelectedColumn: (column: number) => void;
-  whiteBar: number;
-  setWhiteBar: (counter: number) => void;
-  blackBar: number;
-  setBlackBar: (counter: number) => void;
-  whiteOut: number;
-  setWhiteOut: (counter: number) => void;
-  blackOut: number;
-  setBlackOut: (counter: number) => void;
-  alertSeen: boolean;
-  setAlertSeen: (seen: boolean) => void;
-}
-
-function GamePlay({
-  player1,
-  setPlayer1,
-  player2,
-  setPlayer2,
-  scores,
-  setScores,
-  currentPlayer,
-  setCurrentPlayer,
-  currentDiceRoll,
-  setDiceRoll,
-  currentBoardState,
-  setCurrentBoardState,
-  moveLeft,
-  setMoveLeft,
-  selectedColumn,
-  setSelectedColumn,
-  whiteBar,
-  setWhiteBar,
-  blackBar,
-  setBlackBar,
-  whiteOut,
-  setWhiteOut,
-  blackOut,
-  setBlackOut,
-  alertSeen,
-  setAlertSeen,
-}: GamePlayProps) {
+function GamePlay() {
+  const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  const [scores, setScores] = useLocalStorage("scores", [0, 0]);
+  const [currentPlayer, setCurrentPlayer] = useLocalStorage(
+    "currentPlayer",
+    player1
+  );
+  const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
+    0, 0,
+  ] as type.TdiceRoll);
+  const [currentBoardState, setCurrentBoardState] = useLocalStorage(
+    "currentBoardState",
+    initialState
+  );
+  const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
+  const [selectedColumn, setSelectedColumn] = useLocalStorage(
+    "selectedColumn",
+    50
+  );
+  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
+  const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
+  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
+  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
+  const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   const rollTime = 2500; // in milliseconds
+
+  const [online, setOnline] = useLocalStorage("online", false);
+  const [started, setStarted] = useLocalStorage("started", "");
+  const navigate = useNavigate();
+  const [messages, setMessages] = useLocalStorage("messages", []);
 
   PlayerNames = {
     white: [player1],
@@ -96,39 +67,43 @@ function GamePlay({
       setAlertSeen(false);
     }
 
-    // const fetchData = async () => {
-    console.log("state has changed:", currentPlayer);
-    //send the state to the server
-    if (onlineGame !== null) {
-      const username = getUser().username;
-      const matchId = onlineGame.matchId;
-      const hostName = onlineGame.hostName;
-      const wsMessage: type.WsMessage = {
-        type: "state",
-        msg: {
-          scores: scores,
-          currentPlayer: currentPlayer,
-          currentDiceRoll: currentDiceRoll,
-          currentBoardState: currentBoardState,
-          moveLeft: moveLeft,
-          selectedColumn: selectedColumn,
-          whiteBar: whiteBar,
-          blackBar: blackBar,
-          whiteOut: whiteOut,
-          blackOut: blackOut,
-          alertSeen: alertSeen,
-        },
-        user: username,
-        matchId: matchId,
-        msgFor: hostName === username ? "guest" : "host",
-      };
-      if (currentPlayer === username) {
-        sendWsMessage(wsMessage);
-      }
+  let handelClick = () => {};
+
+  if (online === true) {
+    //------------It is an online game---------------
+    //get onlineGame data from local storage
+    const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+    const matchID = onlineGame.matchId;
+    const userName = getUser().username.toString();
+    if (userName === onlineGame.hostName) {
+      var msgFor = "guest";
+    } else {
+      var msgFor = "host";
     }
-    // };
-    // fetchData();
-  }, [scores, currentPlayer, currentDiceRoll, currentBoardState, moveLeft]);
+
+    //-------------web socket client-----------------
+    const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+
+    const sendMessage = (value: string) => {
+      sendWebSocketMessage(value);
+    };
+    handelClick = () => {
+      console.log("handelClick");
+      const message: type.WsData = {
+        type: "game",
+        msg: "test",
+        user: userName,
+        matchId: matchID,
+        msgFor: msgFor as "host" | "guest",
+      };
+      console.log("message: ", message);
+      sendMessage(JSON.stringify(message));
+    };
+
+    //-------------web socket client-----------------
+  } else {
+    //------------It is a local game-----------------
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -154,7 +129,7 @@ function GamePlay({
           onAlertSeen={(seen) => setAlertSeen(seen)}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           onMoveLeft={(moveLeft) => setMoveLeft(moveLeft)}
-          onRoll={(roll) => setDiceRoll(roll)}
+          onRoll={(roll) => setDiceRoll(roll) as type.TdiceRoll}
         />
       </div>
       <div className=" relative flex flex-col items-center mb-2 mt-6 sm:mt-3">
@@ -176,7 +151,7 @@ function GamePlay({
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}
           currentDiceRoll={currentDiceRoll}
-          onRoll={(roll) => setDiceRoll(roll)}
+          onRoll={(roll) => setDiceRoll(roll) as type.TdiceRoll}
           currentPlayer={currentPlayer}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           selectedColumn={selectedColumn}
@@ -215,7 +190,7 @@ function GamePlay({
 
 export default GamePlay;
 
-export let initialState: Color[][] = [
+let initialState: type.Color[][] = [
   ["White", "White"],
   [],
   [],
@@ -242,7 +217,7 @@ export let initialState: Color[][] = [
   ["Black", "Black"],
 ];
 
-let initialState1: Color[][] = [
+let initialState1: type.Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],
@@ -269,7 +244,7 @@ let initialState1: Color[][] = [
   [],
   [],
 ];
-let initialState2: Color[][] = [
+let initialState2: type.Color[][] = [
   //test state for move out
   ["Black", "Black", "Black", "Black", "Black"],
   ["Black", "Black", "Black", "Black", "Black", "Black"],
@@ -296,7 +271,7 @@ let initialState2: Color[][] = [
   ["White", "White"],
   ["White", "White", "White", "White"],
 ];
-let winState: Color[][] = [
+let winState: type.Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],

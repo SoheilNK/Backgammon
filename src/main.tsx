@@ -10,36 +10,39 @@ import { HashRouter, Route, Routes, Link } from "react-router-dom";
 import LoginPage from "./pages/Signin";
 import MyProfile from "./pages/MyProfile";
 import ForgotPassPage from "./pages/ForgotPass";
+import { WebSocketProvider } from "./services/WebSocketContext";
 
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
-        <Route
-          path="/users"
-          element={<UsersPage />}
-          errorElement={<ErrorPage />}
-        />
-        <Route path="/game" element={<GamePage />} errorElement={<ErrorPage />} />
-        <Route path="/onlinegame" element={<OnlineGamePage />} errorElement={<ErrorPage />} />
-        <Route
-          path="/myprofile"
-          element={<MyProfile />}
-          errorElement={<ErrorPage />}
-        />
-        <Route
-          path="/signin"
-          element={<LoginPage />}
-          errorElement={<ErrorPage />}
-        />
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassPage />}
-          errorElement={<ErrorPage />}
-        />
-      </Routes>
-    </HashRouter>
+    <WebSocketProvider>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
+          <Route
+            path="/users"
+            element={<UsersPage />}
+            errorElement={<ErrorPage />}
+          />
+          <Route path="/game" element={<GamePage />} errorElement={<ErrorPage />} />
+          <Route path="/onlinegame" element={<OnlineGamePage />} errorElement={<ErrorPage />} />
+          <Route
+            path="/myprofile"
+            element={<MyProfile />}
+            errorElement={<ErrorPage />}
+          />
+          <Route
+            path="/signin"
+            element={<LoginPage />}
+            errorElement={<ErrorPage />}
+          />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassPage />}
+            errorElement={<ErrorPage />}
+          />
+        </Routes>
+      </HashRouter>
+    </WebSocketProvider>
   </React.StrictMode>
 );

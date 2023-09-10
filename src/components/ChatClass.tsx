@@ -41,7 +41,7 @@ class Chat extends Component<{}, ChatState> {
   chatWebSocketClient: W3CWebSocket | null = null;
 
   componentDidMount(): void {
-    this.chatWebSocketClient = getWebSocketClient(8001);
+    this.chatWebSocketClient = getWebSocketClient();
     this.chatWebSocketClient.onopen = (): void => {
       console.log("chatWebSocket Client Connected");
     };

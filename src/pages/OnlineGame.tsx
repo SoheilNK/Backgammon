@@ -1,15 +1,14 @@
+import { useState, useEffect, ChangeEvent } from "react";
 import PageClass from "../components/PageClass";
-import { useSearchParams } from "react-router-dom";
-import { getUser } from "../services/user.service";
 import GamePlay from "../components/GamePlay";
-import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { useEffect } from "react";
-import { TdiceRoll, initialState } from "../components/GamePlay";
+import { WebSocketProvider, useWebSocket } from "../services/WebSocketContext";
+import * as type from "../types";
+import { useNavigate } from "react-router-dom";
 
 function OnlineGame() {
-  //GamePlay state----------------
+  //all states of the GamePlay----------------
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
@@ -19,10 +18,10 @@ function OnlineGame() {
   );
   const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
     0, 0,
-  ] as TdiceRoll);
+  ] as type.TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
     "currentBoardState",
-    initialState
+    ""
   );
   const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
   const [selectedColumn, setSelectedColumn] = useLocalStorage(
@@ -34,23 +33,15 @@ function OnlineGame() {
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
-  //--------------------------
-  const updateState = (newState: any) => {
-    //update GamePlay state
-    setScores(newState.scores);
-    setCurrentPlayer(newState.currentPlayer);
-    setDiceRoll(newState.currentDiceRoll);
-    setCurrentBoardState(newState.currentBoardState);
-    setMoveLeft(newState.moveLeft);
-    setSelectedColumn(newState.selectedColumn);
-    setWhiteBar(newState.whiteBar);
-    setBlackBar(newState.blackBar);
-    setWhiteOut(newState.whiteOut);
-    setBlackOut(newState.blackOut);
-    setAlertSeen(newState.alertSeen);
-  };
+  const rollTime = 2500; // in milliseconds
 
-  //get the match id from local storage
+  const [online, setOnline] = useLocalStorage("online", false);
+  const [started, setStarted] = useLocalStorage("started", "");
+  const navigate = useNavigate();
+  //all states of the Chat----------------
+  const [messages, setMessages] = useLocalStorage("messages", []);
+
+  //get the onlineGame data from local storage
   const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
   // if (onlineGame !== null) {
   //   window.history.replaceState({}, document.title, "/Backgammon/");
@@ -58,50 +49,80 @@ function OnlineGame() {
   // }
 
   //set the player names
-  var p1 = onlineGame?.hostName;
-  var p2 = onlineGame?.guestName;
+  // var p1 = onlineGame?.hostName;
+  // var p2 = onlineGame?.guestName || "Waiting for player 2...";
+  useEffect(() => {
+    setPlayer1(onlineGame?.hostName);
+    setPlayer2(onlineGame?.guestName || "Waiting for player 2...");
+  }, [onlineGame]);
 
-  localStorage.setItem("player1", JSON.stringify(p1));
-  localStorage.setItem("player2", JSON.stringify(p2));
-  if (onlineGame?.status === "Playing") {
-    localStorage.setItem("started", JSON.stringify("yes"));
-  } else {
-    localStorage.setItem("started", JSON.stringify("no"));
+  // localStorage.setItem("player1", JSON.stringify(p1));
+  // localStorage.setItem("player2", JSON.stringify(p2));
+  // if (onlineGame?.status === "Playing") {
+  //   localStorage.setItem("started", JSON.stringify("yes"));
+  // } else {
+  //   localStorage.setItem("started", JSON.stringify("no"));
+  // }
+  const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+
+  useEffect(() => {
+    handleWebSocketMessage((message) => {
+      // Handle the incoming messages in OnlineGame
+      console.log("Received message in OnlineGame:", message);
+      const wsMessage: type.WsData = JSON.parse(message.data.toString());
+      console.log("Message of type: ", wsMessage);
+      if (wsMessage.type === "chat") {
+        setMessages((prevState: any) => [
+          {
+            msg: wsMessage.msg,
+            user: wsMessage.user,
+          },
+          ...prevState,
+        ]);
+      }
+      //----------------game messages----------------
+
+      //check for joinOnlineGame
+      if (wsMessage.type === "gameJoined") {
+        let newOnlineData = wsMessage.msg;
+        //update localstorage
+        setOnlineGame(newOnlineData);
+        // setPlayer2(newOnlineData.guestName);
+        setStarted("yes");
+      }
+
+      if (wsMessage.type === "game") {
+        console.log("got reply for Game! ", wsMessage);
+        alert(wsMessage.msg);
+      }
+
+      if (wsMessage.type === "chat") {
+        console.log("got reply! for Chat ", wsMessage);
+        setMessages((prevState: any) => [
+          {
+            msg: wsMessage.msg,
+            user: wsMessage.user,
+          },
+          ...prevState,
+        ]);
+      }
+    });
+  }, [handleWebSocketMessage]);
+  //--------------------------------------------------------------------------------
+  //update state
+  if (started === "yes") {
+    // setPlayer2(p2);
+    // setStarted("yes");
+    // navigate(`/onlinegame`);
+    // window.location.reload();
   }
 
   return (
     <div>
       <div className="flex">
-        <GamePlay
-          player1={player1}
-          setPlayer1={setPlayer1}
-          player2={player2}
-          setPlayer2={setPlayer2}
-          scores={scores}
-          setScores={setScores}
-          currentPlayer={currentPlayer}
-          setCurrentPlayer={setCurrentPlayer}
-          currentDiceRoll={currentDiceRoll}
-          setDiceRoll={setDiceRoll}
-          currentBoardState={currentBoardState}
-          setCurrentBoardState={setCurrentBoardState}
-          moveLeft={moveLeft}
-          setMoveLeft={setMoveLeft}
-          selectedColumn={selectedColumn}
-          setSelectedColumn={setSelectedColumn}
-          whiteBar={whiteBar}
-          setWhiteBar={setWhiteBar}
-          blackBar={blackBar}
-          setBlackBar={setBlackBar}
-          whiteOut={whiteOut}
-          setWhiteOut={setWhiteOut}
-          blackOut={blackOut}
-          setBlackOut={setBlackOut}
-          alertSeen={alertSeen}
-          setAlertSeen={setAlertSeen}
-        />
+        <GamePlay />
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
-          <Chat onNewState={updateState} />
+          <Chat />
           <p>Game ID: ${onlineGame.matchId}</p>
         </div>
       </div>

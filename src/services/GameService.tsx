@@ -5,6 +5,9 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { myApi } from "../services/user.service";
 import GameTable from "../components/GameTable";
 import { useNavigate } from "react-router-dom";
+import * as type from "../types";
+
+
 
 //call the api to get the list of online games
 export const getOnlineGames = async () => {
@@ -15,7 +18,7 @@ export const getOnlineGames = async () => {
 };
 
   //update the game room
-  export const updateOnlineGame = async (onlineGame: any) => {
+  export const updateOnlineGame = async (onlineGame: type.OnlineGame) => {
     console.log("updating game id :", onlineGame.matchId);
     try {
       const { data } = await myApi.post(
@@ -46,12 +49,19 @@ export function GameList() {
 
   //add a game room
   const createGame = async () => {
-    const { data } = await myApi.post(
-      "http://localhost:8000/api/games/add/",
-      {}
-    );
+    let onlineUser = localStorage.getItem("onlineUser");
+    console.log("creating game...");
+    //check websocket connection
+    if (onlineUser === null) {
+      //******************* */
+      navigate(`/login`);
+    }
+      
+    const { data } = await myApi.post("http://localhost:8000/api/games/add/", {
+      onlineUser,
+    });
     const onlineGame = data;
-    //store onlineGame objrct in local storage
+    //store onlineGame object in local storage
     localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
 
     //goto the game room
@@ -60,6 +70,7 @@ export function GameList() {
 
   //join a game room
   const joinGame = async (matchId: string, hostName: string) => {
+    let onlineUser = localStorage.getItem("onlineUser");
     console.log("joining game id :", matchId, " hosted by: ", hostName);
     const user = getUser();
     if (user.username === hostName) {
@@ -67,15 +78,21 @@ export function GameList() {
       return;
     } else {
       try {
+        // let updatedOnlineUser: type.OnlineUser = JSON.parse(onlineUser!);
+        // updatedOnlineUser.userName = user.username;
+        // localStorage.setItem("onlineUser", JSON.stringify(updatedOnlineUser));
+
         const { data } = await myApi.post(
           "http://localhost:8000/api/games/join",
-          { matchId: matchId } // Set the matchId in the request body
+          JSON.stringify({ matchId: matchId, onlineUser: onlineUser })
         );
         console.log("Response:", data);
         const onlineGame = data
 
-        //store onlineGame objrct in local storage
+
+        //store onlineGame object in local storage
         localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+        //update the game room
 
         console.log("Response:", onlineGame);
       } catch (error) {
