@@ -48,11 +48,13 @@ const Chat: React.FC<chatProps> = (props) => {
     var msgFrom = "guest";
   }
 
+
   // useEffect(() => {
   //   window.addEventListener("beforeunload", alertUser);
   //   window.addEventListener("unload", handleEndGame);
   //   const fetchData = async () => {
   //     chatWebSocketClient = await getWebSocketClient();
+
 
   //     chatWebSocketClient.onopen = () => {
   //       console.log("chatWebSocket Client Connected");
@@ -98,6 +100,7 @@ const Chat: React.FC<chatProps> = (props) => {
   //         props.setStarted("yes");
   //       }
 
+
   //       if (dataFromServer.type === "chat") {
   //         let wsMessage = dataFromServer.data as unknown as type.WsMessage;
   //         console.log("got reply for Chat! ", dataFromServer);
@@ -115,6 +118,7 @@ const Chat: React.FC<chatProps> = (props) => {
   //     window.removeEventListener("unload", handleEndGame);
   //     handleEndGame();
   //   };
+
 
   //   // Cleanup function when leaving the component
   //   // return () => {
