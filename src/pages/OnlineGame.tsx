@@ -9,19 +9,57 @@ import { useEffect, useState } from "react";
 import { TdiceRoll, winState as initialState } from "../components/GamePlay";
 import { leaveOnlineGame } from "../services/GameService";
 
-//get onlineGame from local storage
-const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-const matchID = onlineGame.matchId;
-const userName = getUser().username.toString();
-if (userName === onlineGame.hostName) {
-  var msgFor = "guest";
-  var msgFrom = "host";
-} else {
-  var msgFor = "host";
-  var msgFrom = "guest";
-}
 
 function OnlineGame() {
+  //get onlineGame from local storage
+  const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+  const matchID = onlineGame.matchId;
+  const userName = getUser().username.toString();
+  if (userName === onlineGame.hostName) {
+    var msgFor = "guest";
+    var msgFrom = "host";
+  } else {
+    var msgFor = "host";
+    var msgFrom = "guest";
+  }
+
+useEffect(() => {
+  const handleUrlChange = () => {
+    console.log("URL changed[popstate]:", window.location.href);
+  };
+
+  window.addEventListener("popstate", handleUrlChange);
+
+  return () => {
+    window.removeEventListener("popstate", handleUrlChange);
+  };
+}, []);
+
+  // let location = useLocation();
+
+  // useEffect(() => {
+  //   console.log("location changed");
+  //   //ask if the user wants to leave the game
+  //   if (location.pathname !== "/onlinegame") {
+  //     if (window.confirm("Do you want to leave the game?")) {
+  //       //leave the game
+  //       console.log(
+  //         "Leaving the game... , Clearing Game Data... Match Id: " + matchID
+  //       );
+  //       clearGameData();
+  //       //leave the game
+  //       leaveOnlineGame(onlineGame, msgFrom);
+  //     } else {
+  //       //stay in the game
+  //       window.history.replaceState(
+  //         {},
+  //         document.title,
+  //         "/Backgammon/OnlineGame"
+  //       );
+  //     }
+  //   }
+  // }, [location]);
+
   //GamePlay state----------------
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");

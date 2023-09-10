@@ -48,92 +48,96 @@ const Chat: React.FC<chatProps> = (props) => {
     var msgFrom = "guest";
   }
 
-  useEffect(() => {
-    // window.addEventListener("beforeunload", alertUser);
-    // window.addEventListener("unload", handleEndGame);
-    const fetchData = async () => {
-      chatWebSocketClient = await getWebSocketClient();
 
-      chatWebSocketClient.onopen = () => {
-        console.log("chatWebSocket Client Connected");
-      };
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", alertUser);
+  //   window.addEventListener("unload", handleEndGame);
+  //   const fetchData = async () => {
+  //     chatWebSocketClient = await getWebSocketClient();
 
-      chatWebSocketClient.onmessage = (message) => {
-        const dataFromServer: type.DataFromServer = JSON.parse(
-          message.data.toString()
-        );
-        console.log("got reply! ", dataFromServer);
 
-        //gameUpdate
-        if (dataFromServer.type === "gameUpdate") {
-          console.log("got reply for GameUpdate! ", dataFromServer);
-          const newOnlineGame =
-            dataFromServer.data as unknown as type.WsMessage;
-          localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
-        }
+  //     chatWebSocketClient.onopen = () => {
+  //       console.log("chatWebSocket Client Connected");
+  //     };
 
-        //handle state updates
-        if (dataFromServer.type === "state") {
-          console.log("got reply for State! ", dataFromServer);
-          const wsMessage = dataFromServer.data as unknown as type.WsMessage;
-          const newState = wsMessage.msg as any;
-          props.onNewState(newState);
-        }
+  //     chatWebSocketClient.onmessage = (message) => {
+  //       const dataFromServer: type.DataFromServer = JSON.parse(
+  //         message.data.toString()
+  //       );
+  //       console.log("got reply! ", dataFromServer);
 
-        //************************************************************ */
-        //check for joinOnlineGame
-        if (dataFromServer.type === "gameJoined") {
-          //update localstorage
-          localStorage.setItem(
-            "onlineGame",
-            JSON.stringify(dataFromServer.data)
-          );
-          //update state
-          if (started === "no") {
-            let msg = dataFromServer.data as unknown as type.OnlineGame;
-            props.setPlayer2(msg.guestName);
-            // navigate(`/onlinegame`);
-            // window.location.reload();
-          }
-          props.setStarted("yes");
-        }
+  //       //gameUpdate
+  //       if (dataFromServer.type === "gameUpdate") {
+  //         console.log("got reply for GameUpdate! ", dataFromServer);
+  //         const newOnlineGame =
+  //           dataFromServer.data as unknown as type.WsMessage;
+  //         localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
+  //       }
 
-        if (dataFromServer.type === "chat") {
-          let wsMessage = dataFromServer.data as unknown as type.WsMessage;
-          console.log("got reply for Chat! ", dataFromServer);
-          setMessages((prevState) => [wsMessage, ...prevState]);
-        }
-        if (dataFromServer.type === "game") {
-          console.log("got reply for Game! ", dataFromServer);
-          alert(dataFromServer.data);
-        }
-      };
-    };
-    fetchData();
-    // return () => {
-    //   window.removeEventListener("beforeunload", alertUser);
-    //   window.removeEventListener("unload", handleEndGame);
-    //   handleEndGame();
-    // };
+  //       //handle state updates
+  //       if (dataFromServer.type === "state") {
+  //         console.log("got reply for State! ", dataFromServer);
+  //         const wsMessage = dataFromServer.data as unknown as type.WsMessage;
+  //         const newState = wsMessage.msg as any;
+  //         props.onNewState(newState);
+  //       }
 
-    // Cleanup function when leaving the component
-    // return () => {
-    //   console.log(
-    //     "Leaving the game... , Clearing Game Data... Match Id: " + matchID
-    //   );
-    //   // clearGameData();
-    //   // //leave the game
-    //   // leaveOnlineGame(onlineGame, msgFrom);
-    //   // if (chatWebSocketClient) {
-    //   //   chatWebSocketClient.onmessage = () => {};
-    //   //   chatWebSocketClient.onerror = () => {};
-    //   //   chatWebSocketClient.close();
-    //   //   console.log(
-    //   //     "chatWebSocket Client Disconnected, online user: " + getUser()
-    //   //   );
-    //   // }
-    // };
-  }, []);
+  //       //************************************************************ */
+  //       //check for joinOnlineGame
+  //       if (dataFromServer.type === "gameJoined") {
+  //         //update localstorage
+  //         localStorage.setItem(
+  //           "onlineGame",
+  //           JSON.stringify(dataFromServer.data)
+  //         );
+  //         //update state
+  //         if (started === "no") {
+  //           let msg = dataFromServer.data as unknown as type.OnlineGame;
+  //           props.setPlayer2(msg.guestName);
+  //           // navigate(`/onlinegame`);
+  //           // window.location.reload();
+  //         }
+  //         props.setStarted("yes");
+  //       }
+
+
+  //       if (dataFromServer.type === "chat") {
+  //         let wsMessage = dataFromServer.data as unknown as type.WsMessage;
+  //         console.log("got reply for Chat! ", dataFromServer);
+  //         setMessages((prevState) => [wsMessage, ...prevState]);
+  //       }
+  //       if (dataFromServer.type === "game") {
+  //         console.log("got reply for Game! ", dataFromServer);
+  //         alert(dataFromServer.data);
+  //       }
+  //     };
+  //   };
+  //   fetchData();
+  //   return () => {
+  //     window.removeEventListener("beforeunload", alertUser);
+  //     window.removeEventListener("unload", handleEndGame);
+  //     handleEndGame();
+  //   };
+
+
+  //   // Cleanup function when leaving the component
+  //   // return () => {
+  //   //   console.log(
+  //   //     "Leaving the game... , Clearing Game Data... Match Id: " + matchID
+  //   //   );
+  //   //   // clearGameData();
+  //   //   // //leave the game
+  //   //   // leaveOnlineGame(onlineGame, msgFrom);
+  //   //   // if (chatWebSocketClient) {
+  //   //   //   chatWebSocketClient.onmessage = () => {};
+  //   //   //   chatWebSocketClient.onerror = () => {};
+  //   //   //   chatWebSocketClient.close();
+  //   //   //   console.log(
+  //   //   //     "chatWebSocket Client Disconnected, online user: " + getUser()
+  //   //   //   );
+  //   //   // }
+  //   // };
+  // }, []);
 
   const alertUser = (e: {
     preventDefault: () => void;
