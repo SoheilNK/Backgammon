@@ -48,6 +48,8 @@ interface GamePlayProps {
   setBlackOut: (counter: number) => void;
   alertSeen: boolean;
   setAlertSeen: (seen: boolean) => void;
+  started: string;
+  setStarted: (started: string) => void;
 }
 
 function GamePlay({
@@ -77,6 +79,8 @@ function GamePlay({
   setBlackOut,
   alertSeen,
   setAlertSeen,
+  started,
+  setStarted,
 }: GamePlayProps) {
   const rollTime = 2500; // in milliseconds
 
@@ -86,7 +90,8 @@ function GamePlay({
   };
 
   //manage state for online game
-  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
 
   useEffect(() => {
     //change player
@@ -128,7 +133,19 @@ function GamePlay({
     }
     // };
     // fetchData();
-  }, [scores, currentPlayer, currentDiceRoll, currentBoardState, moveLeft]);
+  }, [
+    scores,
+    currentPlayer,
+    currentDiceRoll,
+    currentBoardState,
+    moveLeft,
+    selectedColumn,
+    whiteBar,
+    blackBar,
+    whiteOut,
+    blackOut,
+    alertSeen,
+  ]);
 
   return (
     <div className="flex flex-col items-center">
@@ -206,6 +223,7 @@ function GamePlay({
             rollTime={rollTime}
             onAlertSeen={(seen) => setAlertSeen(seen)}
             currentPlayer={currentPlayer}
+            started={started}
           />
         </div>
       </div>
@@ -242,7 +260,7 @@ export let initialState: Color[][] = [
   ["Black", "Black"],
 ];
 
-let initialState1: Color[][] = [
+export let initialState1: Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],
@@ -269,7 +287,7 @@ let initialState1: Color[][] = [
   [],
   [],
 ];
-let initialState2: Color[][] = [
+export let initialState2: Color[][] = [
   //test state for move out
   ["Black", "Black", "Black", "Black", "Black"],
   ["Black", "Black", "Black", "Black", "Black", "Black"],
@@ -296,7 +314,7 @@ let initialState2: Color[][] = [
   ["White", "White"],
   ["White", "White", "White", "White"],
 ];
-let winState: Color[][] = [
+export let winState: Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],

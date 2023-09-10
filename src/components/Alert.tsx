@@ -62,7 +62,7 @@ export function Alert({
     return null;
   } else {
     return (
-      <div className="absolute top-1/2 left-1/6 transform -translate-x-1/6 -translate-y-1/2 z-20">
+      <div id="Aert" className="absolute top-1/2 left-1/6 transform -translate-x-1/6 -translate-y-1/2 z-20">
         <div
           style={{ backgroundColor: "#8E8268" }}
           className=" flex-col  text-lg p-2  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center "

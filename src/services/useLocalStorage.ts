@@ -4,7 +4,13 @@ import { stringify } from "uuid";
 function getStorageValue(key: string, defaultValue: any) {
     // getting stored value
     const saved = localStorage.getItem(key) || JSON.stringify("");
-    const initial = JSON.parse(saved);
+    // parsing stored json or if none return defaultValue
+    let initial: string
+    if (saved === "undefined") {
+        initial = defaultValue;
+    } else {
+        initial = JSON.parse(saved);
+    }
     return initial || defaultValue;
 
 }

@@ -1,3 +1,11 @@
+
+//online game user
+export interface OnlineUser {
+  userId: string;
+  userName: string;
+  status: string;
+}
+
 export interface WsMessage {
   type: string;
   msg: any;

@@ -17,6 +17,7 @@ interface DiceProps {
   rollTime: number;
   onAlertSeen: (seen: boolean) => void;
   currentPlayer: string;
+  started: string;
 }
 
 export default function Dice({
@@ -29,22 +30,27 @@ export default function Dice({
   rollTime,
   onAlertSeen,
   currentPlayer,
+  started,
 }: DiceProps): JSX.Element {
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
 
   const [online, setOnline] = useLocalStorage("online", false);
-  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
+  // const [started, setStarted] = useLocalStorage("started", "no");
   const userName = getUser().username.toString();
-  
+
   let onlineGameStauts = "Playing";
-  if (onlineGame)  onlineGameStauts = onlineGame.status;
+  if (onlineGame) {
+    onlineGameStauts = onlineGame.status;
+  }
 
   let disabled =
     moveLeft > 0 ||
     whiteOut === 15 ||
     blackOut === 15 ||
     (online && currentPlayer !== userName) ||
-    onlineGameStauts !== "Playing";
+    started === "no";
   // console.log(
   //   "disabled: ",
   //   disabled,
@@ -79,7 +85,7 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // currentDiceRoll = [2,4]; //test
+    currentDiceRoll = [3,3]; //test
 
     setRemainingTime(rollTime); //reset animation time
     //play a sound
