@@ -19,31 +19,67 @@ export let PlayerNames = {
   black: ["Player 2"],
 };
 
-function GamePlay() {
-  const [player1, setPlayer1] = useLocalStorage("player1", "");
-  const [player2, setPlayer2] = useLocalStorage("player2", "");
-  const [scores, setScores] = useLocalStorage("scores", [0, 0]);
-  const [currentPlayer, setCurrentPlayer] = useLocalStorage(
-    "currentPlayer",
-    player1
-  );
-  const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
-    0, 0,
-  ] as type.TdiceRoll);
-  const [currentBoardState, setCurrentBoardState] = useLocalStorage(
-    "currentBoardState",
-    initialState
-  );
-  const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
-  const [selectedColumn, setSelectedColumn] = useLocalStorage(
-    "selectedColumn",
-    50
-  );
-  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
-  const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
-  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0);
-  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
-  const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
+interface GamePlayProps {
+  player1: string;
+  setPlayer1: (player: string) => void;
+  player2: string;
+  setPlayer2: (player: string) => void;
+  scores: number[];
+  setScores: (scores: number[]) => void;
+  currentPlayer: string;
+  setCurrentPlayer: (player: string) => void;
+  currentDiceRoll: TdiceRoll;
+  setDiceRoll: (roll: TdiceRoll) => void;
+  currentBoardState: Color[][];
+  setCurrentBoardState: (boardState: Color[][]) => void;
+  moveLeft: number;
+  setMoveLeft: (moves: number) => void;
+  selectedColumn: number;
+  setSelectedColumn: (column: number) => void;
+  whiteBar: number;
+  setWhiteBar: (counter: number) => void;
+  blackBar: number;
+  setBlackBar: (counter: number) => void;
+  whiteOut: number;
+  setWhiteOut: (counter: number) => void;
+  blackOut: number;
+  setBlackOut: (counter: number) => void;
+  alertSeen: boolean;
+  setAlertSeen: (seen: boolean) => void;
+  started: string;
+  setStarted: (started: string) => void;
+}
+
+function GamePlay({
+  player1,
+  setPlayer1,
+  player2,
+  setPlayer2,
+  scores,
+  setScores,
+  currentPlayer,
+  setCurrentPlayer,
+  currentDiceRoll,
+  setDiceRoll,
+  currentBoardState,
+  setCurrentBoardState,
+  moveLeft,
+  setMoveLeft,
+  selectedColumn,
+  setSelectedColumn,
+  whiteBar,
+  setWhiteBar,
+  blackBar,
+  setBlackBar,
+  whiteOut,
+  setWhiteOut,
+  blackOut,
+  setBlackOut,
+  alertSeen,
+  setAlertSeen,
+  started,
+  setStarted,
+}: GamePlayProps) {
   const rollTime = 2500; // in milliseconds
 
   const [online, setOnline] = useLocalStorage("online", false);
@@ -57,7 +93,8 @@ function GamePlay() {
   };
 
   //manage state for online game
-  const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
 
   useEffect(() => {
     //change player
@@ -96,14 +133,25 @@ function GamePlay() {
         matchId: matchID,
         msgFor: msgFor as "host" | "guest",
       };
-      console.log("message: ", message);
-      sendMessage(JSON.stringify(message));
-    };
-
-    //-------------web socket client-----------------
-  } else {
-    //------------It is a local game-----------------
-  }
+      if (currentPlayer === username) {
+        sendWsMessage(wsMessage);
+      }
+    }
+    // };
+    // fetchData();
+  }, [
+    scores,
+    currentPlayer,
+    currentDiceRoll,
+    currentBoardState,
+    moveLeft,
+    selectedColumn,
+    whiteBar,
+    blackBar,
+    whiteOut,
+    blackOut,
+    alertSeen,
+  ]);
 
   return (
     <div className="flex flex-col items-center">
@@ -181,6 +229,7 @@ function GamePlay() {
             rollTime={rollTime}
             onAlertSeen={(seen) => setAlertSeen(seen)}
             currentPlayer={currentPlayer}
+            started={started}
           />
         </div>
       </div>
@@ -217,7 +266,7 @@ let initialState: type.Color[][] = [
   ["Black", "Black"],
 ];
 
-let initialState1: type.Color[][] = [
+export let initialState1: Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],
@@ -244,7 +293,7 @@ let initialState1: type.Color[][] = [
   [],
   [],
 ];
-let initialState2: type.Color[][] = [
+export let initialState2: Color[][] = [
   //test state for move out
   ["Black", "Black", "Black", "Black", "Black"],
   ["Black", "Black", "Black", "Black", "Black", "Black"],
@@ -271,7 +320,7 @@ let initialState2: type.Color[][] = [
   ["White", "White"],
   ["White", "White", "White", "White"],
 ];
-let winState: type.Color[][] = [
+export let winState: Color[][] = [
   //test state for winner
   ["Black", "Black"],
   [],

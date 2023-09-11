@@ -56,7 +56,7 @@ export function Message({
 
   if (winner1 != "") {
     return (
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-20">
+      <div id="winnerMessage" className="absolute top-1/2 translate-y-1/2 left-1/2 transform -translate-x-1/2 z-20">
         <div
           style={{ backgroundColor: "#8E8268" }}
           className=" flex-col  text-lg px-8  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center "
@@ -81,6 +81,7 @@ export function Message({
                 localStorage.setItem("player1", JSON.stringify(player1)),
                 localStorage.setItem("player2", JSON.stringify(player2)),
                 localStorage.setItem("scores", JSON.stringify(newScores)),
+                localStorage.setItem("currentPlayer", JSON.stringify(winner1)), //winner starts next game
                 window.location.reload()
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
@@ -93,7 +94,7 @@ export function Message({
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
-              New Players
+              New Game
             </button>
           </div>
         </div>
@@ -112,7 +113,7 @@ export function Message({
     }
 
     return (
-      <div id="chat" className=" text-xs sm:text-base w-3/4  m-auto">
+      <div id="gameMessage" className=" text-xs sm:text-base w-3/4  m-auto">
         <div
           style={{ backgroundColor: "#8E8268" }}
           className={

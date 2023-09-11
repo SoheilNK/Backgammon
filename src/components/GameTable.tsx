@@ -14,11 +14,11 @@ const GameTable: React.FC<GameTableProps> = ({
   joinGame,
 }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4">
       <button
         onClick={createGame}
         disabled={!isLoggedIn}
-        className="w-1/4 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
+        className="m-auto bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
       >
         Create a New Game
       </button>
@@ -26,24 +26,28 @@ const GameTable: React.FC<GameTableProps> = ({
       <div id="gameList" className="flex flex-col gap-2">
         <h1 className=" text-center bg-slate-300">Game List</h1>
         <table className="table-auto">
-          <thead>
+          <thead className=" text-xs sm:text-base">
             <tr>
-              <th>Match ID</th>
+              <th className="text-center hidden sm:block">Match ID</th>
               <th>Host Name</th>
               <th>Guest Name</th>
               <th>Status</th>
               <th>Join Game</th>
             </tr>
           </thead>
-          <tbody>
-            {games.map((game: type.OnlineGame) => (
+          <tbody className=" text-xs sm:text-base">
+            {games.map((game: Game) => (
               <tr key={game.matchId}>
-                <td>{game.matchId}</td>
-                <td>{game.hostName}</td>
-                <td>{game.guestName}</td>
-                <td>{game.status}</td>
-                <td>
-                  <button onClick={() => joinGame(game.matchId, game.hostName, game.hostId)}>
+                <td className="text-center hidden sm:block">{game.matchId}</td>
+                <td className="text-center">{game.hostName}</td>
+                <td className="text-center">{game.guestName}</td>
+                <td className="text-center">{game.status}</td>
+                <td className="text-center">
+                  <button
+                    className=" m--1 bg-blue-900 hover:bg-sky-700 disabled:bg-slate-300 text-white font-bold px-4 rounded"
+                    onClick={() => joinGame(game.matchId, game.hostName)}
+                    disabled={game.status == "Playing"}
+                  >
                     Join Game
                   </button>
                 </td>

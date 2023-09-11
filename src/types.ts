@@ -1,25 +1,15 @@
-//game types ................................................
-export type Color = "White" | "Black" | null;
-export type Direction = "rtl" | "ltr";
-export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
 
-//websocket types ................................................
 //online game user
-export type OnlineUser = {
+export interface OnlineUser {
   userId: string;
   userName: string;
   status: string;
-};
+}
 
-//online users array
-export type OnlineUsers = {
-  users: OnlineUser[];
-};
-
-export type WsData = {
-  type: "chat" | "game" | "userID" | "gameJoined";
-  msg: string;
-  user: string; //sender username
+export interface WsMessage {
+  type: string;
+  msg: any;
+  user: string;
   matchId: string;
   msgFor: "host" | "guest" | "all";
 };

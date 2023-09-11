@@ -136,20 +136,14 @@ export const logout = () => {
 };
 //clear game data from the local storage
 export const clearGameData = () => {
-  // let allItems = getAllLocalStorageItems();
-  // console.log("All items: ", allItems);
-  // for (let key in allItems) {
-  //     if (key !== "user" && key !== "tokens" && key !== "isLoggedIn" && key !== "online") {
-  //         localStorage.removeItem(key);
-  //     }
-  // }
-  const whitelistKeys = [
-    "user",
-    "tokens",
-    "isLoggedIn",
-    "online",
-    "onlineUser",
-  ];
+    // let allItems = getAllLocalStorageItems();
+    // console.log("All items: ", allItems);
+    // for (let key in allItems) {
+    //     if (key !== "user" && key !== "tokens" && key !== "isLoggedIn" && key !== "online") {
+    //         localStorage.removeItem(key);
+    //     }
+    // }
+    const whitelistKeys = ["user", "tokens", "isLoggedIn", "online", "onlineGame", "onlineUser" ];
 
   for (const key in localStorage) {
     if (!whitelistKeys.includes(key)) {

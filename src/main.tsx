@@ -7,7 +7,7 @@ import UsersPage from "./pages/Users";
 import OnlineGamePage from "./pages/OnlineGame";
 import { HashRouter, Route, Routes, Link } from "react-router-dom";
 
-import LoginPage from "./pages/Signin";
+import LoginPage from "./pages/SignIn";
 import MyProfile from "./pages/MyProfile";
 import ForgotPassPage from "./pages/ForgotPass";
 import { WebSocketProvider } from "./services/WebSocketContext";
