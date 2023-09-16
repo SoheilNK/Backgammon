@@ -84,6 +84,11 @@ function GamePlay({
 }: GamePlayProps) {
   const rollTime = 2500; // in milliseconds
 
+  const [online, setOnline] = useLocalStorage("online", false);
+  const [started, setStarted] = useLocalStorage("started", "");
+  const navigate = useNavigate();
+  const [messages, setMessages] = useLocalStorage("messages", []);
+
   PlayerNames = {
     white: [player1],
     black: [player2],

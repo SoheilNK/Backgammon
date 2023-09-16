@@ -1,5 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { w3cwebsocket as W3CWebSocket, Message } from "websocket";
+import { useState, useEffect, ChangeEvent } from "react";
 import { Card, Avatar, Input, Typography } from "antd";
 import { clearGameData, getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
@@ -7,6 +6,11 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { leaveOnlineGame, updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
+import {
+  useWebSocketSendMessage,
+  useWebSocketMessageHandler,
+} from "../services/WebSocketContext";
+import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 
 const { Search } = Input;
 const { Text } = Typography;
@@ -32,7 +36,9 @@ const Chat: React.FC<chatProps> = (props) => {
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const user = getUser().username.toString();
   const [isLoggedIn] = useState(true);
-  const [messages, setMessages] = useState<type.WsMessage[]>([]);
+  // const [messages, setMessages] = useState<type.WsMessage[]>([]);
+  const [messages, setMessages] = useLocalStorage("messages", []);
+
   const [searchVal, setSearchVal] = useState("");
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
@@ -98,7 +104,7 @@ const Chat: React.FC<chatProps> = (props) => {
           if (dataFromServer.type === "chat") {
             let wsMessage = dataFromServer.data as unknown as type.WsMessage;
             console.log("got reply for Chat! ", dataFromServer);
-            setMessages((prevState) => [wsMessage, ...prevState]);
+            setMessages((prevState: any) => [wsMessage, ...prevState]);
           }
           if (dataFromServer.type === "game") {
             console.log("got reply for Game! ", dataFromServer);
@@ -190,7 +196,7 @@ const Chat: React.FC<chatProps> = (props) => {
             }}
             id="messages"
           >
-            {messages.map((message) => (
+            {messages.map((message: type.WsMessage) => (
               <Card
                 key={message.msg}
                 style={{
