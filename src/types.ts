@@ -11,13 +11,8 @@ export interface WsMessage {
   msg: any;
   user: string;
   matchId: string;
-  msgFor: string;
-}
-
-export interface DataFromServer {
-  type: string;
-  data: string;
-}
+  msgFor: "host" | "guest" | "all";
+};
 
 export type ChatState = {
   userName: string;

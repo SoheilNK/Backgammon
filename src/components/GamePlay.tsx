@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import { getWebSocketClient } from "../services/websocketService";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import * as type from "../types";
-import { sendWsMessage } from "./Chat";
+import { useNavigate } from "react-router-dom";
+import { useWebSocket } from "../services/WebSocketContext";
 
 //----------------------------------------------
 export let PlayerNames = {
@@ -103,31 +104,34 @@ function GamePlay({
       setAlertSeen(false);
     }
 
-    // const fetchData = async () => {
-    console.log("state has changed:", currentPlayer);
-    //send the state to the server
-    if (onlineGame !== null) {
-      const username = getUser().username;
-      const matchId = onlineGame.matchId;
-      const hostName = onlineGame.hostName;
-      const wsMessage: type.WsMessage = {
-        type: "state",
-        msg: {
-          scores: scores,
-          currentPlayer: currentPlayer,
-          currentDiceRoll: currentDiceRoll,
-          currentBoardState: currentBoardState,
-          moveLeft: moveLeft,
-          selectedColumn: selectedColumn,
-          whiteBar: whiteBar,
-          blackBar: blackBar,
-          whiteOut: whiteOut,
-          blackOut: blackOut,
-          alertSeen: alertSeen,
-        },
-        user: username,
-        matchId: matchId,
-        msgFor: hostName === username ? "guest" : "host",
+  let handelClick = () => {};
+
+  if (online === true) {
+    //------------It is an online game---------------
+    //get onlineGame data from local storage
+    const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+    const matchID = onlineGame.matchId;
+    const userName = getUser().username.toString();
+    if (userName === onlineGame.hostName) {
+      var msgFor = "guest";
+    } else {
+      var msgFor = "host";
+    }
+
+    //-------------web socket client-----------------
+    const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+
+    const sendMessage = (value: string) => {
+      sendWebSocketMessage(value);
+    };
+    handelClick = () => {
+      console.log("handelClick");
+      const message: type.WsData = {
+        type: "game",
+        msg: "test",
+        user: userName,
+        matchId: matchID,
+        msgFor: msgFor as "host" | "guest",
       };
       if (currentPlayer === username) {
         sendWsMessage(wsMessage);
@@ -173,7 +177,7 @@ function GamePlay({
           onAlertSeen={(seen) => setAlertSeen(seen)}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           onMoveLeft={(moveLeft) => setMoveLeft(moveLeft)}
-          onRoll={(roll) => setDiceRoll(roll)}
+          onRoll={(roll) => setDiceRoll(roll) as type.TdiceRoll}
         />
       </div>
       <div className=" relative flex flex-col items-center mb-2 mt-6 sm:mt-3">
@@ -195,7 +199,7 @@ function GamePlay({
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}
           currentDiceRoll={currentDiceRoll}
-          onRoll={(roll) => setDiceRoll(roll)}
+          onRoll={(roll) => setDiceRoll(roll) as type.TdiceRoll}
           currentPlayer={currentPlayer}
           onPlayerChange={(player) => setCurrentPlayer(player)}
           selectedColumn={selectedColumn}
@@ -235,7 +239,7 @@ function GamePlay({
 
 export default GamePlay;
 
-export let initialState: Color[][] = [
+let initialState: type.Color[][] = [
   ["White", "White"],
   [],
   [],

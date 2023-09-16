@@ -11,6 +11,7 @@ import LoginPage from "./pages/SignIn";
 import MyProfile from "./pages/MyProfile";
 import ForgotPassPage from "./pages/ForgotPass";
 import { WebSocketProvider } from "./services/WebSocketContext";
+import { WebSocketProvider } from "./services/WebSocketContext";
 
 import { unstable_HistoryRouter as Router } from "react-router-dom"; //***************** */
 import history from "./history";

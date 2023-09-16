@@ -1,4 +1,5 @@
 import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import PageClass from "../components/PageClass";
 import GamePlay from "../components/GamePlay";
 import Chat from "../components/Chat";
@@ -53,10 +54,10 @@ function OnlineGame() {
   );
   const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
     0, 0,
-  ] as TdiceRoll);
+  ] as type.TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
     "currentBoardState",
-    initialState
+    ""
   );
   const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
   const [selectedColumn, setSelectedColumn] = useLocalStorage(
@@ -164,7 +165,7 @@ function OnlineGame() {
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex">
         <GamePlay
           player1={player1}
           setPlayer1={setPlayer1}
@@ -192,8 +193,6 @@ function OnlineGame() {
           setBlackOut={setBlackOut}
           alertSeen={alertSeen}
           setAlertSeen={setAlertSeen}
-          started={started}
-          setStarted={setStarted}
         />
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
           <Chat

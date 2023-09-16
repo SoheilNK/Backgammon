@@ -34,11 +34,7 @@ const Chat: React.FC<chatProps> = (props) => {
   const [started, setStarted] = useLocalStorage("started", "no");
   const navigate = useNavigate();
   const location = useLocation();
-  const [player2, setPlayer2] = useLocalStorage("player2", "");
-  const user = getUser().username.toString();
-  const [isLoggedIn] = useState(true);
-  //----------------game states----------------
-  const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const location = useLocation();
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [started, setStarted] = useLocalStorage("started", "");
 
@@ -57,11 +53,13 @@ const Chat: React.FC<chatProps> = (props) => {
     var msgFrom = "guest";
   }
 
+
   // useEffect(() => {
   //   window.addEventListener("beforeunload", alertUser);
   //   window.addEventListener("unload", handleEndGame);
   //   const fetchData = async () => {
   //     chatWebSocketClient = await getWebSocketClient();
+
 
   //     chatWebSocketClient.onopen = () => {
   //       console.log("chatWebSocket Client Connected");
@@ -149,22 +147,16 @@ const Chat: React.FC<chatProps> = (props) => {
   };
 
   const handleSearchSubmit = (value: string): void => {
-    onButtonClicked(value);
-  };
-
-  const onButtonClicked = (value: string): void => {
-    if (chatWebSocketClient) {
-      chatWebSocketClient.send(
-        JSON.stringify({
-          type: "chat",
-          msg: value,
-          user: userName,
-          matchId: matchID,
-          msgFor: msgFor,
-        })
-      );
-      setSearchVal("");
-    }
+    sendMessage(
+      JSON.stringify({
+        type: "chat",
+        msg: value,
+        user: userName,
+        matchId: matchID,
+        msgFor: msgFor,
+      })
+    );
+    setSearchVal("");
   };
 
   return (
@@ -235,6 +227,6 @@ const Chat: React.FC<chatProps> = (props) => {
       )}
     </div>
   );
-};
+}
 
 export default Chat;
