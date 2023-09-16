@@ -87,7 +87,7 @@ function OnlineGame() {
 
   //get the match id from local storage
   // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
-  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
+  // let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
   // if (onlineGame !== null) {
   //   window.history.replaceState({}, document.title, "/Backgammon/");
   //   console.log(onlineGame);

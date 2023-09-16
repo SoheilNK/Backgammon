@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { w3cwebsocket as W3CWebSocket, Message } from "websocket";
 import { getWebSocketClient } from "../services/websocketService";
 import * as type from "../types";
+import { CLOSING } from "ws";
 
 let chatWebSocketClient: W3CWebSocket | null = null;
 
@@ -128,8 +129,10 @@ if (onlineGame) {
       };
     };
     fetchData();
-    //cleanup function to disconnect the websocket client
-    // return () => {
+    // cleanup function to disconnect the websocket client
+    return () => {
+      console.log("chatWebSocket Client Disconnected, GAMELIST");
+
     //   if (chatWebSocketClient) {
     //     chatWebSocketClient.onmessage = () => {};
     //     chatWebSocketClient.onerror = () => {};
@@ -139,8 +142,8 @@ if (onlineGame) {
     //         getOnlineUser()
     //     );
         
-    //   }
-    // };
+      // }
+    };
   }, []);
 
   // useEffect(() => {
@@ -191,12 +194,12 @@ if (onlineGame) {
         //update the game room
 
         console.log("Response:", onlineGame);
+        //goto the game room
+        navigate(`/onlinegame?matchID=${matchId}`);
       } catch (error) {
         // Handle the error here
         console.error("Error:", error);
       }
-      //goto the game room
-      navigate(`/onlinegame?matchID=${matchId}`);
     }
   };
 
