@@ -211,6 +211,59 @@ function OnlineGame() {
 }
 
 const OnlineGamePage: React.FC = () => {
-  return <PageClass inputComponent={OnlineGame} />;
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  // This effect will set isNavigating to true when the user tries to navigate away
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+      setIsNavigating(true);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  return (
+    <>
+      <Prompt
+        when={isNavigating}
+        message="Are you sure you want to leave this page? Your progress may be lost."
+      />
+      <PageClass inputComponent={OnlineGame} />;
+    </>
+  );
 };
+
 export default OnlineGamePage;
+
+// let location = useLocation();
+
+// console.log("location: ", location);
+// useEffect(() => {
+//   console.log("location changed");
+//   //ask if the user wants to leave the game
+//   if (location.pathname !== "/onlinegame") {
+//     if (window.confirm("Do you want to leave the game room?")) {
+//       //leave the game
+//       console.log(
+//         "Leaving the OnlineGame... , Clearing Game Data... Match Id: " +
+//           matchID
+//       );
+//       clearGameData();
+//       //leave the game
+//       leaveOnlineGame(onlineGame, msgFrom);
+//     } else {
+//       //stay in the game
+//       window.history.replaceState(
+//         {},
+//         document.title,
+//         "/Backgammon/OnlineGame"
+//       );
+//     }
+//   }
+// }, [location]);
