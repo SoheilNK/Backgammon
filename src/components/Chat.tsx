@@ -57,55 +57,55 @@ const Chat: React.FC<chatProps> = (props) => {
     var msgFrom = "guest";
   }
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", alertUser);
-    window.addEventListener("unload", handleEndGame);
-    const fetchData = async () => {
-      chatWebSocketClient = await getWebSocketClient();
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", alertUser);
+  //   window.addEventListener("unload", handleEndGame);
+  //   const fetchData = async () => {
+  //     chatWebSocketClient = await getWebSocketClient();
 
-      chatWebSocketClient.onopen = () => {
-        console.log("chatWebSocket Client Connected");
-      };
+  //     chatWebSocketClient.onopen = () => {
+  //       console.log("chatWebSocket Client Connected");
+  //     };
 
-      chatWebSocketClient.onmessage = (message) => {
-        const dataFromServer: type.DataFromServer = JSON.parse(
-          message.data.toString()
-        );
-        console.log("got reply! ", dataFromServer);
+  //     chatWebSocketClient.onmessage = (message) => {
+  //       const dataFromServer: type.DataFromServer = JSON.parse(
+  //         message.data.toString()
+  //       );
+  //       console.log("got reply! ", dataFromServer);
 
-        //gameUpdate
-        if (dataFromServer.type === "gameUpdate") {
-          console.log("got reply for GameUpdate! ", dataFromServer);
-          const newOnlineGame =
-            dataFromServer.data as unknown as type.WsMessage;
-          localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
-        }
+  //       //gameUpdate
+  //       if (dataFromServer.type === "gameUpdate") {
+  //         console.log("got reply for GameUpdate! ", dataFromServer);
+  //         const newOnlineGame =
+  //           dataFromServer.data as unknown as type.WsMessage;
+  //         localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
+  //       }
 
-        //handle state updates
-        if (dataFromServer.type === "state") {
-          console.log("got reply for State! ", dataFromServer);
-          const wsMessage = dataFromServer.data as unknown as type.WsMessage;
-          const newState = wsMessage.msg as any;
-          props.onNewState(newState);
-        }
+  //       //handle state updates
+  //       if (dataFromServer.type === "state") {
+  //         console.log("got reply for State! ", dataFromServer);
+  //         const wsMessage = dataFromServer.data as unknown as type.WsMessage;
+  //         const newState = wsMessage.msg as any;
+  //         props.onNewState(newState);
+  //       }
 
-        //************************************************************ */
-        //check for joinOnlineGame
-        if (dataFromServer.type === "gameJoined") {
-          //update localstorage
-          localStorage.setItem(
-            "onlineGame",
-            JSON.stringify(dataFromServer.data)
-          );
-          //update state
-          if (started === "no") {
-            let msg = dataFromServer.data as unknown as type.OnlineGame;
-            props.setPlayer2(msg.guestName);
-            // navigate(`/onlinegame`);
-            // window.location.reload();
-          }
-          props.setStarted("yes");
-        }
+  //       //************************************************************ */
+  //       //check for joinOnlineGame
+  //       if (dataFromServer.type === "gameJoined") {
+  //         //update localstorage
+  //         localStorage.setItem(
+  //           "onlineGame",
+  //           JSON.stringify(dataFromServer.data)
+  //         );
+  //         //update state
+  //         if (started === "no") {
+  //           let msg = dataFromServer.data as unknown as type.OnlineGame;
+  //           props.setPlayer2(msg.guestName);
+  //           // navigate(`/onlinegame`);
+  //           // window.location.reload();
+  //         }
+  //         props.setStarted("yes");
+  //       }
 
           if (dataFromServer.type === "chat") {
             let wsMessage = dataFromServer.data as unknown as type.WsMessage;
