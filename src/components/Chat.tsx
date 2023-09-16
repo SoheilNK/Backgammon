@@ -36,9 +36,13 @@ const Chat: React.FC<chatProps> = (props) => {
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const user = getUser().username.toString();
   const [isLoggedIn] = useState(true);
+  //----------------game states----------------
+  const [player1, setPlayer1] = useLocalStorage("player1", "");
+  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  const [started, setStarted] = useLocalStorage("started", "");
+
   // const [messages, setMessages] = useState<type.WsMessage[]>([]);
   const [messages, setMessages] = useLocalStorage("messages", []);
-
   const [searchVal, setSearchVal] = useState("");
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
@@ -196,7 +200,7 @@ const Chat: React.FC<chatProps> = (props) => {
             }}
             id="messages"
           >
-            {messages.map((message: type.WsMessage) => (
+            {messages.map((message: type.WsData) => (
               <Card
                 key={message.msg}
                 style={{

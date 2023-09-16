@@ -19,19 +19,19 @@ export interface DataFromServer {
   data: string;
 }
 
-export interface ChatState {
+export type ChatState = {
   userName: string;
   isLoggedIn: boolean;
-  messages: WsMessage[];
+  messages: WsData[];
   searchVal: string;
-}
+};
 
-// Define an interface for the OnlineGame object
-export interface OnlineGame {
+// Define an type for the OnlineGame object
+export type OnlineGame = {
   matchId: string;
   hostName: string;
   guestName: string;
   hostId: string;
   guestId: string;
   status: string;
-}
+};
