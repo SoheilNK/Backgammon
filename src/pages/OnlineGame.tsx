@@ -1,3 +1,4 @@
+import { useState, useEffect, ChangeEvent } from "react";
 import PageClass from "../components/PageClass";
 import GamePlay from "../components/GamePlay";
 import Chat from "../components/Chat";
@@ -103,6 +104,45 @@ function OnlineGame() {
   } else {
     localStorage.setItem("started", JSON.stringify("no"));
   }
+  const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
+
+  useEffect(() => {
+    handleWebSocketMessage((message) => {
+      // Handle the incoming message for Component A
+      console.log("Received message in Component A:", message);
+      const wsMessage: type.WsData = JSON.parse(message.data.toString());
+      console.log("got reply! From Chat ", wsMessage);
+      if (wsMessage.type === "chat") {
+        setMessages((prevState: any) => [
+          {
+            msg: wsMessage.msg,
+            user: wsMessage.user,
+          },
+          ...prevState,
+        ]);
+      }
+      //----------------game messages----------------
+
+      //check for joinOnlineGame
+      if (wsMessage.type === "gameJoined") {
+        let newOnlineData: type.OnlineGame = JSON.parse(wsMessage.msg);
+        //update localstorage
+        localStorage.setItem("onlineGame", wsMessage.msg);
+        //update state
+        if (started === "no") {
+          setPlayer2(newOnlineData.guestName);
+          navigate(`/onlinegame`);
+          window.location.reload();
+        }
+        setStarted("yes");
+      }
+      if (wsMessage.type === "game") {
+        console.log("got reply for Game! ", wsMessage);
+        alert(wsMessage.msg);
+      }
+    });
+  }, [handleWebSocketMessage]);
+  //--------------------------------------------------------------------------------
 
   return (
     <div>

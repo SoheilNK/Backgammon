@@ -13,9 +13,6 @@ import * as type from "../types";
 import { sendWsMessage } from "./Chat";
 
 //----------------------------------------------
-export type Color = "White" | "Black" | null;
-export type Direction = "rtl" | "ltr";
-export type TdiceRoll = [0 | 1 | 2 | 3 | 4 | 5 | 6, 0 | 1 | 2 | 3 | 4 | 5 | 6];
 export let PlayerNames = {
   white: ["Player 1"],
   black: ["Player 2"],

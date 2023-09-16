@@ -174,6 +174,10 @@ if (onlineGame) {
       return;
     } else {
       try {
+        let updatedOnlineUser: type.OnlineUser = JSON.parse(onlineUser!);
+        updatedOnlineUser.userName = user.username;
+        localStorage.setItem("onlineUser", JSON.stringify(updatedOnlineUser));
+
         const { data } = await myApi.post(
           "http://localhost:8000/api/games/join",
           { matchId: matchId, onlineUser: getOnlineUser() } // Set the matchId in the request body

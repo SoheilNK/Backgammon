@@ -1,15 +1,10 @@
-interface Game {
-  matchId: string;
-  hostName: string;
-  guestName: string;
-  status: string;
-}
+import * as type from "../types";
 
 interface GameTableProps {
-  games: Game[];
+  games: type.OnlineGame[];
   isLoggedIn: boolean;
   createGame: () => void;
-  joinGame: (matchId: string, hostName: string) => void;
+  joinGame: (matchId: string, hostName: string, hostId: string) => void;
 }
 
 const GameTable: React.FC<GameTableProps> = ({
