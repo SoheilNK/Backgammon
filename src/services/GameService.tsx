@@ -57,14 +57,18 @@ export function GameList() {
 
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-  const matchID = onlineGame.matchId;
+  
   const userName = getUser().username.toString();
-  if (userName === onlineGame.hostName) {
-    var msgFor = "guest";
-  } else {
-    var msgFor = "host";
-  }
 
+if (onlineGame) {
+    const matchID = onlineGame.matchId;
+    if (userName === onlineGame.hostName) {
+      var msgFor = "guest";
+    } else {
+      var msgFor = "host";
+    }
+  }
+  
   useEffect(() => {
     const fetchData = async () => {
       const getGames = async () => {

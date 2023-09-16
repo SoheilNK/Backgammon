@@ -5,10 +5,45 @@ import GamePlay from "../components/GamePlay";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TdiceRoll, winState as initialState } from "../components/GamePlay";
+import history from "../history";
 
 function OnlineGame() {
+  //
+  const [block, setBlock] = useState(true);
+
+  useEffect(() => {
+    let unblock: () => void;
+    if (block) {
+      // Block navigation and register a callback that
+      // fires when a navigation attempt is blocked.
+      unblock = history.block((tx) => {
+        // Navigation was blocked! Let's show a confirmation dialog
+        // so the user can decide if they actually want to navigate
+        // away and discard changes they've made in the current page.
+        let url = tx.location.pathname;
+        if (window.confirm(`Are you sure you want to go to "${url}"?`)) {
+          // Unblock the navigation.
+          unblock();
+
+          // Retry the transition.
+          tx.retry();
+        }
+      });
+    }
+
+    return () => {
+      if (typeof unblock === "function") {
+        unblock();
+      }
+    };
+  }, [block]);
+
+  //get onlineGame from local storage
+  // const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+  // const matchID = onlineGame.matchId;
+  const userName = getUser().username.toString();
   //GamePlay state----------------
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");

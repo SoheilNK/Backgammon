@@ -108,23 +108,23 @@ const Chat: React.FC<chatProps> = (props) => {
       };
 
       fetchData();
-      // Cleanup function when leaving the component
-      return () => {
-        console.log(
-          "Leaving the game... , Clearing Game Data... Match Id: " + matchID
-        );
-        clearGameData();
-        //leave the game
-        leaveOnlineGame(onlineGame, msgFrom);
-        if (chatWebSocketClient) {
-          chatWebSocketClient.onmessage = () => {};
-          chatWebSocketClient.onerror = () => {};
-          chatWebSocketClient.close();
-          console.log(
-            "chatWebSocket Client Disconnected, online user: " + getUser()
-          );
-        }
-      };
+      // // Cleanup function when leaving the component
+      // return () => {
+      //   console.log(
+      //     "Leaving the game... , Clearing Game Data... Match Id: " + matchID
+      //   );
+      //   clearGameData();
+      //   //leave the game
+      //   leaveOnlineGame(onlineGame, msgFrom);
+      //   if (chatWebSocketClient) {
+      //     chatWebSocketClient.onmessage = () => {};
+      //     chatWebSocketClient.onerror = () => {};
+      //     chatWebSocketClient.close();
+      //     console.log(
+      //       "chatWebSocket Client Disconnected, online user: " + getUser()
+      //     );
+      //   }
+      // };
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },

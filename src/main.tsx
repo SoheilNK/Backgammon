@@ -11,10 +11,12 @@ import LoginPage from "./pages/SignIn";
 import MyProfile from "./pages/MyProfile";
 import ForgotPassPage from "./pages/ForgotPass";
 
+import { unstable_HistoryRouter as Router } from "react-router-dom"; //***************** */
+import history from "./history";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <HashRouter>
+    <Router history={history}>
       <Routes>
         <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
         <Route
@@ -22,8 +24,16 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           element={<UsersPage />}
           errorElement={<ErrorPage />}
         />
-        <Route path="/game" element={<GamePage />} errorElement={<ErrorPage />} />
-        <Route path="/onlinegame" element={<OnlineGamePage />} errorElement={<ErrorPage />} />
+        <Route
+          path="/game"
+          element={<GamePage />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/onlinegame"
+          element={<OnlineGamePage />}
+          errorElement={<ErrorPage />}
+        />
         <Route
           path="/myprofile"
           element={<MyProfile />}
@@ -40,6 +50,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           errorElement={<ErrorPage />}
         />
       </Routes>
-    </HashRouter>
+    </Router>
   </React.StrictMode>
 );
