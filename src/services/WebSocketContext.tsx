@@ -10,6 +10,9 @@ type WebSocketContextType = {
   handleWebSocketMessage: (handler: (message: IMessageEvent) => void) => void;
 };
 
+//get online user from local storage
+const onlineUser = localStorage.getItem("onlineUser");
+
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
 export function useWebSocket() {

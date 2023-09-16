@@ -94,24 +94,28 @@ function OnlineGame() {
   // }
 
   //set the player names
-  var p1 = onlineGame?.hostName;
-  var p2 = onlineGame?.guestName;
+  // var p1 = onlineGame?.hostName;
+  // var p2 = onlineGame?.guestName || "Waiting for player 2...";
+  useEffect(() => {
+    setPlayer1(onlineGame?.hostName);
+    setPlayer2(onlineGame?.guestName || "Waiting for player 2...");
+  }, [onlineGame]);
 
-  localStorage.setItem("player1", JSON.stringify(p1));
-  localStorage.setItem("player2", JSON.stringify(p2));
-  if (onlineGame?.status === "Playing") {
-    localStorage.setItem("started", JSON.stringify("yes"));
-  } else {
-    localStorage.setItem("started", JSON.stringify("no"));
-  }
+  // localStorage.setItem("player1", JSON.stringify(p1));
+  // localStorage.setItem("player2", JSON.stringify(p2));
+  // if (onlineGame?.status === "Playing") {
+  //   localStorage.setItem("started", JSON.stringify("yes"));
+  // } else {
+  //   localStorage.setItem("started", JSON.stringify("no"));
+  // }
   const { sendWebSocketMessage, handleWebSocketMessage } = useWebSocket();
 
   useEffect(() => {
     handleWebSocketMessage((message) => {
-      // Handle the incoming message for Component A
-      console.log("Received message in Component A:", message);
+      // Handle the incoming messages in OnlineGame
+      console.log("Received message in OnlineGame:", message);
       const wsMessage: type.WsData = JSON.parse(message.data.toString());
-      console.log("got reply! From Chat ", wsMessage);
+      console.log("Message of type: ", wsMessage);
       if (wsMessage.type === "chat") {
         setMessages((prevState: any) => [
           {
@@ -125,24 +129,38 @@ function OnlineGame() {
 
       //check for joinOnlineGame
       if (wsMessage.type === "gameJoined") {
-        let newOnlineData: type.OnlineGame = JSON.parse(wsMessage.msg);
+        let newOnlineData = wsMessage.msg;
         //update localstorage
-        localStorage.setItem("onlineGame", wsMessage.msg);
-        //update state
-        if (started === "no") {
-          setPlayer2(newOnlineData.guestName);
-          navigate(`/onlinegame`);
-          window.location.reload();
-        }
+        setOnlineGame(newOnlineData);
+        // setPlayer2(newOnlineData.guestName);
         setStarted("yes");
       }
+
       if (wsMessage.type === "game") {
         console.log("got reply for Game! ", wsMessage);
         alert(wsMessage.msg);
       }
+
+      if (wsMessage.type === "chat") {
+        console.log("got reply! for Chat ", wsMessage);
+        setMessages((prevState: any) => [
+          {
+            msg: wsMessage.msg,
+            user: wsMessage.user,
+          },
+          ...prevState,
+        ]);
+      }
     });
   }, [handleWebSocketMessage]);
   //--------------------------------------------------------------------------------
+  //update state
+  if (started === "yes") {
+    // setPlayer2(p2);
+    // setStarted("yes");
+    // navigate(`/onlinegame`);
+    // window.location.reload();
+  }
 
   return (
     <div>

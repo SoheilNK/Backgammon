@@ -167,6 +167,7 @@ if (onlineGame) {
 
   //join a game room
   const joinGame = async (matchId: string, hostName: string) => {
+    let onlineUser = localStorage.getItem("onlineUser");
     console.log("joining game id :", matchId, " hosted by: ", hostName);
     const user = getUser();
     if (user.username === hostName) {
@@ -174,9 +175,9 @@ if (onlineGame) {
       return;
     } else {
       try {
-        let updatedOnlineUser: type.OnlineUser = JSON.parse(onlineUser!);
-        updatedOnlineUser.userName = user.username;
-        localStorage.setItem("onlineUser", JSON.stringify(updatedOnlineUser));
+        // let updatedOnlineUser: type.OnlineUser = JSON.parse(onlineUser!);
+        // updatedOnlineUser.userName = user.username;
+        // localStorage.setItem("onlineUser", JSON.stringify(updatedOnlineUser));
 
         const { data } = await myApi.post(
           "http://localhost:8000/api/games/join",
@@ -187,6 +188,7 @@ if (onlineGame) {
 
         //store onlineGame object in local storage
         localStorage.setItem("onlineGame", JSON.stringify(onlineGame));
+        //update the game room
 
         console.log("Response:", onlineGame);
       } catch (error) {

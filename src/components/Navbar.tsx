@@ -6,7 +6,6 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import Test from "./test";
 import * as type from "../types";
 import { useWebSocket } from "../services/WebSocketContext";
-import { updateOnlineGame } from "../services/GameService";
 import { getUser } from "../services/user.service";
 
 interface NavbarProps {
