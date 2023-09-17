@@ -7,6 +7,7 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { leaveOnlineGame, updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
+import { initialState } from "./GamePlay";
 
 const { Search } = Input;
 const { Text } = Typography;
@@ -20,6 +21,7 @@ export const sendWsMessage = (wsMessage: type.WsMessage) => {
 
 interface chatProps {
   onNewState: (newState: any) => void;
+  onResetState: () => void;
   player2: string;
   setPlayer2: (player: string) => void;
   started: string;
@@ -59,7 +61,25 @@ const Chat: React.FC<chatProps> = (props) => {
           const dataFromServer: type.DataFromServer = JSON.parse(
             message.data.toString()
           );
-          console.log("got reply! ", dataFromServer);
+          console.log("got reply(chat.tsx)! ", dataFromServer);
+          //handle hostLeft
+          if (dataFromServer.type === "hostLeft") {
+            console.log("got reply for hostLeft! ", dataFromServer);
+            alert("Host has left the game, you will be the new host");
+            //reset the game
+            clearGameData();
+            //update localstorage
+            localStorage.setItem(
+              "onlineGame",
+              JSON.stringify(dataFromServer.data)
+            );
+            //reset the game
+            props.onResetState();
+            //update state
+            props.setPlayer2("");
+            props.setStarted("no");
+            
+          }
 
           //gameUpdate
           if (dataFromServer.type === "gameUpdate") {

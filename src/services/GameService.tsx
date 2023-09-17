@@ -34,13 +34,26 @@ export const updateOnlineGame = async (onlineGame: any, roll: string) => {
   }
 };
 
-export const leaveOnlineGame = async (onlineGame: any, roll: string) => {
+// export const leaveOnlineGame = async (onlineGame: any, roll: string) => {
+export const leaveOnlineGame = async () => {
+  //get onlineGame from local storage
+  const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+  let roll = "";
+  const userName = getUser().username.toString();
+  if (onlineGame) {
+    if (userName === onlineGame.hostName) {
+      roll = "host";
+    } else {
+      roll = "guest";
+    }
+  }
+
   console.log("leaving game id :", onlineGame.matchId);
   try {
-    const { data } = await myApi.post(
-      "http://localhost:8000/api/games/leave",
-      { onlineGame: onlineGame, roll: roll }
-    );
+    const { data } = await myApi.post("http://localhost:8000/api/games/leave", {
+      onlineGame: onlineGame,
+      roll: roll,
+    });
     console.log("Response:", data);
   } catch (error) {
     // Handle the error here

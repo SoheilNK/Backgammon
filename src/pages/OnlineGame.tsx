@@ -1,13 +1,14 @@
 import PageClass from "../components/PageClass";
 import { useSearchParams } from "react-router-dom";
-import { getUser } from "../services/user.service";
+import { clearGameData, getUser } from "../services/user.service";
 import GamePlay from "../components/GamePlay";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { useEffect, useState } from "react";
-import { TdiceRoll, winState as initialState } from "../components/GamePlay";
+import { TdiceRoll, initialState as initialState } from "../components/GamePlay";
 import history from "../history";
+import { leaveOnlineGame } from "../services/GameService";
 
 function OnlineGame() {
   //
@@ -23,12 +24,14 @@ function OnlineGame() {
         // so the user can decide if they actually want to navigate
         // away and discard changes they've made in the current page.
         let url = tx.location.pathname;
-        if (window.confirm(`Are you sure you want to go to "${url}"?`)) {
+        if (window.confirm(`Are you sure you want to leave the game? \n You will lose the game if you leave!`)) {
           // Unblock the navigation.
           unblock();
-
           // Retry the transition.
           tx.retry();
+          //leave the game
+          leaveOnlineGame()
+          clearGameData();
         }
       });
     }
@@ -66,11 +69,25 @@ function OnlineGame() {
   );
   const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
-  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 12); //0
-  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //0
+  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //0
+  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //0
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   const [started, setStarted] = useLocalStorage("started", "no");
   //--------------------------
+  const resetState = () => {
+    setScores([0, 0]);
+    setCurrentPlayer(player1);
+    setDiceRoll([0, 0]);
+    setCurrentBoardState(initialState);
+    setMoveLeft(0);
+    setSelectedColumn(50);
+    setWhiteBar(0);
+    setBlackBar(0);
+    setWhiteOut(0);
+    setBlackOut(0);
+    setAlertSeen(false);
+    setStarted("no");
+  }
   const updateState = (newState: any) => {
     //update GamePlay state
     setScores(newState.scores);
@@ -142,6 +159,7 @@ function OnlineGame() {
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
           <Chat
             onNewState={updateState}
+            onResetState={resetState}
             player2={player2}
             setPlayer2={setPlayer2}
             started={started}
