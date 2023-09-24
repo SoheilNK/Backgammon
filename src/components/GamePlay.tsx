@@ -22,6 +22,8 @@ export let PlayerNames = {
 };
 
 interface GamePlayProps {
+  gameState: string;
+  setGameState: (gameState: string) => void;
   player1: string;
   setPlayer1: (player: string) => void;
   player2: string;
@@ -53,6 +55,8 @@ interface GamePlayProps {
 }
 
 function GamePlay({
+  gameState,
+  setGameState,
   player1,
   setPlayer1,
   player2,
@@ -176,6 +180,8 @@ function GamePlay({
       </div>
       <div className=" relative flex flex-col items-center mb-2 mt-6 sm:mt-3">
         <Alert
+          gameState={gameState} 
+          onGameState={(gameState: string) => setGameState(gameState)}
           alertSeen={alertSeen}
           onAlertSeen={(seen) => setAlertSeen(seen)}
           currentBoardState={currentBoardState}
@@ -233,7 +239,7 @@ function GamePlay({
 
 export default GamePlay;
 
-export let initialState: Color[][] = [
+const initialState: Color[][] = [
   ["White", "White"],
   [],
   [],

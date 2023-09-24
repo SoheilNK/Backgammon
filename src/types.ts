@@ -33,5 +33,5 @@ export interface OnlineGame {
   guestName: string;
   hostId: string;
   guestId: string;
-  status: string;
+  status: string;  // waiting, Playing, finished, abandoned, expired, draw
 }

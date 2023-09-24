@@ -2,6 +2,8 @@ import { Color, TdiceRoll } from "./GamePlay";
 import { anyMoveAvailable } from "../services/gameRules";
 
 interface AlertProps {
+  gameState: string;
+  onGameState: (gameState: string) => void;
   alertSeen: boolean;
   onAlertSeen: (seen: boolean) => void;
   currentBoardState: Color[][];
@@ -16,6 +18,8 @@ interface AlertProps {
   onMoveLeft: (moves: number) => void;
 }
 export function Alert({
+  gameState,
+  onGameState,
   alertSeen,
   onAlertSeen,
   currentBoardState,
@@ -56,13 +60,22 @@ export function Alert({
       currentDiceRoll;
   }
 
+  if (gameState === "abandoned") {
+    alertSeen = false;
+    // onAlertSeen(false);
+    alertMessage = "The opponent has left the game, you are the host now";
+  }
+
   if (alertMessage === "") {
     alertSeen = true;
     // onAlertSeen(true);
     return null;
   } else {
     return (
-      <div id="Aert" className="absolute top-1/2 left-1/6 transform -translate-x-1/6 -translate-y-1/2 z-20">
+      <div
+        id="Aert"
+        className="absolute top-1/2 left-1/6 transform -translate-x-1/6 -translate-y-1/2 z-20"
+      >
         <div
           style={{ backgroundColor: "#8E8268" }}
           className=" flex-col  text-lg p-2  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center "
@@ -76,6 +89,7 @@ export function Alert({
             onClick={() => {
               onAlertSeen(true);
               onMoveLeft(0);
+              onGameState("waiting");
             }}
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
           >

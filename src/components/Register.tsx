@@ -56,7 +56,7 @@ const Register = async () => {
 
         setUser(apiResp);
         //go to myprofile page
-        window.location.href = "http://localhost:5173/Backgammon#/users";
+        window.location.href = "http://localhost:5173/users";
       } else {
         console.log(
           `Failed to get userid. Are you logged in with a valid token?`
@@ -80,7 +80,7 @@ const Register = async () => {
   const searchParams = new URL(location.href).searchParams;
 
   if (searchParams.get("code") !== null) {
-    window.history.replaceState({}, document.title, "/Backgammon/");
+    window.history.replaceState({}, document.title, "/");
     const state = searchParams.get("state");
     const codeVerifier = sessionStorage.getItem(`codeVerifier-${state}`);
     sessionStorage.removeItem(`codeVerifier-${state}`);

@@ -1,10 +1,13 @@
 import PageClass from "../components/PageClass";
-import GamePlay from "../components/GamePlay";
+import GamePlay, { Color } from "../components/GamePlay";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { TdiceRoll, initialState } from "../components/GamePlay";
+import { TdiceRoll } from "../components/GamePlay";
 
 function OfflineGame() {
   //GamePlay state----------------
+  const [gameState, setGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
+  const [started, setStarted] = useLocalStorage("started", "no");
+
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
@@ -30,41 +33,67 @@ function OfflineGame() {
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
 
-
   return (
-    
-      
-        <GamePlay
-          player1={player1}
-          setPlayer1={setPlayer1}
-          player2={player2}
-          setPlayer2={setPlayer2}
-          scores={scores}
-          setScores={setScores}
-          currentPlayer={currentPlayer}
-          setCurrentPlayer={setCurrentPlayer}
-          currentDiceRoll={currentDiceRoll}
-          setDiceRoll={setDiceRoll}
-          currentBoardState={currentBoardState}
-          setCurrentBoardState={setCurrentBoardState}
-          moveLeft={moveLeft}
-          setMoveLeft={setMoveLeft}
-          selectedColumn={selectedColumn}
-          setSelectedColumn={setSelectedColumn}
-          whiteBar={whiteBar}
-          setWhiteBar={setWhiteBar}
-          blackBar={blackBar}
-          setBlackBar={setBlackBar}
-          whiteOut={whiteOut}
-          setWhiteOut={setWhiteOut}
-          blackOut={blackOut}
-          setBlackOut={setBlackOut}
-          alertSeen={alertSeen}
-          setAlertSeen={setAlertSeen}
-        />
-      
-    
+    <GamePlay
+      gameState={"new"}
+      setGameState={setGameState}
+      started={started}
+      setStarted={setStarted}
+      player1={player1}
+      setPlayer1={setPlayer1}
+      player2={player2}
+      setPlayer2={setPlayer2}
+      scores={scores}
+      setScores={setScores}
+      currentPlayer={currentPlayer}
+      setCurrentPlayer={setCurrentPlayer}
+      currentDiceRoll={currentDiceRoll}
+      setDiceRoll={setDiceRoll}
+      currentBoardState={currentBoardState}
+      setCurrentBoardState={setCurrentBoardState}
+      moveLeft={moveLeft}
+      setMoveLeft={setMoveLeft}
+      selectedColumn={selectedColumn}
+      setSelectedColumn={setSelectedColumn}
+      whiteBar={whiteBar}
+      setWhiteBar={setWhiteBar}
+      blackBar={blackBar}
+      setBlackBar={setBlackBar}
+      whiteOut={whiteOut}
+      setWhiteOut={setWhiteOut}
+      blackOut={blackOut}
+      setBlackOut={setBlackOut}
+      alertSeen={alertSeen}
+      setAlertSeen={setAlertSeen}
+    />
   );
 }
 
 export default OfflineGame;
+
+const initialState: Color[][] = [
+  ["White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White", "White", "White"],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White"],
+  [],
+  ["White", "White", "White", "White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black"],
+];

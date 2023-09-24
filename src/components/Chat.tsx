@@ -7,7 +7,6 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { leaveOnlineGame, updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
-import { initialState } from "./GamePlay";
 
 const { Search } = Input;
 const { Text } = Typography;
@@ -20,15 +19,20 @@ export const sendWsMessage = (wsMessage: type.WsMessage) => {
 };
 
 interface chatProps {
+  gameState: string;
+  onGameState: (gameState: string) => void;
   onNewState: (newState: any) => void;
   onResetState: () => void;
-  player2: string;
-  setPlayer2: (player: string) => void;
+  onPlayer1: (player: string) => void;
+  onPlayer2: (player: string) => void;
+  onCurrentPlayer: (player: string) => void;
   started: string;
   setStarted: (started: string) => void;
+  
 }
 
 const Chat: React.FC<chatProps> = (props) => {
+  const [gameState, onGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
   const [started, setStarted] = useLocalStorage("started", "no");
   const navigate = useNavigate();
   const [player2, setPlayer2] = useLocalStorage("player2", "");
@@ -65,7 +69,8 @@ const Chat: React.FC<chatProps> = (props) => {
           //handle hostLeft
           if (dataFromServer.type === "hostLeft") {
             console.log("got reply for hostLeft! ", dataFromServer);
-            alert("Host has left the game, you will be the new host");
+            // alert("Host has left the game, you will be the new host");
+            props.onGameState("abandoned");
             //reset the game
             clearGameData();
             //update localstorage
@@ -73,12 +78,32 @@ const Chat: React.FC<chatProps> = (props) => {
               "onlineGame",
               JSON.stringify(dataFromServer.data)
             );
+            //update state
+            props.onPlayer1(userName);
+            props.onPlayer2("");
+            // props.onCurrentPlayer(userName);
+            props.setStarted("no");
             //reset the game
             props.onResetState();
+          }
+          //handle guestLeft
+          if (dataFromServer.type === "guestLeft") {
+            console.log("got reply for guestLeft! ", dataFromServer);
+            // alert("Guest has left the game");
+            props.onGameState("abandoned");
+            //reset the game
+            clearGameData();
+            //update localstorage
+            localStorage.setItem(
+              "onlineGame",
+              JSON.stringify(dataFromServer.data)
+            );
             //update state
-            props.setPlayer2("");
+            props.onPlayer2("");
+            // props.onCurrentPlayer(userName);
             props.setStarted("no");
-            
+            //reset the game
+            props.onResetState();
           }
 
           //gameUpdate
@@ -108,7 +133,7 @@ const Chat: React.FC<chatProps> = (props) => {
             //update state
             if (started === "no") {
               let msg = dataFromServer.data as unknown as type.OnlineGame;
-              props.setPlayer2(msg.guestName);
+              props.onPlayer2(msg.guestName);
               // navigate(`/onlinegame`);
               // window.location.reload();
             }

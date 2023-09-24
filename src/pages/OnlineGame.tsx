@@ -1,12 +1,15 @@
 import PageClass from "../components/PageClass";
 import { useSearchParams } from "react-router-dom";
 import { clearGameData, getUser } from "../services/user.service";
-import GamePlay from "../components/GamePlay";
+import GamePlay, { Color } from "../components/GamePlay";
 import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { useEffect, useState } from "react";
-import { TdiceRoll, initialState as initialState } from "../components/GamePlay";
+import { TdiceRoll } from "../components/GamePlay";
+//import intialsState from "../components/GamePlay" as a constant
+// import { initialState } from "../components/GamePlay";
+
 import history from "../history";
 import { leaveOnlineGame } from "../services/GameService";
 
@@ -24,7 +27,11 @@ function OnlineGame() {
         // so the user can decide if they actually want to navigate
         // away and discard changes they've made in the current page.
         let url = tx.location.pathname;
-        if (window.confirm(`Are you sure you want to leave the game? \n You will lose the game if you leave!`)) {
+        if (
+          window.confirm(
+            `Are you sure you want to leave the game? \n You will lose the game if you leave!`
+          )
+        ) {
           // Unblock the navigation.
           unblock();
           // Retry the transition.
@@ -43,11 +50,11 @@ function OnlineGame() {
     };
   }, [block]);
 
-  //get onlineGame from local storage
-  // const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-  // const matchID = onlineGame.matchId;
+  // const initialBoardState = initialState;
   const userName = getUser().username.toString();
   //GamePlay state----------------
+  const [gameState, setGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
+  const [started, setStarted] = useLocalStorage("started", "no");
   const [player1, setPlayer1] = useLocalStorage("player1", "");
   const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
@@ -72,7 +79,6 @@ function OnlineGame() {
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //0
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //0
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
-  const [started, setStarted] = useLocalStorage("started", "no");
   //--------------------------
   const resetState = () => {
     setScores([0, 0]);
@@ -87,7 +93,7 @@ function OnlineGame() {
     setBlackOut(0);
     setAlertSeen(false);
     setStarted("no");
-  }
+  };
   const updateState = (newState: any) => {
     //update GamePlay state
     setScores(newState.scores);
@@ -104,7 +110,7 @@ function OnlineGame() {
   };
 
   //get the match id from local storage
-  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+// const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
   let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
   // if (onlineGame !== null) {
   //   window.history.replaceState({}, document.title, "/Backgammon/");
@@ -127,6 +133,10 @@ function OnlineGame() {
     <div>
       <div className="flex flex-col lg:flex-row">
         <GamePlay
+          gameState={gameState}
+          setGameState={setGameState}
+          started={started}
+          setStarted={setStarted}
           player1={player1}
           setPlayer1={setPlayer1}
           player2={player2}
@@ -153,15 +163,20 @@ function OnlineGame() {
           setBlackOut={setBlackOut}
           alertSeen={alertSeen}
           setAlertSeen={setAlertSeen}
-          started={started}
-          setStarted={setStarted}
         />
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
           <Chat
+            gameState={gameState}
+            onGameState={(gameState: string) =>
+              setGameState(gameState as never as string)
+            }
             onNewState={updateState}
             onResetState={resetState}
-            player2={player2}
-            setPlayer2={setPlayer2}
+            // player1={player1}
+            onPlayer1={(player: string) => setPlayer1(player)}
+            // player2={player2}
+            onPlayer2={(player: string) => setPlayer2(player)}
+            onCurrentPlayer={(player: string) => setCurrentPlayer(player)}
             started={started}
             setStarted={setStarted}
           />
@@ -176,3 +191,30 @@ const OnlineGamePage: React.FC = () => {
   return <PageClass inputComponent={OnlineGame} />;
 };
 export default OnlineGamePage;
+
+const initialState: Color[][] = [
+  ["White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  ["Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White", "White", "White"],
+  ["Black", "Black", "Black", "Black", "Black"],
+  [],
+  [],
+  [],
+  ["White", "White", "White"],
+  [],
+  ["White", "White", "White", "White", "White"],
+  [],
+  [],
+  [],
+  [],
+  ["Black", "Black"],
+];

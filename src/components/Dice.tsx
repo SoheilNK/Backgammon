@@ -40,38 +40,12 @@ export default function Dice({
   // const [started, setStarted] = useLocalStorage("started", "no");
   const userName = getUser().username.toString();
 
-  let onlineGameStauts = "Playing";
-  if (onlineGame) {
-    onlineGameStauts = onlineGame.status;
-  }
-
-  let disabled =
+   let disabled =
     moveLeft > 0 ||
     whiteOut === 15 ||
     blackOut === 15 ||
     (online && currentPlayer !== userName) ||
     started === "no";
-  // console.log(
-  //   "disabled: ",
-  //   disabled,
-  //   "moveLeft: ",
-  //   moveLeft,
-  //   "online: ",
-  //   online,
-  //   "currentPlayer: ",
-  //   currentPlayer,
-  //   "userName: ",
-  //   userName,
-  //   "onlineGame.status: ",
-  //   onlineGame.status,
-  //   "whiteOut: ",
-  //   whiteOut,
-  //   "blackOut: ",
-  //   blackOut,
-  //   "onlineGame: ",
-  //   onlineGame
-  // );
-  // let disabled (!moveAllowed[0] && !moveAllowed[1]) || whiteOut === 15 || blackOut === 15;
   var glowDice = classNames("", {
     "opacity-5": disabled,
     "opacity-100": !disabled,
@@ -85,7 +59,7 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    currentDiceRoll = [3,3]; //test
+    // currentDiceRoll = [0,0]; //test
 
     setRemainingTime(rollTime); //reset animation time
     //play a sound
