@@ -12,6 +12,33 @@ import history from "../history";
 import { leaveOnlineGame } from "../services/GameService";
 
 function OnlineGame() {
+  const initialState: Color[][] = [
+    ["White", "White"],
+    [],
+    [],
+    [],
+    [],
+    ["Black", "Black", "Black", "Black", "Black"],
+    [],
+    ["Black", "Black", "Black"],
+    [],
+    [],
+    [],
+    ["White", "White", "White", "White", "White"],
+    ["Black", "Black", "Black", "Black", "Black"],
+    [],
+    [],
+    [],
+    ["White", "White", "White"],
+    [],
+    ["White", "White", "White", "White", "White"],
+    [],
+    [],
+    [],
+    [],
+    ["Black", "Black"],
+  ];
+
   //
   const [block, setBlock] = useState(true);
 
@@ -36,7 +63,11 @@ function OnlineGame() {
           tx.retry();
           //leave the game
           leaveOnlineGame()
-            clearGameData();
+          clearGameData();
+          // localStorage.setItem(
+          //   "currentBoardState",
+          //   JSON.stringify("undefined")
+          // );
         }
       });
     }
@@ -189,29 +220,3 @@ const OnlineGamePage: React.FC = () => {
 };
 export default OnlineGamePage;
 
-const initialState: Color[][] = [
-  ["White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  ["Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White", "White"],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White"],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black"],
-];
