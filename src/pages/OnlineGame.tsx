@@ -7,8 +7,6 @@ import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { useEffect, useState } from "react";
 import { TdiceRoll } from "../components/GamePlay";
-//import intialsState from "../components/GamePlay" as a constant
-// import { initialState } from "../components/GamePlay";
 
 import history from "../history";
 import { leaveOnlineGame } from "../services/GameService";
@@ -32,13 +30,13 @@ function OnlineGame() {
             `Are you sure you want to leave the game? \n You will lose the game if you leave!`
           )
         ) {
-          // Unblock the navigation.
+                    // Unblock the navigation.
           unblock();
           // Retry the transition.
           tx.retry();
           //leave the game
           leaveOnlineGame()
-          clearGameData();
+            clearGameData();
         }
       });
     }
@@ -50,7 +48,6 @@ function OnlineGame() {
     };
   }, [block]);
 
-  // const initialBoardState = initialState;
   const userName = getUser().username.toString();
   //GamePlay state----------------
   const [gameState, setGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
@@ -111,7 +108,7 @@ function OnlineGame() {
 
   //get the match id from local storage
 // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
-  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
+let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
   // if (onlineGame !== null) {
   //   window.history.replaceState({}, document.title, "/Backgammon/");
   //   console.log(onlineGame);

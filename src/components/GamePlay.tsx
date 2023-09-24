@@ -266,7 +266,7 @@ const initialState: Color[][] = [
   ["Black", "Black"],
 ];
 
-export let initialState1: Color[][] = [
+ const initialState1: Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],
@@ -293,7 +293,7 @@ export let initialState1: Color[][] = [
   [],
   [],
 ];
-export let initialState2: Color[][] = [
+const initialState2: Color[][] = [
   //test state for move out
   ["Black", "Black", "Black", "Black", "Black"],
   ["Black", "Black", "Black", "Black", "Black", "Black"],

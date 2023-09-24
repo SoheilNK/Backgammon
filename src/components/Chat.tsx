@@ -28,7 +28,7 @@ interface chatProps {
   onCurrentPlayer: (player: string) => void;
   started: string;
   setStarted: (started: string) => void;
-  
+
 }
 
 const Chat: React.FC<chatProps> = (props) => {
@@ -42,7 +42,7 @@ const Chat: React.FC<chatProps> = (props) => {
   const [searchVal, setSearchVal] = useState("");
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-  const matchID = onlineGame.matchId;
+    const matchID = onlineGame.matchId;
   const userName = getUser().username.toString();
   if (userName === onlineGame.hostName) {
     var msgFor = "guest";

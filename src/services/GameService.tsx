@@ -63,17 +63,17 @@ export const leaveOnlineGame = async () => {
 
 //create a component for online users to create a game room and join a game room
 export function GameList() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
   //get the list of online games
   const [games, setGames] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
 
   //get onlineGame from local storage
   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-  
+
   const userName = getUser().username.toString();
 
-if (onlineGame) {
+  if (onlineGame) {
     const matchID = onlineGame.matchId;
     if (userName === onlineGame.hostName) {
       var msgFor = "guest";
@@ -81,7 +81,7 @@ if (onlineGame) {
       var msgFor = "host";
     }
   }
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const getGames = async () => {
@@ -151,7 +151,7 @@ if (onlineGame) {
     //       "chatWebSocket Client Disconnected, online user: " +
     //         getOnlineUser()
     //     );
-        
+
     //   }
     // };
   }, []);
