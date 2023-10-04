@@ -12,10 +12,7 @@ import MyProfile from "./pages/MyProfile";
 import ForgotPassPage from "./pages/ForgotPass";
 
 import { unstable_HistoryRouter as Router } from "react-router-dom"; //***************** */
-// import history from "./history";
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
+import history from "./history";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
