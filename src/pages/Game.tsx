@@ -7,7 +7,7 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { GameList } from "../services/GameService";
 import OfflineGame from "./OfflineGame";
 
-function Game() {
+function Game() { 
   const [online, setOnline] = useLocalStorage("online", false);
   if (online === false) {
     //offline mode
