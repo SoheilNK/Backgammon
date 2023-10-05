@@ -38,11 +38,93 @@ function OnlineGame() {
     [],
     ["Black", "Black"],
   ];
+  const allAtHomelState: Color[][] = [
+    //test state for all at home
+    ["White", "White"],
+    [],
+    ["Black", "Black"],
+    ["Black", "Black", "Black", "Black", "Black"],
+    ["Black", "Black"],
+    ["Black", "Black", "Black", "Black", "Black"],
+    [],
+    ["Black"],
+    [],
+    [],
+    [],
+    ["White", "White", "White", "White", "White"],
+    [],
+    [],
+    [],
+    [],
+    ["White", "White", "White"],
+    [],
+    ["White", "White", "White", "White", "White"],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ];
+  const moveOutState: Color[][] = [
+    //test state for move out
+    ["Black", "Black", "Black", "Black", "Black"],
+    ["Black", "Black", "Black", "Black", "Black", "Black"],
+    ["Black", "Black"],
+    [],
+    ["Black", "Black"],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["White", "White"],
+    ["White", "White"],
+    ["White", "White"],
+    ["White", "White", "White"],
+    ["White", "White"],
+    ["White", "White", "White", "White"],
+  ];
+  const winState: Color[][] = [
+    //test state for winner
+    ["Black", "Black"],
+    [],
+    ["Black"],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["White"],
+    [],
+    ["White"],
+    [],
+    [],
+    ["White"],
+  ];
 
   //
   const [block, setBlock] = useState(true);
 
   useEffect(() => {
+    //handle leaving the game
     let unblock: () => void;
     if (block) {
       // Block navigation and register a callback that
@@ -57,12 +139,12 @@ function OnlineGame() {
             `Are you sure you want to leave the game? \n You will lose the game if you leave!`
           )
         ) {
-                    // Unblock the navigation.
+          // Unblock the navigation.
           unblock();
           // Retry the transition.
           tx.retry();
           //leave the game
-          leaveOnlineGame()
+          leaveOnlineGame();
           clearGameData();
           // localStorage.setItem(
           //   "currentBoardState",
@@ -95,7 +177,10 @@ function OnlineGame() {
   ] as TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
     "currentBoardState",
-    initialState
+    // initialState
+    // allAtHomelState
+    // moveOutState
+    winState
   );
   const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
   const [selectedColumn, setSelectedColumn] = useLocalStorage(
@@ -104,8 +189,10 @@ function OnlineGame() {
   );
   const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
-  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //0
-  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //0
+  // const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //intialState
+  // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //intialState
+  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 12); //winState
+  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //winState
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   //--------------------------
   const resetState = () => {
@@ -138,8 +225,8 @@ function OnlineGame() {
   };
 
   //get the match id from local storage
-// const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
-let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
   // if (onlineGame !== null) {
   //   window.history.replaceState({}, document.title, "/Backgammon/");
   //   console.log(onlineGame);

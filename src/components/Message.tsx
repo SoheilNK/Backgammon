@@ -5,21 +5,25 @@ import { clearGameData } from "../services/user.service";
 
 interface MessageProps {
   currentPlayer: string;
+  player1: string;
+  player2: string;
   moveLeft: number;
   whiteOut: number;
   blackOut: number;
 }
 export function Message({
   currentPlayer,
+  player1,
+  player2,
   moveLeft,
   whiteOut,
   blackOut,
 }: MessageProps) {
-  const [p1, setPlayer1] = useLocalStorage("player1", "");
-  const [p2, setPlayer2] = useLocalStorage("player2", "");
+  // const [player1, setPlayer1] = useLocalStorage("player1", "");
+  // const [player2, setPlayer2] = useLocalStorage("player2", "");
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
-  let player1 = p1;
-  let player2 = p2;
+  // let player1 = p1;
+  // let player2 = p2;
 
   const navigate = useNavigate();
 
@@ -41,6 +45,7 @@ export function Message({
   if (blackOut == 15) {
     newScores[1] = scores[1] + 1;
     winner1 = player2;
+
   }
 
   useEffect(() => {

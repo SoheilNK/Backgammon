@@ -156,6 +156,8 @@ function GamePlay({
       <div className="  players relative flex flex-col gap-1">
         <Message
           currentPlayer={currentPlayer}
+          player1={player1}
+          player2={player2}
           moveLeft={moveLeft}
           whiteOut={whiteOut}
           blackOut={blackOut}
