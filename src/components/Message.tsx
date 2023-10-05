@@ -4,6 +4,8 @@ import { useLocalStorage } from "../services/useLocalStorage";
 import { clearGameData } from "../services/user.service";
 
 interface MessageProps {
+  onSetScores: (scores: number[]) => void;
+  onResetState: () => void;
   currentPlayer: string;
   player1: string;
   player2: string;
@@ -12,6 +14,8 @@ interface MessageProps {
   blackOut: number;
 }
 export function Message({
+  onSetScores,
+  onResetState: onResetState,
   currentPlayer,
   player1,
   player2,
@@ -45,7 +49,6 @@ export function Message({
   if (blackOut == 15) {
     newScores[1] = scores[1] + 1;
     winner1 = player2;
-
   }
 
   useEffect(() => {
@@ -61,7 +64,10 @@ export function Message({
 
   if (winner1 != "") {
     return (
-      <div id="winnerMessage" className="absolute top-1/2 translate-y-1/2 left-1/2 transform -translate-x-1/2 z-20">
+      <div
+        id="winnerMessage"
+        className="absolute top-1/2 translate-y-1/2 left-1/2 transform -translate-x-1/2 z-20"
+      >
         <div
           style={{ backgroundColor: "#8E8268" }}
           className=" flex-col  text-lg px-8  max-w-md smx-auto rounded-xl shadow-lg sm:flex sm:items-center   sm:py-1 text-center "
@@ -82,12 +88,15 @@ export function Message({
           <div className="flex w-full p-4 gap-4">
             <button
               onClick={() => (
-                clearGameData(),
-                localStorage.setItem("player1", JSON.stringify(player1)),
-                localStorage.setItem("player2", JSON.stringify(player2)),
-                localStorage.setItem("scores", JSON.stringify(newScores)),
-                localStorage.setItem("currentPlayer", JSON.stringify(winner1)), //winner starts next game
-                window.location.reload()
+                // clearGameData(),
+                onResetState(),
+                // localStorage.setItem("player1", JSON.stringify(player1)),
+                // localStorage.setItem("player2", JSON.stringify(player2)),
+                // localStorage.setItem("scores", JSON.stringify(newScores)),
+                onSetScores(newScores),
+                localStorage.setItem("currentPlayer", JSON.stringify(winner1)) //winner starts next game
+                // window.location.reload()
+                // navigate("/game")
               )}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >

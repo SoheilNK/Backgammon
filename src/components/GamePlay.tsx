@@ -22,6 +22,7 @@ export let PlayerNames = {
 };
 
 interface GamePlayProps {
+  onResetState: () => void;
   gameState: string;
   setGameState: (gameState: string) => void;
   player1: string;
@@ -55,6 +56,7 @@ interface GamePlayProps {
 }
 
 function GamePlay({
+  onResetState: onResetState,
   gameState,
   setGameState,
   player1,
@@ -155,6 +157,8 @@ function GamePlay({
     <div className="flex flex-col items-center">
       <div className="  players relative flex flex-col gap-1">
         <Message
+          onSetScores={(scores) => setScores(scores)}
+          onResetState={onResetState}
           currentPlayer={currentPlayer}
           player1={player1}
           player2={player2}
@@ -182,7 +186,7 @@ function GamePlay({
       </div>
       <div className=" relative flex flex-col items-center mb-2 mt-6 sm:mt-3">
         <Alert
-          gameState={gameState} 
+          gameState={gameState}
           onGameState={(gameState: string) => setGameState(gameState)}
           alertSeen={alertSeen}
           onAlertSeen={(seen) => setAlertSeen(seen)}
@@ -268,7 +272,7 @@ const initialState: Color[][] = [
   ["Black", "Black"],
 ];
 
- const initialState1: Color[][] = [
+const initialState1: Color[][] = [
   //test state for all at home
   ["White", "White"],
   [],

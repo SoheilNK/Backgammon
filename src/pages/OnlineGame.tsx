@@ -278,6 +278,7 @@ function OnlineGame() {
           setBlackOut={setBlackOut}
           alertSeen={alertSeen}
           setAlertSeen={setAlertSeen}
+          onResetState={resetState}
         />
         <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
           <Chat
