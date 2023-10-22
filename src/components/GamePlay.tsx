@@ -157,9 +157,11 @@ function GamePlay({
     <div className="flex flex-col items-center">
       <div className="  players relative flex flex-col gap-1">
         <Message
+          scores={scores}
           onSetScores={(scores) => setScores(scores)}
           onResetState={onResetState}
           currentPlayer={currentPlayer}
+          onCurrentPlayer={(player) => setCurrentPlayer(player)}
           player1={player1}
           player2={player2}
           moveLeft={moveLeft}
@@ -202,6 +204,7 @@ function GamePlay({
           whiteOut={whiteOut}
           blackOut={blackOut}
           onMoveLeft={(moves) => setMoveLeft(moves)}
+          onResetState={onResetState}
         />
         <Board
           currentBoardState={currentBoardState}

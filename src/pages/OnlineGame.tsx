@@ -112,10 +112,10 @@ function OnlineGame() {
     [],
     [],
     [],
-    ["White"],
     [],
     ["White"],
     [],
+    ["White"],
     [],
     ["White"],
   ];
@@ -189,8 +189,8 @@ function OnlineGame() {
   );
   const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
-  // const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //intialState
-  // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //intialState
+  // const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //initialState
+  // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //initialState
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 12); //winState
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //winState
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
@@ -199,13 +199,16 @@ function OnlineGame() {
     setScores([0, 0]);
     setCurrentPlayer(player1);
     setDiceRoll([0, 0]);
-    setCurrentBoardState(initialState);
+    setCurrentBoardState(winState); //winState
+    // setCurrentBoardState(initialState); //initialState
     setMoveLeft(0);
     setSelectedColumn(50);
     setWhiteBar(0);
     setBlackBar(0);
-    setWhiteOut(0);
-    setBlackOut(0);
+    // setWhiteOut(0); //initialState
+    // setBlackOut(0); //initialState
+    setWhiteOut(12); //winState
+    setBlackOut(12); //winState
     setAlertSeen(false);
     setStarted("no");
   };

@@ -1,10 +1,10 @@
-require("dotenv").config();
+
 import axios from "axios";
-import {
-  CognitoUser,
-  AuthenticationDetails,
-  CognitoUserPool,
-} from "amazon-cognito-identity-js";
+// import {
+//   CognitoUser,
+//   AuthenticationDetails,
+//   CognitoUserPool,
+// } from "amazon-cognito-identity-js";
 
 //creat new axios instance
 export const myApi = axios.create({
@@ -33,57 +33,57 @@ function isTokenExpired(token: string): boolean {
   return Date.now() >= exp * 1000;
 }
 //Refreshing the Token with AWS Cognito
-const poolData = {
-  UserPoolId: process.env.YOUR_USER_POOL_ID,
-  ClientId: process.env.YOUR_CLIENT_ID,
-};
+// const poolData = {
+//   UserPoolId: process.env.YOUR_USER_POOL_ID,
+//   ClientId: process.env.YOUR_CLIENT_ID,
+// };
 
-const userPool = new CognitoUserPool(poolData);
+// const userPool = new CognitoUserPool(poolData);
 
-async function refreshAccessToken(): Promise<string | null> {
-  const currentUser = userPool.getCurrentUser();
-  if (currentUser) {
-    return new Promise((resolve, reject) => {
-      currentUser.getSession((err, session) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        if (session.isValid()) {
-          resolve(session.getIdToken().getJwtToken());
-        } else {
-          // Handle token refresh here
-          currentUser.refreshSession(
-            session.getRefreshToken(),
-            (refreshErr, newSession) => {
-              if (refreshErr) {
-                reject(refreshErr);
-                return;
-              }
-              resolve(newSession.getIdToken().getJwtToken());
-            }
-          );
-        }
-      });
-    });
-  }
-  return null;
-}
-
-// //refresh the access token
-// const refreshAccessToken = async () => {
-//     const refreshToken = localStorage.getItem("refresh_token");
-//     if (!refreshToken) {
-//         return null;
-//     }
-//     const { exp } = JSON.parse(atob(refreshToken.split(".")[1]));
-//     if (Date.now() >= exp * 1000) {
-//         return null;
-//     }
-//     const { data } = await myApi.post("/refresh", { refresh_token: refreshToken });
-//     localStorage.setItem("access_token", data.access_token);
-//     return data.access_token;
+// async function refreshAccessToken(): Promise<string | null> {
+//   const currentUser = userPool.getCurrentUser();
+//   if (currentUser) {
+//     return new Promise((resolve, reject) => {
+//       currentUser.getSession((err, session) => {
+//         if (err) {
+//           reject(err);
+//           return;
+//         }
+//         if (session.isValid()) {
+//           resolve(session.getIdToken().getJwtToken());
+//         } else {
+//           // Handle token refresh here
+//           currentUser.refreshSession(
+//             session.getRefreshToken(),
+//             (refreshErr, newSession) => {
+//               if (refreshErr) {
+//                 reject(refreshErr);
+//                 return;
+//               }
+//               resolve(newSession.getIdToken().getJwtToken());
+//             }
+//           );
+//         }
+//       });
+//     });
+//   }
+//   return null;
 // }
+
+//refresh the access token
+const refreshAccessToken = async () => {
+    const refreshToken = localStorage.getItem("refresh_token");
+    if (!refreshToken) {
+        return null;
+    }
+    const { exp } = JSON.parse(atob(refreshToken.split(".")[1]));
+    if (Date.now() >= exp * 1000) {
+        return null;
+    }
+    const { data } = await myApi.post("/refresh", { refresh_token: refreshToken });
+    localStorage.setItem("access_token", data.access_token);
+    return data.access_token;
+}
 
 //get the access token from the local storage
 export const getAccessToken = async () => {

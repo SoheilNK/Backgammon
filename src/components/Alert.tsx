@@ -16,6 +16,7 @@ interface AlertProps {
   whiteOut: number;
   blackOut: number;
   onMoveLeft: (moves: number) => void;
+  onResetState: () => void;
 }
 export function Alert({
   gameState,
@@ -31,6 +32,7 @@ export function Alert({
   whiteOut,
   blackOut,
   onMoveLeft,
+  onResetState,
 }: AlertProps) {
   let alertMessage: string = "";
   let moveAllowed: boolean[] = [true, true];
@@ -90,6 +92,8 @@ export function Alert({
               onAlertSeen(true);
               onMoveLeft(0);
               onGameState("waiting");
+              onResetState();
+              
             }}
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
           >
