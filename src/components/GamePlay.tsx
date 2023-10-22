@@ -165,6 +165,8 @@ function GamePlay({
           moveLeft={moveLeft}
           whiteOut={whiteOut}
           blackOut={blackOut}
+          started={started}
+          onStarted={(started) => setStarted(started)}
         />
         <Players
           currentPlayer={currentPlayer}

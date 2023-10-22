@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { clearGameData } from "../services/user.service";
+import { on } from "events";
+import { sendWsMessage } from "./Chat";
+import * as type from "../types";
 
 interface MessageProps {
   onSetScores: (scores: number[]) => void;
@@ -12,22 +15,27 @@ interface MessageProps {
   moveLeft: number;
   whiteOut: number;
   blackOut: number;
+  started: string;
+  onStarted: (started: string) => void;
 }
 export function Message({
   onSetScores,
-  onResetState: onResetState,
+  onResetState,
   currentPlayer,
   player1,
   player2,
   moveLeft,
   whiteOut,
   blackOut,
-}: MessageProps) {
-  // const [player1, setPlayer1] = useLocalStorage("player1", "");
-  // const [player2, setPlayer2] = useLocalStorage("player2", "");
+  started,
+  onStarted,
+}: MessageProps): JSX.Element {
+  const [username, setUsername] = useLocalStorage("username", "");
+  const [hostName, setHostName] = useLocalStorage("hostName", "");
+  const [matchId, setMatchId] = useLocalStorage("matchId", "");
+  
+  const [online, setOnline] = useLocalStorage("online", false);
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
-  // let player1 = p1;
-  // let player2 = p2;
 
   const navigate = useNavigate();
 
@@ -42,11 +50,11 @@ export function Message({
   //set Scores
   //We have a winner
   let newScores = [...scores];
-  if (whiteOut == 15) {
+  if (whiteOut === 15) {
     newScores[0] = scores[0] + 1;
     winner1 = player1;
   }
-  if (blackOut == 15) {
+  if (blackOut === 15) {
     newScores[1] = scores[1] + 1;
     winner1 = player2;
   }
@@ -62,7 +70,7 @@ export function Message({
     }
   }, [moveLeft]);
 
-  if (winner1 != "") {
+  if (winner1 !== "") {
     return (
       <div
         id="winnerMessage"
@@ -87,25 +95,61 @@ export function Message({
           </div>
           <div className="flex w-full p-4 gap-4">
             <button
-              onClick={() => (
+              onClick={() => {
                 // clearGameData(),
-                onResetState(),
+                onResetState();
                 // localStorage.setItem("player1", JSON.stringify(player1)),
                 // localStorage.setItem("player2", JSON.stringify(player2)),
                 // localStorage.setItem("scores", JSON.stringify(newScores)),
-                onSetScores(newScores),
-                localStorage.setItem("currentPlayer", JSON.stringify(winner1)) //winner starts next game
+                onSetScores(newScores);
+                localStorage.setItem(
+                  "currentPlayer",
+                  JSON.stringify(winner1)
+                ); //winner starts next game
                 // window.location.reload()
                 // navigate("/game")
-              )}
+                onStarted("yes");
+                // for online game only send a message to the other player to start a new game
+                if (online) {
+                  const wsMessage: type.WsMessage = {
+                    type: "state",
+                    msg: {
+                      player1: player1,
+                      player2: player2,
+                      scores: newScores,
+                      currentPlayer: winner1,
+                      // currentDiceRoll: currentDiceRoll,
+                      // currentBoardState: currentBoardState,
+                      moveLeft: moveLeft,
+                      // selectedColumn: selectedColumn,
+                      // whiteBar: whiteBar,
+                      // blackBar: blackBar,
+                      whiteOut: whiteOut,
+                      blackOut: blackOut,
+                      // alertSeen: alertSeen,
+                    },
+                    user: username,
+                    matchId: matchId,
+                    msgFor: hostName === username ? "guest" : "host",
+                  };
+                  if (currentPlayer === username) {
+                    sendWsMessage(wsMessage);
+                  }
+                } else {
+                  navigate("/game");
+                  window.location.reload();
+                }
+              }}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               Continue
             </button>
             <button
-              onClick={() => (
-                clearGameData(), navigate("/users"), window.location.reload()
-              )}
+              onClick={() => {
+                clearGameData();
+                navigate("/users");
+                window.location.reload();
+              }}
               className="w-1/2 bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
             >
               New Game
@@ -121,7 +165,7 @@ export function Message({
       newMessage = currentPlayer + " You have " + moveLeft + " moves left.";
     }
 
-    if (message != newMessage) {
+    if (message !== newMessage) {
       setMessage(newMessage);
       setOldPlayer(currentPlayer);
     }
@@ -136,9 +180,6 @@ export function Message({
           }
         >
           <div className="p-1 ">
-            {/* <strong className=" truncate bg-yellow-200 text-black rounded-md p-1">
-              {currentPlayer}
-            </strong> */}
             {newMessage}
           </div>
         </div>
