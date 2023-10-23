@@ -1,44 +1,86 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from "react";
+import {
+  DndContext,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  useDraggable,
+  DragOverlay,
+} from "@dnd-kit/core";
 
-interface LocalStorageItem {
-  key: string;
-  value: string;
-}
+type DraggableItemProps = {
+  id: string;
+  children: React.ReactNode;
+};
 
-function Test(): JSX.Element {
-  const [localStorageItems, setLocalStorageItems] = useState<LocalStorageItem[]>([]);
-
-  useEffect(() => {
-    // Function to get all items from localStorage
-    const getAllLocalStorageItems = (): LocalStorageItem[] => {
-      const items: LocalStorageItem[] = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        const value = localStorage.getItem(key!); // "key" could be null, so we use "!" to assert it's not null
-        if (key && value) {
-          items.push({ key, value });
-        }
-      }
-      return items;
-    };
-
-    // Fetch all items from localStorage and update state
-    const items = getAllLocalStorageItems();
-    setLocalStorageItems(items);
-  }, []);
+const DraggableItem: React.FC<DraggableItemProps> = ({ id, children }) => {
+  const { setNodeRef, isDragging } = useDraggable({ id });
 
   return (
-    <div>
-      <h1>Local Storage Items:</h1>
-      <ul>
-        {localStorageItems.map(item => (
-          <li key={item.key}>
-            <strong>{item.key}:</strong> {item.value}
-          </li>
-        ))}
-      </ul>
+    <div
+      ref={setNodeRef}
+      style={{
+        width: "100px",
+        height: "100px",
+        border: "1px solid black",
+        margin: "10px",
+        opacity: isDragging ? 0.5 : 1,
+      }}
+    >
+      {children}
     </div>
   );
-}
+};
 
-export default Test;
+const DragAndDropComponent: React.FC = () => {
+  const sensors = useSensors(useSensor(PointerSensor));
+  const [coordinates, setCoordinates] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const onDragStart = (event: any) => {
+    setActiveId(event.active.id);
+  };
+
+  const onDragMove = (event: any) => {
+    if (event) {
+      const { pointer } = event;
+      setCoordinates({
+        x: -pointer.x,
+        y: -pointer.y,
+      });
+    }
+  };
+
+  const onDragEnd = () => {
+    setCoordinates(null);
+    setActiveId(null);
+  };
+
+  return (
+    <DndContext
+      sensors={sensors}
+      onDragStart={onDragStart}
+      onDragMove={onDragMove}
+      onDragEnd={onDragEnd}
+    >
+      <DraggableItem id="item-1">Item 1</DraggableItem>
+      <DraggableItem id="item-2">Item 2</DraggableItem>
+      <DragOverlay adjustScale>
+        {activeId && coordinates && (
+          <div
+            style={{
+              transform: `translate(${coordinates.x}px, ${coordinates.y}px)`,
+            }}
+          >
+            <DraggableItem id={activeId}>{activeId}</DraggableItem>
+          </div>
+        )}
+      </DragOverlay>
+    </DndContext>
+  );
+};
+
+export default DragAndDropComponent;

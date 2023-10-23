@@ -4,16 +4,23 @@ import {
   setAllowedColumns,
   togglePlayer,
 } from "../services/gameRules";
-import { DragEndEvent, DragOverlay, DragStartEvent } from "@dnd-kit/core";
+import {
+  DragEndEvent,
+  DragMoveEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import { Checker, Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { restrictToWindowEdges, snapCenterToCursor } from "@dnd-kit/modifiers";
+import { getUser } from "../services/user.service";
 // import { adjustScale } from "@dnd-kit/modifiers";
 const audioMove = new Audio("checkerMove.mp3");
+
 type BoardProps = {
   currentBoardState: Color[][];
   onMove: (boardState: Color[][]) => void;
@@ -58,6 +65,13 @@ export function Board({
   alertSeen,
   onAlertSeen,
 }: BoardProps) {
+  const userName = getUser().username.toString();
+  //rotate the board if it is an online game and user is white
+  let isBoardRotated = false;
+  if (userName == PlayerNames.white[0]) {
+    isBoardRotated = true;
+  }
+
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
 
   let allowedColumns: number[] = [];
@@ -296,12 +310,27 @@ export function Board({
       onDragEnd={handleDragEnd}
       autoScroll={false}
     >
-      <div className="relative board m-3">
-        <span className=" scale-75 sm:scale-100 absolute top-0 right-0 sm:right-8 text-yellow-100">
+      <div
+        className="relative board m-3"
+        style={{
+          transform: isBoardRotated ? "rotate(180deg)" : "rotate(0deg)",
+        }}
+      >
+        <span
+          style={{
+            transform: isBoardRotated ? "rotate(180deg)" : "rotate(0deg)",
+          }}
+          className=" scale-75 sm:scale-100 absolute top-0 right-0 sm:right-8 text-yellow-100"
+        >
           White's Home Board
         </span>
 
-        <span className=" scale-75 sm:scale-100 absolute bottom-0 right-0 sm:right-8 text-yellow-100">
+        <span
+          style={{
+            transform: isBoardRotated ? "rotate(180deg)" : "rotate(0deg)",
+          }}
+          className=" scale-75 sm:scale-100 absolute bottom-0 right-0 sm:right-8 text-yellow-100"
+        >
           Brown's Home Board
         </span>
         <Quadrant
