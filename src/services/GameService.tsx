@@ -1,11 +1,11 @@
 import axios from "axios";
-import { getAccessToken, getUser } from "../services/user.service";
+import { getUser } from "../services/user.service";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { myApi } from "../services/user.service";
 import GameTable from "../components/GameTable";
 import { useNavigate } from "react-router-dom";
-import { w3cwebsocket as W3CWebSocket, Message } from "websocket";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { getWebSocketClient } from "../services/websocketService";
 import * as type from "../types";
 

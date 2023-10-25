@@ -17,69 +17,40 @@ export const myApi = axios.create({
 myApi.interceptors.request.use(async (config) => {
   let token = await getAccessToken();
   if (isTokenExpired(token)) {
+    console.log("token expired");
+    
       token = await refreshAccessToken();
       localStorage.setItem("access_token", token);
   }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   } else {
+    console.log("no token");
+    console.log("user is not logged in");
     delete config.headers.Authorization;
   }
   return config;
 });
+
 //Check Token Expiry Before Making a Request
 function isTokenExpired(token: string): boolean {
   const { exp } = JSON.parse(atob(token.split(".")[1]));
   return Date.now() >= exp * 1000;
 }
-//Refreshing the Token with AWS Cognito
-// const poolData = {
-//   UserPoolId: process.env.YOUR_USER_POOL_ID,
-//   ClientId: process.env.YOUR_CLIENT_ID,
-// };
-
-// const userPool = new CognitoUserPool(poolData);
-
-// async function refreshAccessToken(): Promise<string | null> {
-//   const currentUser = userPool.getCurrentUser();
-//   if (currentUser) {
-//     return new Promise((resolve, reject) => {
-//       currentUser.getSession((err, session) => {
-//         if (err) {
-//           reject(err);
-//           return;
-//         }
-//         if (session.isValid()) {
-//           resolve(session.getIdToken().getJwtToken());
-//         } else {
-//           // Handle token refresh here
-//           currentUser.refreshSession(
-//             session.getRefreshToken(),
-//             (refreshErr, newSession) => {
-//               if (refreshErr) {
-//                 reject(refreshErr);
-//                 return;
-//               }
-//               resolve(newSession.getIdToken().getJwtToken());
-//             }
-//           );
-//         }
-//       });
-//     });
-//   }
-//   return null;
-// }
 
 //refresh the access token
 const refreshAccessToken = async () => {
     const refreshToken = localStorage.getItem("refresh_token");
-    if (!refreshToken) {
+  if (!refreshToken) {
+      console.log("no refresh token");
         return null;
     }
     const { exp } = JSON.parse(atob(refreshToken.split(".")[1]));
-    if (Date.now() >= exp * 1000) {
+  if (Date.now() >= exp * 1000) {
+      console.log("refresh token expired");
         return null;
-    }
+  }
+  console.log("calling backend/refreshing token");
     const { data } = await myApi.post("/refresh", { refresh_token: refreshToken });
     localStorage.setItem("access_token", data.access_token);
     return data.access_token;
@@ -93,23 +64,9 @@ export const getAccessToken = async () => {
   if (!token) {
     return null;
   }
-  const { exp } = JSON.parse(atob(token.split(".")[1]));
-  if (Date.now() >= exp * 1000) {
-    console.log("token expired");
-    console.log("refreshing token");
-    const newToken = await refreshAccessToken();
-    if (!newToken) {
-      console.log("refresh token expired");
-      console.log("logging out");
-      logout();
-    } else {
-      console.log("token refreshed");
-      return newToken;
-    }
-    return null;
-  }
   return token;
 };
+
 //get the user from the local storage
 export const getUser = () => {
   const user = localStorage.getItem("user");
@@ -127,17 +84,6 @@ const removeUser = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("isLoggedIn");
 };
-// export const getTokens = () => {
-//     const tokens = localStorage.getItem("tokens");
-//     if (!tokens) {
-//         return null;
-//     }
-//     return JSON.parse(tokens);
-// }
-// //set the tokens to the local storage
-// export const setTokens = (tokens: any) => {
-//     localStorage.setItem("tokens", JSON.stringify(tokens));
-// }
 
 //remove the access token from the local storage
 const removeTokens = () => {
@@ -150,13 +96,6 @@ export const logout = () => {
 };
 //clear game data from the local storage
 export const clearGameData = () => {
-  // let allItems = getAllLocalStorageItems();
-  // console.log("All items: ", allItems);
-  // for (let key in allItems) {
-  //     if (key !== "user" && key !== "tokens" && key !== "isLoggedIn" && key !== "online") {
-  //         localStorage.removeItem(key);
-  //     }
-  // }
   const whitelistKeys = [
     "user",
     "tokens",
@@ -171,33 +110,6 @@ export const clearGameData = () => {
     }
   }
 };
-//Using a loop to iterate through all keys in localStorage and return an object with all key/value pairs
-// function getAllLocalStorageItems(): { [key: string]: string } {
-//     const allItems: { [key: string]: string } = {};
-
-//     for (let i = 0; i < localStorage.length; i++) {
-//         const key = localStorage.key(i);
-//         if (key !== null) {
-//             const value = localStorage.getItem(key);
-//             allItems[key] = value || '';
-//         }
-//     }
-
-//     return allItems;
-// }
-
-//login the user
-// const login = async (email: string, password: string) => {
-//     try {
-//         const { data } = await myApi.post("/login", { email, password });
-//         localStorage.setItem("access_token", data.access_token);
-//         localStorage.setItem("refresh_token", data.refresh_token);
-//         setUser(data.user);
-//         return data.user;
-//     } catch (error) {
-//         return Promise.reject(error);
-//     }
-// }
 //update the user profile
 const updateProfile = async (profile: any) => {
   try {
@@ -216,66 +128,5 @@ const deleteProfile = async () => {
     return Promise.reject(error);
   }
 };
-//get the user friends
-const getFriends = async () => {
-  try {
-    const { data } = await myApi.get("/friends");
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-//add a friend to the user friends
-const addFriend = async (friendId: string) => {
-  try {
-    const { data } = await myApi.post("/friends", { friendId });
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-//remove a friend from the user friends
-const removeFriend = async (friendId: string) => {
-  try {
-    const { data } = await myApi.delete(`/friends/${friendId}`);
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-//get the user friend requests
-const getFriendRequests = async () => {
-  try {
-    const { data } = await myApi.get("/friend-requests");
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-//send a friend request to a user
-const sendFriendRequest = async (friendId: string) => {
-  try {
-    const { data } = await myApi.post("/friend-requests", { friendId });
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-//accept a friend request from a user
-const acceptFriendRequest = async (friendId: string) => {
-  try {
-    const { data } = await myApi.put("/friend-requests", { friendId });
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-//reject a friend request from a user
-const rejectFriendRequest = async (friendId: string) => {
-  try {
-    const { data } = await myApi.delete(`/friend-requests/${friendId}`);
-    return data;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
+//update the user password with AWS Cognito
+
