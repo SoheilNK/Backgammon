@@ -1,4 +1,3 @@
-
 import axios from "axios";
 // import {
 //   CognitoUser,
@@ -15,12 +14,19 @@ export const myApi = axios.create({
 });
 //set up axiosApi interceptors to add the token to the request and refresh the token if it is expired
 myApi.interceptors.request.use(async (config) => {
+  //check if the body contains a refresh token
+  if (config.data && config.data.refresh_token) {
+    console.log("refresh token in the body");
+    return config;
+  }
   let token = await getAccessToken();
   if (isTokenExpired(token)) {
     console.log("token expired");
-    
-      token = await refreshAccessToken();
-      localStorage.setItem("access_token", token);
+
+    token = await refreshAccessToken(); // refresh access token
+    //print token
+    // console.log(token);
+    // localStorage.setItem("access_token", token);
   }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -40,22 +46,47 @@ function isTokenExpired(token: string): boolean {
 
 //refresh the access token
 const refreshAccessToken = async () => {
-    const refreshToken = localStorage.getItem("refresh_token");
+  let tokens = localStorage.getItem("tokens");
+  const refreshToken = tokens ? JSON.parse(tokens).refresh_token : null;
+  console.log("refresh token", "...refreshToken");
   if (!refreshToken) {
-      console.log("no refresh token");
-        return null;
-    }
-    const { exp } = JSON.parse(atob(refreshToken.split(".")[1]));
-  if (Date.now() >= exp * 1000) {
-      console.log("refresh token expired");
-        return null;
+    console.log("no refresh token");
+    return null;
   }
   console.log("calling backend/refreshing token");
-    const { data } = await myApi.post("/refresh", { refresh_token: refreshToken });
-    localStorage.setItem("access_token", data.access_token);
-    return data.access_token;
-}
 
+  try {
+    const { data } = await myApi.post("/auth/refresh", {
+      refresh_token: refreshToken,
+    });
+    if (!data) {
+      console.log("no data");
+      return null;
+    }
+    if (data.error) {
+      console.log("error");
+      console.log("need to log out....", data.error);
+      //logout();
+      return null;
+    }
+    console.log("token refreshed...data", data);
+    tokens = await data;
+    console.log("token refreshed...tokens", tokens);
+    localStorage.setItem("tokens", JSON.stringify(tokens));
+
+    return data.access_token;
+  } catch (error: Error) {
+    if (error.response && error.response.status === 401) {
+      console.log("Refresh token expired. Logging out...");
+      logout();
+      // Redirect to login page or handle as needed
+      // window.location.href = '/login';
+    } else {
+      console.error("Error refreshing token:", error);
+    }
+    return null;
+  }
+};
 //get the access token from the local storage
 export const getAccessToken = async () => {
   const tokens = localStorage.getItem("tokens");
@@ -129,4 +160,3 @@ const deleteProfile = async () => {
   }
 };
 //update the user password with AWS Cognito
-
