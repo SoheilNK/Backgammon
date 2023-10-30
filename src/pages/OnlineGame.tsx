@@ -177,10 +177,10 @@ function OnlineGame() {
   ] as TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
     "currentBoardState",
-    // initialState
+    initialState
     // allAtHomelState
     // moveOutState
-    winState
+    // winState
   );
   const [moveLeft, setMoveLeft] = useLocalStorage("moveLeft", 0);
   const [selectedColumn, setSelectedColumn] = useLocalStorage(
@@ -189,26 +189,26 @@ function OnlineGame() {
   );
   const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
-  // const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //initialState
-  // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //initialState
-  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 12); //winState
-  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //winState
+  const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //initialState
+  const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //initialState
+  // const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 12); //winState
+  // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //winState
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   //--------------------------
   const resetState = () => {
     setScores([0, 0]);
     setCurrentPlayer(player1);
     setDiceRoll([0, 0]);
-    setCurrentBoardState(winState); //winState
-    // setCurrentBoardState(initialState); //initialState
+    // setCurrentBoardState(winState); //winState
+    setCurrentBoardState(initialState); //initialState
     setMoveLeft(0);
     setSelectedColumn(50);
     setWhiteBar(0);
     setBlackBar(0);
-    // setWhiteOut(0); //initialState
-    // setBlackOut(0); //initialState
-    setWhiteOut(12); //winState
-    setBlackOut(12); //winState
+    setWhiteOut(0); //initialState
+    setBlackOut(0); //initialState
+    // setWhiteOut(12); //winState
+    // setBlackOut(12); //winState
     setAlertSeen(false);
     setStarted("no");
   };

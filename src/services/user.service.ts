@@ -1,4 +1,6 @@
 import axios from "axios";
+import redirectToLogin from "../components/Register";
+import { parse } from "dotenv";
 // import {
 //   CognitoUser,
 //   AuthenticationDetails,
@@ -48,6 +50,7 @@ function isTokenExpired(token: string): boolean {
 const refreshAccessToken = async () => {
   let tokens = localStorage.getItem("tokens");
   const refreshToken = tokens ? JSON.parse(tokens).refresh_token : null;
+  const username = getUser().username;
   console.log("refresh token", "...refreshToken");
   if (!refreshToken) {
     console.log("no refresh token");
@@ -58,6 +61,7 @@ const refreshAccessToken = async () => {
   try {
     const { data } = await myApi.post("/auth/refresh", {
       refresh_token: refreshToken,
+      user_name: username,
     });
     if (!data) {
       console.log("no data");
@@ -70,7 +74,7 @@ const refreshAccessToken = async () => {
       return null;
     }
     console.log("token refreshed...data", data);
-    tokens = await data;
+    tokens = data;
     console.log("token refreshed...tokens", tokens);
     localStorage.setItem("tokens", JSON.stringify(tokens));
 
@@ -78,13 +82,13 @@ const refreshAccessToken = async () => {
   } catch (error: Error) {
     if (error.response && error.response.status === 401) {
       console.log("Refresh token expired. Logging out...");
-      logout();
-      // Redirect to login page or handle as needed
-      // window.location.href = '/login';
     } else {
       console.error("Error refreshing token:", error);
     }
-    return null;
+    logout();
+    redirectToLogin();
+
+    // return null;
   }
 };
 //get the access token from the local storage
