@@ -68,9 +68,9 @@ export function Board({
   const userName = getUser().username.toString();
   //rotate the board if it is an online game and user is white
   let isBoardRotated = false;
-  if (userName == PlayerNames.white[0]) {
-    isBoardRotated = true;
-  }
+  // if (userName == PlayerNames.white[0]) { //add rotation feature later
+  //   isBoardRotated = true;
+  // }
 
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
 

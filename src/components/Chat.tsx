@@ -131,12 +131,12 @@ const Chat: React.FC<chatProps> = (props) => {
               JSON.stringify(dataFromServer.data)
             );
             //update state
-            if (started === "no") {
+            // if (started === "no") {
               let msg = dataFromServer.data as unknown as type.OnlineGame;
               props.onPlayer2(msg.guestName);
               // navigate(`/onlinegame`);
               // window.location.reload();
-            }
+            // }
             props.setStarted("yes");
           }
 
