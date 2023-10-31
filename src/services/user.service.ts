@@ -79,7 +79,7 @@ const refreshAccessToken = async () => {
     localStorage.setItem("tokens", JSON.stringify(tokens));
 
     return data.access_token;
-  } catch (error: Error) {
+  } catch (error: any) {
     if (error.response && error.response.status === 401) {
       console.log("Refresh token expired. Logging out...");
     } else {
@@ -145,22 +145,75 @@ export const clearGameData = () => {
     }
   }
 };
-//update the user profile
-const updateProfile = async (profile: any) => {
+// //update the user profile
+// const updateProfile = async (profile: any) => {
+//   try {
+//     const { data } = await myApi.put("/profile", profile);
+//     return data;
+//   } catch (error) {
+//     return Promise.reject(error);
+//   }
+// };
+// //delete the user profile
+// const deleteProfile = async () => {
+//   try {
+//     const { data } = await myApi.delete("/profile");
+//     return data;
+//   } catch (error) {
+//     return Promise.reject(error);
+//   }
+// };
+//update the user password with AWS Cognito
+
+// user.service.ts
+
+// import { myApi } from "./myApi"; // Importing your Axios instance
+
+// Define the types for clarity
+interface ProfileUpdateValues {
+  name: string;
+  email: string;
+}
+
+interface PasswordChangeValues {
+  newPassword: string;
+}
+
+/**
+ * Update the user's profile information
+ */
+const updateProfile = async (values: ProfileUpdateValues) => {
   try {
-    const { data } = await myApi.put("/profile", profile);
-    return data;
+    const response = await myApi.put('/user/update-profile', values);
+    return response.data;
   } catch (error) {
-    return Promise.reject(error);
+    throw error;
   }
 };
-//delete the user profile
+
+/**
+ * Change the user's password
+ */
+const changePassword = async (values: PasswordChangeValues) => {
+  try {
+    const response = await myApi.put('/user/change-password', values);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Delete the user's profile
+ */
 const deleteProfile = async () => {
   try {
-    const { data } = await myApi.delete("/profile");
-    return data;
+    const response = await myApi.delete('/user/delete-profile');
+    return response.data;
   } catch (error) {
-    return Promise.reject(error);
+    throw error;
   }
 };
-//update the user password with AWS Cognito
+
+export { updateProfile, changePassword, deleteProfile };
+

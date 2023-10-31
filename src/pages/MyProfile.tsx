@@ -1,4 +1,4 @@
-import Profile  from "../components/Profile";
+import Profile  from "../components/Profile-V1";
 import PageClass from "../components/PageClass";
 
 const MyProfile: React.FC = () => {
