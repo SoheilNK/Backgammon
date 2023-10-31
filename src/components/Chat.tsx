@@ -28,7 +28,6 @@ interface chatProps {
   onCurrentPlayer: (player: string) => void;
   started: string;
   setStarted: (started: string) => void;
-
 }
 
 const Chat: React.FC<chatProps> = (props) => {
@@ -132,10 +131,10 @@ const Chat: React.FC<chatProps> = (props) => {
             );
             //update state
             // if (started === "no") {
-              let msg = dataFromServer.data as unknown as type.OnlineGame;
-              props.onPlayer2(msg.guestName);
-              // navigate(`/onlinegame`);
-              // window.location.reload();
+            let msg = dataFromServer.data as unknown as type.OnlineGame;
+            props.onPlayer2(msg.guestName);
+            // navigate(`/onlinegame`);
+            // window.location.reload();
             // }
             props.setStarted("yes");
           }
@@ -234,8 +233,7 @@ const Chat: React.FC<chatProps> = (props) => {
               onSearch={handleSearchSubmit}
             />
           </div>
-
-          <div
+          {/* <div
             style={{
               display: "flex",
               flexDirection: "column",
@@ -267,7 +265,35 @@ const Chat: React.FC<chatProps> = (props) => {
                 />
               </Card>
             ))}
-          </div>
+          </div>{" "} */}
+          <div className="flex flex-col pb-12 w-full" id="messages">
+            {messages.map((message) => (
+              <div
+                key={message.msg}
+                className={`w-full my-1 py-0 ${
+                  userName === message.user ? "self-end" : "self-start"
+                }`}
+                // loading={false}
+              >
+                <div
+                  className={`flex items-center w-full ${
+                    userName === message.user ? "flex-row-reverse" : "flex-row"
+                  }`}
+                >
+                  <Avatar
+                    style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
+                    className={`${userName === message.user ? "ml-2" : "mr-2"}`}
+                  >
+                    {message.user[0].toUpperCase()}
+                  </Avatar>
+                  <span className="font-thin scale-x-75">[{message.user}]</span>
+                  <span className="text-sm sm:text-base md:text-lg break-words">
+                    {message.msg}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>{" "}
         </div>
       ) : (
         <div style={{ padding: "200px 40px" }}>
