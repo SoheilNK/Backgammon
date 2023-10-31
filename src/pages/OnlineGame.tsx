@@ -299,7 +299,6 @@ function OnlineGame() {
             started={started}
             setStarted={setStarted}
           />
-          <p>Game ID: ${onlineGame.matchId}</p>
         </div>
       </div>
     </div>

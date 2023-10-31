@@ -207,13 +207,21 @@ const Chat: React.FC<chatProps> = (props) => {
     >
       {isLoggedIn ? (
         <div>
-          <div className="title">
+          <div className="title flex">
             <Text
               id="main-heading"
               type="secondary"
               style={{ fontSize: "14px" }}
             >
               In Game Chat: <strong>{userName}</strong>
+            </Text>
+            <Text
+              className="ml-auto"
+              id="main-heading"
+              type="secondary"
+              style={{ fontSize: "14px" }}
+            >
+              Game ID: <strong>{onlineGame.matchId}</strong>
             </Text>
           </div>
           <div className="">
