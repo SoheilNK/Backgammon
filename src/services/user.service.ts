@@ -176,6 +176,7 @@ interface ProfileUpdateValues {
 }
 
 interface PasswordChangeValues {
+  username: string;
   newPassword: string;
 }
 
@@ -196,7 +197,9 @@ const updateProfile = async (values: ProfileUpdateValues) => {
  */
 const changePassword = async (values: PasswordChangeValues) => {
   try {
-    const response = await myApi.put('/user/change-password', values);
+    const username = getUser().username;
+    values.username = username;
+    const response = await myApi.post('/user/change-password', values);
     return response.data;
   } catch (error) {
     throw error;

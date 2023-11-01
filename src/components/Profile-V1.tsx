@@ -99,7 +99,7 @@ const Profile: React.FC = () => {
           <Form.Item label="Email" name="email">
             <Input placeholder="Enter your email" />
           </Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="default" htmlType="submit">
             Update
           </Button>
         </Form>
@@ -108,7 +108,7 @@ const Profile: React.FC = () => {
       {/* Change Password Modal */}
       <Modal
         title="Change Password"
-        visible={isChangePasswordModalVisible}
+        open={isChangePasswordModalVisible}
         onCancel={() => setIsChangePasswordModalVisible(false)}
         footer={null}
       >
@@ -116,7 +116,7 @@ const Profile: React.FC = () => {
           <Form.Item label="New Password" name="newPassword">
             <Input.Password placeholder="Enter your new password" />
           </Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="default" htmlType="submit">
             Change Password
           </Button>
         </Form>
