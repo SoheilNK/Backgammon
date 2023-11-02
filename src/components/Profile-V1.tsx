@@ -1,46 +1,54 @@
 import React, { useState } from "react";
+import redirectToLogin from "../components/Register";
+
 import {
   getUser,
-  updateProfile,
   changePassword,
   deleteProfile,
+  logout,
 } from "../services/user.service";
 import { Button, Modal, Input, Form, message } from "antd";
 
 const Profile: React.FC = () => {
   const currentUser = getUser();
-  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [isChangePasswordModalVisible, setIsChangePasswordModalVisible] =
     useState(false);
 
-  const handleUpdate = async (values: any) => {
-    try {
-      await updateProfile(values);
-      message.success("Profile updated successfully");
-      setIsUpdateModalVisible(false);
-    } catch (error) {
-      message.error("Failed to update profile");
-    }
-  };
-
   const handleChangePassword = async (values: any) => {
-    try {
-      await changePassword(values);
-      message.success("Password changed successfully");
-      setIsChangePasswordModalVisible(false);
-    } catch (error) {
-      message.error("Failed to change password");
-    }
+    Modal.confirm({
+      title: "Are you sure you want to change your password?",
+      content: "This action cannot be undone.",
+      onOk: async () => {
+        try {
+          await changePassword(values);
+          message.success("Password changed successfully");
+          setIsChangePasswordModalVisible(false);
+          logout();
+          redirectToLogin();
+        } catch (error) {
+          message.error("Failed to change password");
+        }
+      },
+    });
   };
 
   const handleDeleteProfile = async () => {
-    try {
-      await deleteProfile();
-      message.success("Profile deleted successfully");
-      // Redirect or perform some other action after deleting the profile
-    } catch (error) {
-      message.error("Failed to delete profile");
-    }
+    Modal.confirm({
+      title: "Are you sure you want to delete your profile?",
+      content: "This action cannot be undone.",
+      onOk: async () => {
+        try {
+          await deleteProfile();
+          message.success("Profile deleted successfully");
+          // Redirect or perform some other action after deleting the profile
+          // Logout and redirect to login page
+          logout();
+          redirectToLogin();
+        } catch (error) {
+          message.error("Failed to delete profile");
+        }
+      },
+    });
   };
 
   return (
@@ -70,9 +78,6 @@ const Profile: React.FC = () => {
         </div>
 
         <div className="mt-8">
-          <Button type="default" onClick={() => setIsUpdateModalVisible(true)}>
-            Update Profile
-          </Button>
           <Button
             type="default"
             onClick={() => setIsChangePasswordModalVisible(true)}
@@ -84,26 +89,6 @@ const Profile: React.FC = () => {
           </Button>
         </div>
       </div>
-
-      {/* Update Profile Modal */}
-      <Modal
-        title="Update Profile"
-        open={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
-        footer={null}
-      >
-        <Form onFinish={handleUpdate}>
-          <Form.Item label="Name" name="name">
-            <Input placeholder="Enter your name" />
-          </Form.Item>
-          <Form.Item label="Email" name="email">
-            <Input placeholder="Enter your email" />
-          </Form.Item>
-          <Button type="default" htmlType="submit">
-            Update
-          </Button>
-        </Form>
-      </Modal>
 
       {/* Change Password Modal */}
       <Modal

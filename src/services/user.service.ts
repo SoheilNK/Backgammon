@@ -145,31 +145,7 @@ export const clearGameData = () => {
     }
   }
 };
-// //update the user profile
-// const updateProfile = async (profile: any) => {
-//   try {
-//     const { data } = await myApi.put("/profile", profile);
-//     return data;
-//   } catch (error) {
-//     return Promise.reject(error);
-//   }
-// };
-// //delete the user profile
-// const deleteProfile = async () => {
-//   try {
-//     const { data } = await myApi.delete("/profile");
-//     return data;
-//   } catch (error) {
-//     return Promise.reject(error);
-//   }
-// };
-//update the user password with AWS Cognito
 
-// user.service.ts
-
-// import { myApi } from "./myApi"; // Importing your Axios instance
-
-// Define the types for clarity
 interface ProfileUpdateValues {
   name: string;
   email: string;
@@ -180,17 +156,11 @@ interface PasswordChangeValues {
   newPassword: string;
 }
 
-/**
- * Update the user's profile information
- */
-const updateProfile = async (values: ProfileUpdateValues) => {
-  try {
-    const response = await myApi.put('/user/update-profile', values);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+interface DeleteProfileValues {
+  username: string;
+}
+
+
 
 /**
  * Change the user's password
@@ -199,7 +169,7 @@ const changePassword = async (values: PasswordChangeValues) => {
   try {
     const username = getUser().username;
     values.username = username;
-    const response = await myApi.post('/user/change-password', values);
+    const response = await myApi.post("/user/change-password", values);
     return response.data;
   } catch (error) {
     throw error;
@@ -211,12 +181,13 @@ const changePassword = async (values: PasswordChangeValues) => {
  */
 const deleteProfile = async () => {
   try {
-    const response = await myApi.delete('/user/delete-profile');
+    const username = getUser().username;
+    const values: DeleteProfileValues = { username: username };
+    const response = await myApi.delete("/user/delete-profile", { data: values });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-export { updateProfile, changePassword, deleteProfile };
-
+export { changePassword, deleteProfile };
