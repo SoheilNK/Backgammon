@@ -26,3 +26,5 @@ src/assets/testDND
 src/temp*
 
 .env
+.env.development
+.env.production

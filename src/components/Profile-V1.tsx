@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import redirectToLogin from "../components/Register";
+import { useNavigate } from "react-router-dom";
 
 import {
   getUser,
@@ -10,7 +11,11 @@ import {
 import { Button, Modal, Input, Form, message } from "antd";
 
 const Profile: React.FC = () => {
+  const navigate = useNavigate();
   const currentUser = getUser();
+  if (!currentUser) {
+    redirectToLogin();
+  }
   const [isChangePasswordModalVisible, setIsChangePasswordModalVisible] =
     useState(false);
 
@@ -43,7 +48,7 @@ const Profile: React.FC = () => {
           // Redirect or perform some other action after deleting the profile
           // Logout and redirect to login page
           logout();
-          redirectToLogin();
+          navigate("/");
         } catch (error) {
           message.error("Failed to delete profile");
         }

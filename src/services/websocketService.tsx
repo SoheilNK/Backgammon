@@ -7,8 +7,9 @@ import { getUser } from "./user.service";
 let client: W3CWebSocket | null = null;
 
 export const getWebSocketClient = () => {
+  const apiUrlWs = import.meta.env.VITE_API_URL_WS;
   const user = getUser().username.toString();
-  const WebSocketURL = `ws://localhost:8001?username=${user}`;
+  const WebSocketURL = `${apiUrlWs}?username=${user}`;
   if (!client || client.readyState === client.CLOSED) {
     client = new W3CWebSocket(WebSocketURL);
     console.log("New client created for: ", WebSocketURL);

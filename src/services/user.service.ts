@@ -1,15 +1,13 @@
 import axios from "axios";
 import redirectToLogin from "../components/Register";
 import { parse } from "dotenv";
-// import {
-//   CognitoUser,
-//   AuthenticationDetails,
-//   CognitoUserPool,
-// } from "amazon-cognito-identity-js";
+
+//read apiUrl from Vite env
+const apiUrl = import.meta.env.VITE_API_URL;
 
 //creat new axios instance
 export const myApi = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: apiUrl,
   headers: {
     "Content-Type": "application/json",
   },
