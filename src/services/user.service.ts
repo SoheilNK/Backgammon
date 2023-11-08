@@ -1,6 +1,7 @@
 import axios from "axios";
 import redirectToLogin from "../components/Register";
 import { parse } from "dotenv";
+import { useLocalStorage } from "./useLocalStorage";
 // import {
 //   CognitoUser,
 //   AuthenticationDetails,
@@ -104,11 +105,23 @@ export const getAccessToken = async () => {
 
 //get the user from the local storage
 export const getUser = () => {
-  const user = localStorage.getItem("user");
-  if (!user) {
-    return null;
+  //read online status from local storage as a boolean
+  const online = JSON.parse(localStorage.getItem("online") || "{}");
+  if (online) {
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+      return null;
+    }
+    return JSON.parse(user);
+  } else {
+    //create a local user
+    const user = {
+      username: "Local User",
+      email: "",
+    }
+    return user;
   }
-  return JSON.parse(user);
 };
 //set the user to the local storage
 export const setUser = (user: any) => {
