@@ -1,9 +1,9 @@
 import { cognitoLoginUrl, clientId } from "../../cognitoConfig";
 import { myApi } from "../services/user.service";
 import { setUser } from "../services/user.service";
-import { useLocalStorage } from "../services/useLocalStorage";
 
 const Register = async () => {
+  const appUrl = import.meta.env.VITE_APP_URL;
   // const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
   let isLoggedIn: boolean =
     JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
@@ -34,7 +34,7 @@ const Register = async () => {
     const codeVerifier = await generateNonce();
     sessionStorage.setItem(`codeVerifier-${state}`, codeVerifier);
     const codeChallenge = base64URLEncode(await sha256(codeVerifier));
-    window.location.href = `${cognitoLoginUrl}/login?response_type=code&client_id=${clientId}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}&redirect_uri=http://localhost:5173/Backgammon`;
+    window.location.href = `${cognitoLoginUrl}/login?response_type=code&client_id=${clientId}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}&redirect_uri=${appUrl}/Backgammon`;
   };
 
   const init = async (tokens: any): Promise<void> => {
@@ -56,7 +56,7 @@ const Register = async () => {
 
         setUser(apiResp);
         //go to myprofile page
-        window.location.href = "http://localhost:5173/users";
+        window.location.href = `${appUrl}/users`;
       } else {
         console.log(
           `Failed to get userid. Are you logged in with a valid token?`
@@ -71,7 +71,7 @@ const Register = async () => {
         // setMessage("Access token has expired");
         localStorage.removeItem("tokens");
         // reload page
-        window.location.href = "http://localhost:5173/Backgammon";
+        window.location.href = `${appUrl}/Backgammon`;
       }
     }
   };
@@ -97,7 +97,7 @@ const Register = async () => {
         client_id: clientId,
         code: searchParams.get("code")!,
         code_verifier: codeVerifier,
-        redirect_uri: "http://localhost:5173/Backgammon",
+        redirect_uri: `${appUrl}/Backgammon`,
       })
         .map(([k, v]) => `${k}=${v}`)
         .join("&"),

@@ -10,11 +10,12 @@ import { getWebSocketClient } from "../services/websocketService";
 import * as type from "../types";
 
 let chatWebSocketClient: W3CWebSocket | null = null;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 //call the api to get the list of online games
 export const getOnlineGames = async () => {
   console.log("getOnlineGames...");
-  const { data } = await myApi.get("http://localhost:8000/api/games");
+  const { data } = await myApi.get(`${apiUrl}/games`);
 
   return data;
 };
@@ -24,7 +25,7 @@ export const updateOnlineGame = async (onlineGame: any, roll: string) => {
   console.log("updating game id :", onlineGame.matchId);
   try {
     const { data } = await myApi.post(
-      "http://localhost:8000/api/games/update",
+      `${apiUrl}/games/update`,
       { onlineGame: onlineGame, roll: roll }
     );
     console.log("Response:", data);
@@ -50,7 +51,7 @@ export const leaveOnlineGame = async () => {
 
   console.log("leaving game id :", onlineGame.matchId);
   try {
-    const { data } = await myApi.post("http://localhost:8000/api/games/leave", {
+    const { data } = await myApi.post(`${apiUrl}/games/leave`, {
       onlineGame: onlineGame,
       roll: roll,
     });
@@ -141,33 +142,13 @@ export function GameList() {
       };
     };
     fetchData();
-    //cleanup function to disconnect the websocket client
-    // return () => {
-    //   if (chatWebSocketClient) {
-    //     chatWebSocketClient.onmessage = () => {};
-    //     chatWebSocketClient.onerror = () => {};
-    //     chatWebSocketClient.close();
-    //     console.log(
-    //       "chatWebSocket Client Disconnected, online user: " +
-    //         getOnlineUser()
-    //     );
-
-    //   }
-    // };
   }, []);
 
-  // useEffect(() => {
-  //   const getGames = async () => {
-  //     const games = await getOnlineGames();
-  //     setGames(games);
-  //   };
-  //   getGames();
-  // }, []);
 
   //add a game room
   const createGame = async () => {
     const { data } = await myApi.post(
-      "http://localhost:8000/api/games/add/",
+      `${apiUrl}/games/add/`,
       {onlineUser: getOnlineUser()}
     );
     const onlineGame = data;
@@ -188,7 +169,7 @@ export function GameList() {
     } else {
       try {
         const { data } = await myApi.post(
-          "http://localhost:8000/api/games/join",
+          `${apiUrl}/games/join`,
           { matchId: matchId, onlineUser: getOnlineUser() } // Set the matchId in the request body
         );
         console.log("Response:", data);
