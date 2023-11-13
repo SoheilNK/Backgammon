@@ -1,0 +1,122 @@
+import { useState } from 'react';
+import {
+  DndContext,
+  DragOverlay,
+  DragEndEvent,
+  DragStartEvent,
+  PointerSensor,
+  useDraggable,
+  useDroppable,
+} from '@dnd-kit/core';
+
+function DroppableComponent() {
+  const [activeId, setActiveId] = useState(null);
+  const [items, setItems] = useState([
+    { id: 'item-1', content: 'Item 1' },
+    { id: 'item-2', content: 'Item 2' },
+    { id: 'item-3', content: 'Item 3' },
+  ]);
+
+  const handleDragStart = ({ active }) => {
+    setActiveId(active.id);
+  };
+
+  const handleDragEnd = ({ over }) => {
+    if (over) {
+      const oldIndex = items.findIndex((item) => item.id === activeId);
+      const newIndex = items.findIndex((item) => item.id === over.id);
+
+      const newItems = [...items];
+      newItems.splice(newIndex, 0, newItems.splice(oldIndex, 1)[0]);
+
+      setItems(newItems);
+    }
+
+    setActiveId(null);
+  };
+
+  return (
+    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+      <SortableContext strategy={verticalListSortingStrategy}>
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 1 }}>
+            <Droppable id="left">
+              {items
+                .filter((item, index) => index % 2 === 0)
+                .map((item) => (
+                  <Draggable key={item.id} id={item.id}>
+                    <div style={{ padding: '8px', background: activeId === item.id ? '#eee' : '#fff' }}>
+                      {item.content}
+                    </div>
+                  </Draggable>
+                ))}
+            </Droppable>
+          </div>
+          <div style={{ flex: 1 }}>
+            <Droppable id="right">
+              {items
+                .filter((item, index) => index % 2 !== 0)
+                .map((item) => (
+                  <Draggable key={item.id} id={item.id}>
+                    <div style={{ padding: '8px', background: activeId === item.id ? '#eee' : '#fff' }}>
+                      {item.content}
+                    </div>
+                  </Draggable>
+                ))}
+            </Droppable>
+          </div>
+        </div>
+      </SortableContext>
+      <DragOverlay>
+        {activeId && (
+          <div style={{ pointerEvents: 'none', position: 'absolute', top: 0, left: 0 }}>
+            <Draggable id={activeId}>
+              <div style={{ padding: '8px', background: '#eee' }}>{items.find((item) => item.id === activeId).content}</div>
+            </Draggable>
+          </div>
+        )}
+      </DragOverlay>
+    </DndContext>
+  );
+}
+
+function Droppable({ id, children }) {
+  const { isOver, setNodeRef } = useDroppable({ id });
+
+  return (
+    <div ref={setNodeRef} style={{ border: isOver ? '2px solid #ccc' : '2px solid transparent' }}>
+      {children}
+    </div>
+  );
+}
+
+function Draggable({ id, children }) {
+    function Draggable({ id, children }) {
+        const { isDragging, attributes, listeners, setNodeRef } = useDraggable({ id });
+
+        return (
+            <div ref={setNodeRef} {...attributes} {...listeners} style={{ opacity: isDragging ? 0.5 : 1 }}>
+                {children}
+            </div>
+        );
+    }
+}
+
+// The Draggable component uses the useDraggable hook from the @dnd-kit/core 
+//library to make the component draggable.It sets up a drag source by calling 
+//the useDraggable hook with an id prop that identifies the draggable item.
+//It also adds attributes and listeners to the component to handle dragging 
+//events and styles the component based on whether it is currently being 
+//dragged(isDragging).The setNodeRef function is used to attach the draggable 
+//element to the DOM node.
+
+// With these three components (Droppable, Draggable, and DroppableComponent), 
+//you can create a React component with two droppable divs that can be used for 
+//drag and drop interactions using the dnd - kit library.
+
+
+
+
+
+
+

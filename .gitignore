@@ -25,4 +25,9 @@ dist-ssr
 src/assets/testDND
 src/temp*
 
+# production react app
+/client/dist
+
 .env
+.env.development
+.env.production

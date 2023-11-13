@@ -1,0 +1,34 @@
+.BurgerMenu__button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+}
+
+.BurgerMenu__line {
+  background-color: #000;
+  height: 2px;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.BurgerMenu__line--open:nth-child(1) {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+
+.BurgerMenu__line--open:nth-child(2) {
+  opacity: 0;
+}
+
+.BurgerMenu__line--open:nth-child(3) {
+  transform: rotate(-45deg) translate(3px, -3px);
+}
+
+button:hover {
+  background-color: #833c3c;
+}
+button:focus {
+  background-color: #53af7c;
+}
