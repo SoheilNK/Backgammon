@@ -5,7 +5,9 @@ import * as cors from "cors";
 import { Request, Response } from "express";
 import { AppDataSource } from "./data-source";
 import { Routes } from "./routes";
-import {WebSocketServer} from "./WebSocketServer";
+import { WebSocketServer } from "./WebSocketServer";
+import * as path from "path";
+
 
 const port = 8001;
 export const webSocketServerInstance = new WebSocketServer(port);
@@ -15,8 +17,6 @@ AppDataSource.initialize()
   .then(async () => {
     const dotenv = require("dotenv");
     dotenv.config();
-
-    
 
     // create express app
 
@@ -31,7 +31,6 @@ AppDataSource.initialize()
       console.error(err.stack);
       res.status(500).send("Something broke!");
     });
-
 
     // register express routes from defined application routes
     Routes.forEach((route) => {
@@ -58,8 +57,14 @@ AppDataSource.initialize()
       );
     });
 
-    // setup express app here
-    // ...
+    // Serve static files from the React app
+    app.use(express.static(path.join(__dirname, "../client/build")));
+
+    // The "catchall" handler: for any request that doesn't
+    // match one above, send back React's index.html file.
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../client/build/index.html"));
+    });
 
     // start express server
     app.listen(port);

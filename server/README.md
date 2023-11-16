@@ -1,2 +1,2 @@
 # sosepBackgammon-backend
-This the back end for SoSep Backgammon project.
+This the back end for the SoSep Backgammon project.
