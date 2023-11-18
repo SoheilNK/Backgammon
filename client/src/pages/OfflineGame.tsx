@@ -33,6 +33,25 @@ function OfflineGame() {
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0);
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
 
+    const resetState = () => {
+      setScores([0, 0]);
+      setCurrentPlayer(player1);
+      setDiceRoll([0, 0]);
+      // setCurrentBoardState(winState); //winState
+      setCurrentBoardState(initialState); //initialState
+      setMoveLeft(0);
+      setSelectedColumn(50);
+      setWhiteBar(0);
+      setBlackBar(0);
+      setWhiteOut(0); //initialState
+      setBlackOut(0); //initialState
+      // setWhiteOut(12); //winState
+      // setBlackOut(12); //winState
+      setAlertSeen(false);
+      setStarted("no");
+    };
+
+
   return (
     <GamePlay
       gameState={"new"}
@@ -65,6 +84,7 @@ function OfflineGame() {
       setBlackOut={setBlackOut}
       alertSeen={alertSeen}
       setAlertSeen={setAlertSeen}
+      onResetState={resetState}
     />
   );
 }
