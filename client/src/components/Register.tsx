@@ -34,7 +34,7 @@ const Register = async () => {
     const codeVerifier = await generateNonce();
     sessionStorage.setItem(`codeVerifier-${state}`, codeVerifier);
     const codeChallenge = base64URLEncode(await sha256(codeVerifier));
-    window.location.href = `${cognitoLoginUrl}/login?response_type=code&client_id=${clientId}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}&redirect_uri=${appUrl}/Backgammon`;
+    window.location.href = `${cognitoLoginUrl}/login?response_type=code&client_id=${clientId}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}&redirect_uri=${appUrl}`;
   };
 
   const init = async (tokens: any): Promise<void> => {
@@ -71,7 +71,7 @@ const Register = async () => {
         // setMessage("Access token has expired");
         localStorage.removeItem("tokens");
         // reload page
-        window.location.href = `${appUrl}/Backgammon`;
+        window.location.href = `${appUrl}`;
       }
     }
   };
@@ -97,7 +97,7 @@ const Register = async () => {
         client_id: clientId,
         code: searchParams.get("code")!,
         code_verifier: codeVerifier,
-        redirect_uri: `${appUrl}/Backgammon`,
+        redirect_uri: `${appUrl}`,
       })
         .map(([k, v]) => `${k}=${v}`)
         .join("&"),

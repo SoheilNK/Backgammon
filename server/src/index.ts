@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 import { Routes } from "./routes";
 import { WebSocketServer } from "./WebSocketServer";
 import * as path from "path";
+import * as logger from "./logger";
 
 
 const port = 8001;
@@ -24,7 +25,21 @@ AppDataSource.initialize()
     const port = process.env.PORT;
 
     // Call midlewares
-    app.use(helmet());
+    app.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["'self'"],
+            connectSrc: [
+              "'self'",
+              "https://sosepbackgammon.auth.ca-central-1.amazoncognito.com",
+            ],
+            // Add other directives as needed
+          },
+        },
+      })
+    );
+
     app.use(cors());
     app.use(bodyParser.json());
     app.use((err: any, req: Request, res: Response, next: Function) => {
@@ -58,17 +73,27 @@ AppDataSource.initialize()
     });
 
     // Serve static files from the React app
-    app.use(express.static(path.join(__dirname, "../../client/dist")));
+    const static_dir = path.resolve(path.join(__dirname, '../../client/dist'))
 
-    // The "catchall" handler: for any request that doesn't
-    // match one above, send back React's index.html file.
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../../client/dist/index.html"));
+    app.use(express.json())
+    app.use('/', express.static(static_dir))
+
+    app.get('/*', (req, res, next) => {
+      if (req.url.startsWith('/api/')) {
+        next();
+        return;
+      }
+      console.log("sending index.html");
+      res.sendFile(path.join(static_dir, 'index.html'));
     });
 
-    // start express server
-    app.listen(port);
+    app.post('/api/echo', (req, res) => {
+      console.log(req);
+      res.json(req.body);
+    })
 
-    console.log(`Express server has started on port ${port}.`);
+    app.listen(port, () => {
+      logger.get().info(`port ${port}, im listening...`)
+    })
   })
   .catch((error) => console.log(error));

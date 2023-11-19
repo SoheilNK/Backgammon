@@ -135,6 +135,7 @@ const removeTokens = () => {
 export const logout = () => {
   removeUser();
   removeTokens();
+  localStorage.removeItem("isLoggedIn");
 };
 //clear game data from the local storage
 export const clearGameData = () => {

@@ -3,7 +3,6 @@ import { User } from "../types/user.type";
 import { LogoutButton } from "./Signout";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../services/useLocalStorage";
-import Test from "./test";
 interface NavbarProps {
   title: string;
 }
