@@ -16,14 +16,16 @@ export class WebSocketServer {
   private webSocketServer: any; // Type it properly to avoid any
   public onlineUsers: types.OnlineUser[] = [];
 
-  constructor(port: number) {
+  constructor() {
+    //read wsPort from .env file
+    const wsPort = process.env.WS_PORT;
     this.clients = new Map<string, w3cwebsocket>();
     const webSocketServer = require("websocket").server;
     const http = require("http");
 
     const server = http.createServer();
-    server.listen(port);
-    console.log(`WebSocketServer listening on port ${port}`);
+    server.listen(wsPort);
+    console.log(`WebSocketServer listening on wsPort ${wsPort}`);
 
     this.webSocketServer = new webSocketServer({
       httpServer: server,

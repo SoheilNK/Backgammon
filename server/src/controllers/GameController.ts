@@ -30,6 +30,10 @@ export class GameController {
     // console.log("result from addOnlineGame: " + JSON.stringify(result));
     // read onlineUser from request body
     const onlineUser = request.body.onlineUser;
+    //check if onlineUser is null
+    if (!onlineUser) {
+      throw new Error(`Cannot find online user`);
+    }
     const username = onlineUser.userName;
     const userId = onlineUser.userId;
 

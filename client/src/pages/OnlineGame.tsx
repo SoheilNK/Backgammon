@@ -161,12 +161,28 @@ function OnlineGame() {
     };
   }, [block]);
 
+  //get the match id from local storage
+  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
+  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
+
+  //set the player names
+  var p1 = onlineGame?.hostName;
+  var p2 = onlineGame?.guestName;
+
+  // localStorage.setItem("player1", JSON.stringify(p1));
+  // localStorage.setItem("player2", JSON.stringify(p2));
+  if (onlineGame?.status === "Playing") {
+    localStorage.setItem("started", JSON.stringify("yes"));
+  } else {
+    localStorage.setItem("started", JSON.stringify("no"));
+  }
+
   const userName = getUser().username.toString();
   //GamePlay state----------------
   const [gameState, setGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
   const [started, setStarted] = useLocalStorage("started", "no");
-  const [player1, setPlayer1] = useLocalStorage("player1", "");
-  const [player2, setPlayer2] = useLocalStorage("player2", "");
+  const [player1, setPlayer1] = useLocalStorage("player1", p1);
+  const [player2, setPlayer2] = useLocalStorage("player2", p2);
   const [scores, setScores] = useLocalStorage("scores", [0, 0]);
   const [currentPlayer, setCurrentPlayer] = useLocalStorage(
     "currentPlayer",
@@ -226,22 +242,6 @@ function OnlineGame() {
     setBlackOut(newState.blackOut);
     setAlertSeen(newState.alertSeen);
   };
-
-  //get the match id from local storage
-  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
-  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
-
-  //set the player names
-  var p1 = onlineGame?.hostName;
-  var p2 = onlineGame?.guestName;
-
-  localStorage.setItem("player1", JSON.stringify(p1));
-  localStorage.setItem("player2", JSON.stringify(p2));
-  if (onlineGame?.status === "Playing") {
-    localStorage.setItem("started", JSON.stringify("yes"));
-  } else {
-    localStorage.setItem("started", JSON.stringify("no"));
-  }
 
   return (
     <div>

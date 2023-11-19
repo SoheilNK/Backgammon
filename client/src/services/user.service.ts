@@ -124,6 +124,7 @@ export const setUser = (user: any) => {
 //remove the user from the local storage
 const removeUser = () => {
   localStorage.removeItem("user");
+  localStorage.removeItem("onlineUser");
   localStorage.removeItem("isLoggedIn");
 };
 

@@ -10,8 +10,7 @@ import * as path from "path";
 import * as logger from "./logger";
 
 
-const port = 8001;
-export const webSocketServerInstance = new WebSocketServer(port);
+export const webSocketServerInstance = new WebSocketServer();
 
 
 AppDataSource.initialize()
@@ -33,6 +32,7 @@ AppDataSource.initialize()
             connectSrc: [
               "'self'",
               "https://sosepbackgammon.auth.ca-central-1.amazoncognito.com",
+              "ws://localhost:8001",
             ],
             // Add other directives as needed
           },
