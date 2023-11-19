@@ -16,7 +16,7 @@ import history from "./history";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Router history={history}>
+    <Router history={history as any}>
       <Routes>
         <Route path="/" element={<HomePage />} errorElement={<ErrorPage />} />
         <Route
