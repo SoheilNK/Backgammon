@@ -1,9 +1,11 @@
-import { cognitoLoginUrl, clientId } from "../../cognitoConfig";
 import { myApi } from "../services/user.service";
 import { setUser } from "../services/user.service";
 
 const Register = async () => {
   const appUrl = import.meta.env.VITE_APP_URL;
+  const cognitoLoginUrl = import.meta.env.VITE_COGNITO_LOGIN_URL;
+  const clientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
+
   // const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
   let isLoggedIn: boolean =
     JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
