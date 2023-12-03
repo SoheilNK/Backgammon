@@ -22,6 +22,8 @@ AppDataSource.initialize()
 
     const app = express();
     const port = process.env.PORT;
+    const congnitoLoginUrl = process.env.COGNITO_LOGIN_URL;
+    const viteWsUrl = process.env.VITE_WS_URL;
 
     // Call midlewares
     app.use(
@@ -31,8 +33,8 @@ AppDataSource.initialize()
             defaultSrc: ["'self'"],
             connectSrc: [
               "'self'",
-              "https://sosepbackgammon.auth.ca-central-1.amazoncognito.com",
-              "ws://localhost:8001",
+              congnitoLoginUrl,
+              viteWsUrl,
             ],
             // Add other directives as needed
           },
