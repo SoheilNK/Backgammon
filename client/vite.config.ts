@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   // base: '/Backgammon',
   plugins: [react()],
-  }
-
-)
+  build: {
+    outDir: "../dist",
+  },
+});
 

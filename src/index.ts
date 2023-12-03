@@ -75,7 +75,7 @@ AppDataSource.initialize()
     });
 
     // Serve static files from the React app
-    const static_dir = path.resolve(path.join(__dirname, '../../client/dist'))
+    const static_dir = path.resolve(path.join(__dirname, '../dist'))
 
     app.use(express.json())
     app.use('/', express.static(static_dir))
