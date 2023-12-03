@@ -15,30 +15,54 @@ const AboutMe: React.FC = () => {
             alt="backgammon"
             className="m-auto w-36 inline- float-right"
           />
-          Well, hello there! I'm Soheil, and I love learning new things and
-          improving my programing skills. As part of my coursework in the second
-          module of the{" "}
-          <a
-            href="https://www.getcoding.ca/"
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            target="_blank"
-          >
-            Get Coding{" "}
-          </a>
-          program, I developed this game. Vite, React, and Typescript were the
-          primary technologies I worked with on this project, along with a
-          number of libraries, including dnd kit, Tailwind, React Three Fibre,
-          and React Router. I'm always expanding my knowledge and working to
-          better myself. I'd also like to express my gratitude to my coach,
-          <a
-            href="https://www.linkedin.com/in/mitchell-hynes/"
-            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            target="_blank"
-          >
-            {" "}
-            Mitchell Hynes{" "}
-          </a>
-          , who has been an invaluable resource throughout this endeavor.
+          <p>
+            Hello again! I'm Soheil. As I continue on my journey with the{" "}
+            <a
+              href="https://www.getcoding.ca/"
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              target="_blank"
+            >
+              Get Coding{" "}
+            </a>
+            program, I've made some exciting advancements in the third module.
+            Building upon my previous work with Vite, React, and TypeScript,
+            I've now expanded my project into an online multiplayer game. This
+            latest development involved integrating a robust backend using
+            Node.js, TypeScript, Express, Cognito, MySQL, JWT, WebSocket, and
+            TypeORM. My sincere thanks go to my coach,{" "}
+            <a
+              href="https://www.linkedin.com/in/brandon-bemister-40240866/"
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              target="_blank"
+            >
+              {" "}
+              Brandon Bemister{" "}
+            </a>
+            , for his invaluable support and guidance in this module.
+          </p>
+
+          <p>
+            Reflecting on my progress from the second module, I appreciate the
+            foundational skills I developed using technologies like dnd kit,
+            Tailwind, React Three Fibre, and React Router. The mentorship from
+            <a
+              href="https://www.linkedin.com/in/mitchell-hynes/"
+              className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              target="_blank"
+            >
+              {" "}
+              Mitchell Hynes{" "}
+            </a>{" "}
+            during this phase played a critical role in preparing me for the
+            more complex challenges I faced in the subsequent module.
+          </p>
+          <p>
+            Additionally, I'm thrilled to share that the game has been
+            successfully deployed on AWS, showcasing my growing capabilities in
+            both front-end and back-end development. My journey in programming
+            is a testament to my dedication to continual learning and
+            improvement in this ever-evolving field.
+          </p>
         </p>
         <br />
         <p className="text-center sm:text-left space-y-2">
