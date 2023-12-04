@@ -8,7 +8,7 @@
     "dev": "vite",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --emptyOutDir",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/three": "^0.150.2",
     "antd": "^5.6.2",
+    "autoprefixer": "^10.4.16",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "history": "^5.3.0",

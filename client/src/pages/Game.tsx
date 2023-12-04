@@ -1,5 +1,3 @@
-"use client";
-
 import { ErrorBoundary } from "react-error-boundary";
 import GamePlay from "../components/GamePlay";
 import PageClass from "../components/PageClass";
