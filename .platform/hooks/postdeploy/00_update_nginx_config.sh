@@ -16,7 +16,7 @@ WS_CONFIG="    location /ws {\\n        proxy_pass http://127.0.0.1:8001;\\n    
 # Check if WebSocket configuration already exists
 if ! sudo grep -q "location /ws" "$NGINX_CONF"; then
     # Insert WebSocket configuration into the specific server block
-    sudo sed -i "/server_name sosepbackgammon.ca-central-1.elasticbeanstalk.com;/a $WS_CONFIG" $NGINX_CONF
+    sudo sed -i "/ssl_dhparam/a $WS_CONFIG" $NGINX_CONF
 fi
 
 # Reload Nginx to apply changes
