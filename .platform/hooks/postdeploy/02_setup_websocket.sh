@@ -1,3 +1,11 @@
+#!/bin/bash
+
+# Define Nginx configuration file path
+NGINX_CONF="/etc/nginx/nginx.conf"
+
+# Backup the original configuration file
+sudo cp $NGINX_CONF "${NGINX_CONF}.bak2"
+
 # Define WebSocket configuration
 WS_CONFIG="    location /ws {\\n        proxy_pass http://127.0.0.1:8001;\\n        proxy_http_version 1.1;\\n        proxy_set_header Upgrade \$http_upgrade;\\n        proxy_set_header Connection \"upgrade\";\\n        proxy_set_header Host \$host;\\n        proxy_set_header X-Real-IP \$remote_addr;\\n        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;\\n    }"
 
