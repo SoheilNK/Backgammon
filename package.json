@@ -22,6 +22,7 @@
       "@types/jwk-to-pem": "^2.0.1",
       "@types/node-fetch": "^2.6.4",
       "amazon-cognito-identity-js": "^6.3.6",
+      "archiver": "^6.0.1",
       "aws-sdk": "^2.1510.0",
       "axios": "^1.4.0",
       "body-parser": "^1.20.2",
@@ -48,6 +49,7 @@
       "build": "tsc",
       "start": "node ./build/index.js",
       "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts",
-      "trace": "set debug=* && ts-node-dev --trace-warnings --respawn --transpile-only ./src/index.ts"
+      "trace": "set debug=* && ts-node-dev --trace-warnings --respawn --transpile-only ./src/index.ts",
+      "zip": "node zipFiles.js"
    }
 }
