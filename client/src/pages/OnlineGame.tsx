@@ -244,8 +244,8 @@ function OnlineGame() {
   };
 
   return (
-    <div>
-      <div className="flex flex-col lg:flex-row">
+    <div id="OnlineGame">
+      <div className="flex flex-col lg:flex-row ">
         <GamePlay
           gameState={gameState}
           setGameState={setGameState}

@@ -154,7 +154,7 @@ function GamePlay({
   ]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div id='GamePlay' className="flex flex-col items-center ">
       <div className="  players relative flex flex-col gap-1">
         <Message
           scores={scores}

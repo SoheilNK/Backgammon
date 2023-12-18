@@ -233,39 +233,6 @@ const Chat: React.FC<chatProps> = (props) => {
               onSearch={handleSearchSubmit}
             />
           </div>
-          {/* <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              paddingBottom: 50,
-            }}
-            id="messages"
-          >
-            {messages.map((message) => (
-              <Card
-                key={message.msg}
-                style={{
-                  maxWidth: "80%",
-                  margin: "16px 4px 0 4px",
-                  alignSelf:
-                    userName === message.user ? "flex-end" : "flex-start",
-                }}
-                loading={false}
-              >
-                <Meta
-                  avatar={
-                    <Avatar
-                      style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}
-                    >
-                      {message.user[0].toUpperCase()}
-                    </Avatar>
-                  }
-                  title={message.user + ":"}
-                  description={message.msg}
-                />
-              </Card>
-            ))}
-          </div>{" "} */}
           <div className="flex flex-col pb-12 w-full" id="messages">
             {messages.map((message) => (
               <div

@@ -27,7 +27,7 @@ function Game() {
 
 const GamePage: React.FC = () => {
   return (
-    <div className="w-1/2">
+    <div id="Game" className="w-1/2">
       <PageClass inputComponent={Game} />
     </div>
   );

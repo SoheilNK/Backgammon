@@ -19,7 +19,10 @@ const GameTable: React.FC<GameTableProps> = ({
   joinGame,
 }) => {
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div
+      id="GameTable"
+      className="flex flex-col gap-4 p-4  bg-white  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+    >
       <button
         onClick={createGame}
         disabled={!isLoggedIn}

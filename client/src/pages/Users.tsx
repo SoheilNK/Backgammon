@@ -6,7 +6,7 @@ import { clearGameData } from "../services/user.service";
 const UsersPage: React.FC = () => {
   clearGameData();
   return (
-    <div className="w-1/2">
+    <div id="UserPage">
       <PageClass inputComponent={Intro} />
     </div>
   );

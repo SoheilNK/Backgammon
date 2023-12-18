@@ -37,7 +37,7 @@ const searchParams = new URL(location.href).searchParams;
         </div>
       </div>
       <div className="container m-auto p-1">
-        <div className="sm:w-3/4 bg-white relative  rounded-md text-center p-8 m-auto dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+        <div className=" bg-white relative  rounded-md text-center p-8 m-auto dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
           <h1 className=" text-xl text-black text-center text-clip font-bold  m-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
             A Short Tutorial
           </h1>
