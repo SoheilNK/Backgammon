@@ -279,7 +279,7 @@ function OnlineGame() {
           setAlertSeen={setAlertSeen}
           onResetState={resetState}
         />
-        <div className=" w-full mx-auto p-4 sm:px-6 lg:px-8">
+        <div className=" w-full max-w-full mx-auto p-4 sm:px-6 lg:px-8">
           <Chat
             gameState={gameState}
             onGameState={(gameState: string) =>

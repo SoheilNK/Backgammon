@@ -254,7 +254,10 @@ const Chat: React.FC<chatProps> = (props) => {
                     {message.user[0].toUpperCase()}
                   </Avatar>
                   <span className="font-thin scale-x-75">[{message.user}]</span>
-                  <span className="text-sm sm:text-base md:text-lg break-words">
+                  <span
+                    style={{ fontSize: "14px" }}
+                    className="text-sm sm:text-base md:text-lg break-words"
+                  >
                     {message.msg}
                   </span>
                 </div>
