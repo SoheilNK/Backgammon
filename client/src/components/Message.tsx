@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { clearGameData, getUser } from "../services/user.service";
-import { on } from "events";
-import { sendWsMessage } from "./Chat";
 import * as type from "../types";
 
 interface MessageProps {

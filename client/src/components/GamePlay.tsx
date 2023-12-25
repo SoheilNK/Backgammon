@@ -3,12 +3,9 @@ import Dice from "./Dice";
 import Players from "./Players";
 import { Message } from "./Message";
 import { Alert } from "./Alert";
-import { useLocalStorage } from "../services/useLocalStorage";
 import { togglePlayer } from "../services/gameRules";
 import { getUser } from "../services/user.service";
-import { useEffect, useState } from "react";
-import { getWebSocketClient } from "../services/websocketService";
-import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
+import { useEffect } from "react";
 import * as type from "../types";
 import { sendWsMessage } from "./Chat";
 

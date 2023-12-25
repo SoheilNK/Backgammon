@@ -2,24 +2,21 @@ import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import {
   anyMoveAvailable,
   setAllowedColumns,
-  togglePlayer,
 } from "../services/gameRules";
 import {
   DragEndEvent,
-  DragMoveEvent,
-  DragOverlay,
   DragStartEvent,
 } from "@dnd-kit/core";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { Checker, Quadrant } from "./Points";
+import { Quadrant } from "./Points";
 import Bar from "./Bar";
 import Out from "./out";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { useEffect, useRef, useState } from "react";
-import { restrictToWindowEdges, snapCenterToCursor } from "@dnd-kit/modifiers";
 import { getUser } from "../services/user.service";
 // import { adjustScale } from "@dnd-kit/modifiers";
-const audioMove = new Audio("checkerMove.mp3");
+export const audioMove = new Audio("checkerMove.mp3");
+import * as type from "../types";
+import { sendWsMessage } from "./Chat";
 
 type BoardProps = {
   currentBoardState: Color[][];
@@ -65,6 +62,7 @@ export function Board({
   alertSeen,
   onAlertSeen,
 }: BoardProps) {
+  const [online, setOnline] = useLocalStorage("online", false);
   const userName = getUser().username.toString();
   //rotate the board if it is an online game and user is white
   let isBoardRotated = false;
@@ -114,7 +112,6 @@ export function Board({
     onColumnSelect(currentPoint);
   }
 
-  // const audioMove = new Audio("checkerMove.mp3");
   function handleDragEnd(e: DragEndEvent) {
     if (!e.over) return;
     let newPlayer: string;
@@ -289,7 +286,22 @@ export function Board({
 
     if (checkerMoved) {
       //play a sound
-      audioMove.play();
+      audioMove.play(); //test
+      //For online game, send a message to the opponent to play the dice sound
+      if (online) {
+        //get onlineGame from local storage
+        const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+        const matchId = onlineGame.matchId;
+   
+        const wsMessage: type.WsMessage = {
+          type: "checkerMoved",
+          msg: "checkerMoved",
+          user: userName,
+          matchId: matchId,
+          msgFor: userName === onlineGame.hostName ? "guest" : "host",
+        };
+        sendWsMessage(wsMessage);
+      }
     }
 
     // return;

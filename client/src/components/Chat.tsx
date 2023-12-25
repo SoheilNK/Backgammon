@@ -4,13 +4,13 @@ import { Card, Avatar, Input, Typography } from "antd";
 import { clearGameData, getUser } from "../services/user.service";
 import { getWebSocketClient } from "../services/websocketService";
 import { useLocalStorage } from "../services/useLocalStorage";
-import { leaveOnlineGame, updateOnlineGame } from "../services/GameService";
 import { useNavigate } from "react-router-dom";
 import * as type from "../types";
+import { audioDice } from "./Dice";
+import { audioMove } from "./Board";
 
 const { Search } = Input;
 const { Text } = Typography;
-const { Meta } = Card;
 let chatWebSocketClient: W3CWebSocket | null = null;
 export const sendWsMessage = (wsMessage: type.WsMessage) => {
   if (chatWebSocketClient) {
@@ -65,6 +65,19 @@ const Chat: React.FC<chatProps> = (props) => {
             message.data.toString()
           );
           console.log("got reply(chat.tsx)! ", dataFromServer);
+          //handle chcker move sound
+          if (dataFromServer.type === "checkerMoved") {
+            console.log("got reply for checkerMoved! ", dataFromServer);
+            //play a sound
+            audioMove.play();
+          }
+          //handle dice sound and animation
+          if (dataFromServer.type === "diceRoll") {
+            console.log("got reply for diceRoll! ", dataFromServer);
+            //play a sound
+            audioDice.play();
+          }
+
           //handle hostLeft
           if (dataFromServer.type === "hostLeft") {
             console.log("got reply for hostLeft! ", dataFromServer);

@@ -1,8 +1,6 @@
 import PageClass from "../components/PageClass";
-import { useSearchParams } from "react-router-dom";
 import { clearGameData, getUser } from "../services/user.service";
 import GamePlay, { Color } from "../components/GamePlay";
-import { w3cwebsocket as W3CWebSocket, IMessageEvent } from "websocket";
 import Chat from "../components/Chat";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { useEffect, useState } from "react";

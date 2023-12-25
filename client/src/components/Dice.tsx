@@ -4,7 +4,9 @@ import Dice3Dv4 from "./Dice3Dv4";
 import { TdiceRoll } from "./GamePlay";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { getUser } from "../services/user.service";
-const audioDice = new Audio("diceRoll3.mp3");
+export const audioDice = new Audio("diceRoll3.mp3");
+import * as type from "../types";
+import { sendWsMessage } from "./Chat";
 
 interface DiceProps {
   currentDiceRoll: TdiceRoll;
@@ -35,12 +37,9 @@ export default function Dice({
   const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
 
   const [online, setOnline] = useLocalStorage("online", false);
-  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
-  let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
-  // const [started, setStarted] = useLocalStorage("started", "no");
   const userName = getUser().username.toString();
 
-   let disabled =
+  let disabled =
     moveLeft > 0 ||
     whiteOut === 15 ||
     blackOut === 15 ||
@@ -63,7 +62,23 @@ export default function Dice({
 
     setRemainingTime(rollTime); //reset animation time
     //play a sound
-    audioDice.play();
+    audioDice.play(); //test
+
+    //For online game, send a message to the opponent to play the dice sound
+    if (online) {
+      //get onlineGame from local storage
+      const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+      const matchId = onlineGame.matchId;
+      const userName = getUser().username.toString();
+      const wsMessage: type.WsMessage = {
+        type: "diceRoll",
+        msg: "diceRoll",
+        user: userName,
+        matchId: matchId,
+        msgFor: userName === onlineGame.hostName ? "guest" : "host",
+      };
+      sendWsMessage(wsMessage);
+    }
 
     let newMoveLeft = 2;
     if (currentDiceRoll[0] === currentDiceRoll[1]) {
