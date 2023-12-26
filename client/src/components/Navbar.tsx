@@ -13,8 +13,6 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   const userString = localStorage.getItem("user");
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
 
-  // let isLoggedIn: boolean =
-  //   JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
   const navigate = useNavigate();
 
   let user: User = {
@@ -81,7 +79,6 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                     !open && "hidden"
                   }`}
                 >
-                  {/* <Link to="/">Home</Link> */}
                   Home
                 </li>
                 <li
@@ -123,7 +120,9 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                   className={`cursor-pointer w-full rounded p-2 mr-auto md:block hover:bg-green-700 `}
                   onClick={() => setOpenProfile(!openProfile)}
                 >
-                  <LogoutButton />
+                  <LogoutButton
+                    setIsLoggedIn={setIsLoggedIn}
+                  />
                 </li>
               </ul>
             </nav>
