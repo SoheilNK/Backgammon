@@ -66,6 +66,7 @@ export function Alert({
     alertSeen = false;
     // onAlertSeen(false);
     alertMessage = "The opponent has left the game, you are the host now";
+    // onResetState();
   }
 
   if (alertMessage === "") {
@@ -92,7 +93,7 @@ export function Alert({
               onAlertSeen(true);
               onMoveLeft(0);
               onGameState("waiting");
-              onResetState();
+              if (gameState === "abandoned") onResetState();
               
             }}
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"

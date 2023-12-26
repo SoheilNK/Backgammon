@@ -10,7 +10,6 @@ interface PageClassProps {
 class PageClass extends React.Component<PageClassProps> {
   render() {
     const { inputComponent: InputComponent } = this.props;
-
     return (
       <div
         id="PageClass"
