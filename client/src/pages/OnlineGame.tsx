@@ -210,6 +210,8 @@ function OnlineGame() {
   // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //winState
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   //--------------------------
+  if (gameState === "new" && onlineGame.guestName !== '') setGameState("started");
+
   const resetState = () => {
     setScores([0, 0]);
     setCurrentPlayer(player1);

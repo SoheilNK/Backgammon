@@ -1,5 +1,6 @@
 import { Color, TdiceRoll } from "./GamePlay";
 import { anyMoveAvailable } from "../services/gameRules";
+import { on } from "events";
 
 interface AlertProps {
   gameState: string;
@@ -35,9 +36,29 @@ export function Alert({
   onResetState,
 }: AlertProps) {
   let alertMessage: string = "";
-  let moveAllowed: boolean[] = [true, true];
+
+  if (gameState === "started") {
+    alertSeen = false;
+    //show a count down timer from 5 to 1
+    alertMessage = "The game will start in " + 5 + " seconds";
+    //set a timer to start the game after 5 seconds
+    setTimeout(() => {
+      onGameState("playing");
+    }, 5000);
+  }
+
+
+  if (gameState === "abandoned") {
+    alertSeen = false;
+    alertMessage = "The opponent has left the game, you are the host now";
+  }
+  if (gameState === "new") {
+    alertSeen = false;
+    alertMessage = "Waiting for an opponent to join";
+  }
 
   //******************check if any move is available */
+  let moveAllowed: boolean[] = [true, true];
   moveAllowed = anyMoveAvailable(
     currentBoardState,
     currentPlayer,
@@ -54,24 +75,15 @@ export function Alert({
       (currentDiceRoll[0] != 0 || currentDiceRoll[1] != 0))
   ) {
     alertSeen = false;
-    // onAlertSeen(false)
-
+    onGameState("noMoves");
     alertMessage =
       currentPlayer +
       " has no possible moves with a roll of " +
       currentDiceRoll;
   }
 
-  if (gameState === "abandoned") {
-    alertSeen = false;
-    // onAlertSeen(false);
-    alertMessage = "The opponent has left the game, you are the host now";
-    // onResetState();
-  }
-
   if (alertMessage === "") {
     alertSeen = true;
-    // onAlertSeen(true);
     return null;
   } else {
     return (
@@ -90,11 +102,15 @@ export function Alert({
           </div>
           <button
             onClick={() => {
-              onAlertSeen(true);
-              onMoveLeft(0);
-              onGameState("waiting");
-              if (gameState === "abandoned") onResetState();
-              
+              if (gameState === "noMoves") {
+                onAlertSeen(true);
+                onMoveLeft(0);
+              }
+              if (gameState === "abandoned") {
+                onAlertSeen(true);
+                onGameState("new");
+                onResetState();
+              }
             }}
             className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
           >
