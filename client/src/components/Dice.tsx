@@ -9,6 +9,8 @@ import * as type from "../types";
 import { sendWsMessage } from "./Chat";
 
 interface DiceProps {
+  remainingTime: number;
+  onRemainingTime: (time: number) => void;
   currentDiceRoll: TdiceRoll;
   onRoll: (roll: TdiceRoll) => void;
   moveLeft: number;
@@ -23,6 +25,8 @@ interface DiceProps {
 }
 
 export default function Dice({
+  remainingTime,
+  onRemainingTime,
   currentDiceRoll,
   onRoll,
   moveLeft,
@@ -34,8 +38,8 @@ export default function Dice({
   currentPlayer,
   started,
 }: DiceProps): JSX.Element {
-  const [remainingTime, setRemainingTime] = useState(0); // in milliseconds
-
+  let rollingTime = remainingTime;
+  
   const [online, setOnline] = useLocalStorage("online", false);
   const userName = getUser().username.toString();
 
@@ -60,7 +64,7 @@ export default function Dice({
     ] as TdiceRoll;
     // currentDiceRoll = [0,0]; //test
 
-    setRemainingTime(rollTime); //reset animation time
+    onRemainingTime(rollTime); //reset animation time
     //play a sound
     audioDice.play(); //test
 
@@ -107,8 +111,8 @@ export default function Dice({
             roll1={currentDiceRoll[0]}
             roll2={currentDiceRoll[1]}
             rotate={true}
-            remainingTime={remainingTime}
-            onRemainingTime={setRemainingTime}
+            remainingTime={rollingTime}
+            onRemainingTime={onRemainingTime}
           />
         </div>
       </div>

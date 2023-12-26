@@ -19,6 +19,8 @@ export let PlayerNames = {
 };
 
 interface GamePlayProps {
+  remainingTime: number;
+  setRemainingTime: (time: number) => void;
   onResetState: () => void;
   gameState: string;
   setGameState: (gameState: string) => void;
@@ -53,6 +55,8 @@ interface GamePlayProps {
 }
 
 function GamePlay({
+  remainingTime,
+  setRemainingTime,
   onResetState: onResetState,
   gameState,
   setGameState,
@@ -85,7 +89,7 @@ function GamePlay({
   started,
   setStarted,
 }: GamePlayProps) {
-  const rollTime = 2500; // in milliseconds
+  const rollTime = 1300; // in milliseconds
 
   PlayerNames = {
     white: [player1],
@@ -114,6 +118,7 @@ function GamePlay({
       const wsMessage: type.WsMessage = {
         type: "state",
         msg: {
+          remainingTime: remainingTime,
           scores: scores,
           currentPlayer: currentPlayer,
           currentDiceRoll: currentDiceRoll,
@@ -137,6 +142,7 @@ function GamePlay({
     // };
     // fetchData();
   }, [
+    remainingTime,
     scores,
     currentPlayer,
     currentDiceRoll,
@@ -227,6 +233,8 @@ function GamePlay({
         />
         <div className="absolute -top-3 sm:-top-1">
           <Dice
+            remainingTime={remainingTime}
+            onRemainingTime={(time) => setRemainingTime(time)}
             currentDiceRoll={currentDiceRoll}
             onRoll={(roll) => setDiceRoll(roll)}
             moveLeft={moveLeft}

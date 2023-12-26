@@ -177,6 +177,7 @@ function OnlineGame() {
 
   const userName = getUser().username.toString();
   //GamePlay state----------------
+  const [remainingTime, setRemainingTime] = useLocalStorage("remainingTime", 0); // in milliseconds
   const [gameState, setGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
   const [started, setStarted] = useLocalStorage("started", "no");
   const [player1, setPlayer1] = useLocalStorage("player1", p1);
@@ -228,6 +229,7 @@ function OnlineGame() {
   };
   const updateState = (newState: any) => {
     //update GamePlay state
+    setRemainingTime(newState.remainingTime);
     setScores(newState.scores);
     setCurrentPlayer(newState.currentPlayer);
     setDiceRoll(newState.currentDiceRoll);
@@ -245,6 +247,8 @@ function OnlineGame() {
     <div id="OnlineGame">
       <div className="flex flex-col lg:flex-row ">
         <GamePlay
+          remainingTime={remainingTime}
+          setRemainingTime={setRemainingTime}
           gameState={gameState}
           setGameState={setGameState}
           started={started}
