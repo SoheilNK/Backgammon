@@ -102,7 +102,13 @@ function GamePlay({
 
   useEffect(() => {
     //change player
-    if (alertSeen && moveLeft == 0 && whiteOut !== 15 && blackOut !== 15) {
+    if (
+      gameState === "playing" &&
+      alertSeen &&
+      moveLeft == 0 &&
+      whiteOut !== 15 &&
+      blackOut !== 15
+    ) {
       togglePlayer(currentPlayer, setCurrentPlayer);
       setDiceRoll([0, 0]);
       setAlertSeen(false);
@@ -157,7 +163,7 @@ function GamePlay({
   ]);
 
   return (
-    <div id='GamePlay' className="flex flex-col items-center ">
+    <div id="GamePlay" className="flex flex-col items-center ">
       <div className="  players relative flex flex-col gap-1">
         <Message
           scores={scores}
@@ -233,6 +239,7 @@ function GamePlay({
         />
         <div className="absolute -top-3 sm:-top-1">
           <Dice
+            gameState={gameState}
             remainingTime={remainingTime}
             onRemainingTime={(time) => setRemainingTime(time)}
             currentDiceRoll={currentDiceRoll}

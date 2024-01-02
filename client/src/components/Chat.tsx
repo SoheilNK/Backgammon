@@ -150,7 +150,7 @@ const Chat: React.FC<chatProps> = (props) => {
             // window.location.reload();
             // }
             props.setStarted("yes");
-            props.onGameState("started");
+            props.onGameState("starting");
           }
 
           if (dataFromServer.type === "chat") {

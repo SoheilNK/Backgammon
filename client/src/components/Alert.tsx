@@ -1,7 +1,7 @@
 import { Color, TdiceRoll } from "./GamePlay";
 import { anyMoveAvailable } from "../services/gameRules";
-import { on } from "events";
-
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 interface AlertProps {
   gameState: string;
   onGameState: (gameState: string) => void;
@@ -36,15 +36,24 @@ export function Alert({
   onResetState,
 }: AlertProps) {
   let alertMessage: string = "";
+  let isOnline = localStorage.getItem("online");
+  const navigate = useNavigate();
+  //define a countdown timer state
+  const [countDown, setCountDown] = useState(5);
+  
 
-  if (gameState === "started") {
+  if (gameState === "starting") {
     alertSeen = false;
     //show a count down timer from 5 to 1
-    alertMessage = "The game will start in " + 5 + " seconds";
+    alertMessage = "The game will start in " + countDown + " seconds";
     //set a timer to start the game after 5 seconds
     setTimeout(() => {
-      onGameState("playing");
-    }, 5000);
+      if (countDown === 0) {
+        onGameState("playing");
+        setCountDown(5);
+      }
+      setCountDown(countDown - 1);
+    }, 1000);
   }
 
 
@@ -52,9 +61,12 @@ export function Alert({
     alertSeen = false;
     alertMessage = "The opponent has left the game, you are the host now";
   }
-  if (gameState === "new") {
+  if (gameState === "new" && isOnline === "true") {
     alertSeen = false;
-    alertMessage = "Waiting for an opponent to join";
+    alertMessage = "Please wait for an opponent to join the game or";
+    if (countDown !== 5) {
+      setCountDown(5);
+    }
   }
 
   //******************check if any move is available */
@@ -88,8 +100,8 @@ export function Alert({
   } else {
     return (
       <div
-        id="Aert"
-        className="absolute top-1/2 left-1/6 transform -translate-x-1/6 -translate-y-1/2 z-20"
+        id="Alert"
+        className="absolute top-1/2 left-1/6 transform -translate-x-1/6 -translate-y-1/2 z-20 max-w-xs"
       >
         <div
           style={{ backgroundColor: "#8E8268" }}
@@ -100,22 +112,36 @@ export function Alert({
               {alertMessage}
             </strong>{" "}
           </div>
-          <button
-            onClick={() => {
-              if (gameState === "noMoves") {
+          {gameState === "new" && (
+            <button
+              onClick={() => {
                 onAlertSeen(true);
-                onMoveLeft(0);
-              }
-              if (gameState === "abandoned") {
-                onAlertSeen(true);
-                onGameState("new");
-                onResetState();
-              }
-            }}
-            className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
-          >
-            ok
-          </button>
+                navigate("/game");
+              }}
+              className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
+            >
+              Go back to the Online Games Table
+            </button>
+          )}
+          {gameState !== "new" &&
+            gameState !== "starting" && (
+                <button
+                  onClick={() => {
+                    if (gameState === "noMoves") {
+                      onAlertSeen(true);
+                      onMoveLeft(0);
+                    }
+                    if (gameState === "abandoned") {
+                      onAlertSeen(true);
+                      onGameState("new");
+                      onResetState();
+                    }
+                  }}
+                  className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
+                >
+                  OK
+                </button>
+              )}
         </div>
       </div>
     );

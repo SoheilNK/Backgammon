@@ -22,6 +22,14 @@ const searchParams = new URL(location.href).searchParams;
               Welcome to SoSep Backgammon
             </h1>
             <Dice3Dv2 roll1={3} roll2={4} rotate={true} />
+            <div className=" bg-white relative  rounded-md text-center p-8 m-auto dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+              <Link
+                to="/users"
+                className="bg-blue-900 hover:bg-sky-700 text-white  font-bold py-2 px-4 rounded disabled:bg-blue-200"
+              >
+                Start the Game{" "}
+              </Link>
+            </div>
           </div>
           <AboutMe />
         </div>

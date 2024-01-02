@@ -1,12 +1,44 @@
-import PageClass from "../components/PageClass";
 import GamePlay, { Color } from "../components/GamePlay";
 import { useLocalStorage } from "../services/useLocalStorage";
 import { TdiceRoll } from "../components/GamePlay";
+import history from "../history";
+import { useEffect, useState } from "react";
+import { clearGameData } from "../services/user.service";
 
 function OfflineGame() {
+  const initialState: Color[][] = [
+    ["White", "White"],
+    [],
+    [],
+    [],
+    [],
+    ["Black", "Black", "Black", "Black", "Black"],
+    [],
+    ["Black", "Black", "Black"],
+    [],
+    [],
+    [],
+    ["White", "White", "White", "White", "White"],
+    ["Black", "Black", "Black", "Black", "Black"],
+    [],
+    [],
+    [],
+    ["White", "White", "White"],
+    [],
+    ["White", "White", "White", "White", "White"],
+    [],
+    [],
+    [],
+    [],
+    ["Black", "Black"],
+  ];
+
+  //
+  const [block, setBlock] = useState(true);
+
   //GamePlay state----------------
   const [remainingTime, setRemainingTime] = useLocalStorage("remainingTime", 0); // in milliseconds
-  const [gameState, setGameState] = useLocalStorage("gameState", "new"); //use it to show Alert component
+  const [gameState, setGameState] = useLocalStorage("gameState", "playing"); //use it to show Alert component
   const [started, setStarted] = useLocalStorage("started", "no");
 
   const [player1, setPlayer1] = useLocalStorage("player1", "");
@@ -16,7 +48,7 @@ function OfflineGame() {
     "currentPlayer",
     player1
   );
-  const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
+    const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
     0, 0,
   ] as TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
@@ -52,11 +84,43 @@ function OfflineGame() {
     setStarted("no");
   };
 
+  //reset state when navigate away from the page
+  useEffect(() => {
+    //handle leaving the game
+    let unblock: () => void;
+    if (block) {
+      // Block navigation and register a callback that
+      // fires when a navigation attempt is blocked.
+      unblock = history.block((tx) => {
+        // Navigation was blocked! Let's show a confirmation dialog
+        // so the user can decide if they actually want to navigate
+        // away and discard changes they've made in the current page.
+        if (
+          window.confirm(
+            `Are you sure you want to leave the game? \n Your progress will be lost!`
+          )
+        ) {
+          clearGameData();
+          // Unblock the navigation.
+          unblock();
+          // Retry the transition.
+          tx.retry();
+        }
+      });
+    }
+
+    return () => {
+      if (typeof unblock === "function") {
+        unblock();
+      }
+    };
+  }, [block]);
+
   return (
     <GamePlay
       remainingTime={remainingTime}
       setRemainingTime={setRemainingTime}
-      gameState={"new"}
+      gameState={"playing"}
       setGameState={setGameState}
       started={started}
       setStarted={setStarted}
@@ -93,29 +157,3 @@ function OfflineGame() {
 
 export default OfflineGame;
 
-const initialState: Color[][] = [
-  ["White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  ["Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White", "White", "White"],
-  ["Black", "Black", "Black", "Black", "Black"],
-  [],
-  [],
-  [],
-  ["White", "White", "White"],
-  [],
-  ["White", "White", "White", "White", "White"],
-  [],
-  [],
-  [],
-  [],
-  ["Black", "Black"],
-];

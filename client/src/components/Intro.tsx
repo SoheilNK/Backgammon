@@ -1,10 +1,7 @@
 import Dice3Dv2 from "./Dice3Dv2";
 import { useLocalStorage } from "../services/useLocalStorage";
-import redirectToLogin from "../components/Register";
 import { useNavigate } from "react-router-dom";
-import Register from "../components/Register";
 import Signin from "../pages/SignIn";
-import { Button } from "antd";
 import { clearGameData } from "../services/user.service";
 
 export const Intro = () => {
@@ -17,7 +14,7 @@ export const Intro = () => {
   // let isLoggedIn: boolean = JSON.parse(localStorage.getItem("isLoggedIn")!) || false;
   const navigate = useNavigate();
 
-  if (started === "yes") {
+  if (started === "yes" && !online) {
     return (
       <div className="z-10">
         <div
@@ -71,12 +68,12 @@ export const Intro = () => {
       >
         <div className="text-center m-auto space-y-4 ">
           <h1 className=" text-lg text-black font-semibold">
-            Please choose how you would like to play
+            Please choose between an online or offline game.
           </h1>
           <div id="onlineORoffline" className="flex gap-0 w-full">
             <button
               className={`text-white font-bold ml-auto py-2 px-4 rounded-s-md ${
-                online ? "bg-green-900" : "bg-slate-300  hover:bg-green-700"
+                online ? "bg-green-900" : "bg-slate-300 " 
               }`}
               onClick={() => {
                 setOnline(!online);
@@ -86,7 +83,7 @@ export const Intro = () => {
             </button>
             <button
               className={`text-white font-bold mr-auto py-2 px-4  rounded-e-md ${
-                !online ? "bg-green-900" : "bg-slate-300  hover:bg-green-700"
+                !online ? "bg-green-900" : "bg-slate-300 "
               }`}
               onClick={() => {
                 setOnline(!online);

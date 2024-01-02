@@ -131,7 +131,6 @@ function OnlineGame() {
         // Navigation was blocked! Let's show a confirmation dialog
         // so the user can decide if they actually want to navigate
         // away and discard changes they've made in the current page.
-        let url = tx.location.pathname;
         if (
           window.confirm(
             `Are you sure you want to leave the game? \n You will lose the game if you leave!`
@@ -144,10 +143,6 @@ function OnlineGame() {
           //leave the game
           leaveOnlineGame();
           clearGameData();
-          // localStorage.setItem(
-          //   "currentBoardState",
-          //   JSON.stringify("undefined")
-          // );
         }
       });
     }
@@ -210,7 +205,7 @@ function OnlineGame() {
   // const [blackOut, setBlackOut] = useLocalStorage("blackOut", 12); //winState
   const [alertSeen, setAlertSeen] = useLocalStorage("alertSeen", false);
   //--------------------------
-  if (gameState === "new" && onlineGame.guestName !== '') setGameState("started");
+  if (gameState === "new" && onlineGame.guestName !== '') setGameState("starting");
 
   const resetState = () => {
     setScores([0, 0]);

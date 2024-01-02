@@ -9,6 +9,7 @@ import * as type from "../types";
 import { sendWsMessage } from "./Chat";
 
 interface DiceProps {
+  gameState: string;  
   remainingTime: number;
   onRemainingTime: (time: number) => void;
   currentDiceRoll: TdiceRoll;
@@ -25,6 +26,7 @@ interface DiceProps {
 }
 
 export default function Dice({
+  gameState,
   remainingTime,
   onRemainingTime,
   currentDiceRoll,
@@ -48,7 +50,7 @@ export default function Dice({
     whiteOut === 15 ||
     blackOut === 15 ||
     (online && currentPlayer !== userName) ||
-    started === "no";
+    started === "no" || gameState === "starting";
   var glowDice = classNames("", {
     "opacity-5": disabled,
     "opacity-100": !disabled,

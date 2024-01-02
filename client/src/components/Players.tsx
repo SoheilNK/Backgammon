@@ -1,11 +1,5 @@
-import { useEffect } from "react";
 import { Color, PlayerNames, TdiceRoll } from "./GamePlay";
 import { Checker } from "./Points";
-import {
-  anyMoveAvailable as moveAvailable,
-  setAllowedColumns,
-  togglePlayer,
-} from "../services/gameRules";
 import { useLocalStorage } from "../services/useLocalStorage";
 
 //define a players component
