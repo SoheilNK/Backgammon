@@ -4,6 +4,7 @@ import { TdiceRoll } from "../components/GamePlay";
 import history from "../history";
 import { useEffect, useState } from "react";
 import { clearGameData } from "../services/user.service";
+import { Modal } from "antd";
 
 function OfflineGame() {
   const initialState: Color[][] = [
@@ -48,7 +49,7 @@ function OfflineGame() {
     "currentPlayer",
     player1
   );
-    const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
+  const [currentDiceRoll, setDiceRoll] = useLocalStorage("currentDiceRoll", [
     0, 0,
   ] as TdiceRoll);
   const [currentBoardState, setCurrentBoardState] = useLocalStorage(
@@ -95,17 +96,20 @@ function OfflineGame() {
         // Navigation was blocked! Let's show a confirmation dialog
         // so the user can decide if they actually want to navigate
         // away and discard changes they've made in the current page.
-        if (
-          window.confirm(
-            `Are you sure you want to leave the game? \n Your progress will be lost!`
-          )
-        ) {
-          clearGameData();
-          // Unblock the navigation.
-          unblock();
-          // Retry the transition.
-          tx.retry();
-        }
+        Modal.confirm({
+          title: "Leave the game?",
+          content:
+            "Are you sure you want to leave the game? \n Your progress will be lost!",
+          onOk: () => {
+            clearGameData();
+            //leaveOnlineGame();
+            unblock();
+            tx.retry();
+          },
+          onCancel() {
+            // Optional: Handle the cancel event
+          },
+        });
       });
     }
 
@@ -114,7 +118,7 @@ function OfflineGame() {
         unblock();
       }
     };
-  }, [block]);
+  }, [block, history, clearGameData]);
 
   return (
     <GamePlay
@@ -156,4 +160,3 @@ function OfflineGame() {
 }
 
 export default OfflineGame;
-

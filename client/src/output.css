@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+.ant-modal-confirm-btns .ant-btn-primary {
+    -webkit-appearance: button;
+    appearance: button;
+    background-color: var(--color4);
+    background-image: none;
+    /* Add more custom styles as needed */
+}
+.ant-modal-confirm-btns .ant-btn-primary:hover {
+    background-color: var(--color5); /* Replace with your desired color */
+}
+.ant-modal-confirm-btns .ant-btn-default:hover {
+    -webkit-appearance: button;
+    appearance: button;
+    color: var(--color5);
+    border-color: var(--color5);
+    /* Add more custom styles as needed */
+}
+
+
+.ant-input-search .ant-input-search-button {
+    -webkit-appearance: button;
+    appearance: button;
+    background-color: var(--color4);
+    background-image: none;
+    /* Add more custom styles as needed */
+}
+.ant-input-search .ant-input-search-button:hover {
+    background-color: var(--color5); /* Replace with your desired color */
+}
+.ant-input-group .ant-input:hover, .ant-input-group .ant-input:focus {
+    -webkit-appearance: button;
+    appearance: button;
+    color: var(--color4);
+    border-color: var(--color5);
+    /* Add more custom styles as needed */
+}
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y))
     rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
@@ -33,7 +70,7 @@
   --color2: #f25c05;
   --color1: #d18457;
   --color4: rgba(1, 89, 89, 1);
-  --color5: RGB(152, 251, 152);
+  --color5: RGB(21, 128, 61);
   --color51: RGB(152, 251, 152, 0.5);
   --color3: #ffedd5;
   --whiteChecker: #fef08a;

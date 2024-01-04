@@ -8,6 +8,7 @@ import { TdiceRoll } from "../components/GamePlay";
 
 import history from "../history";
 import { leaveOnlineGame } from "../services/GameService";
+import { Modal } from "antd";
 
 function OnlineGame() {
   const initialState: Color[][] = [
@@ -131,19 +132,21 @@ function OnlineGame() {
         // Navigation was blocked! Let's show a confirmation dialog
         // so the user can decide if they actually want to navigate
         // away and discard changes they've made in the current page.
-        if (
-          window.confirm(
-            `Are you sure you want to leave the game? \n You will lose the game if you leave!`
-          )
-        ) {
-          // Unblock the navigation.
-          unblock();
-          // Retry the transition.
-          tx.retry();
-          //leave the game
-          leaveOnlineGame();
-          clearGameData();
-        }
+        Modal.confirm({
+          title: "Leave the game?",
+          content:
+            "Are you sure you want to leave the game? \n Your progress will be lost!",
+          onOk: () => {
+            leaveOnlineGame();
+            clearGameData();
+            
+            unblock();
+            tx.retry();
+          },
+          onCancel() {
+            // Optional: Handle the cancel event
+          },
+        });
       });
     }
 
