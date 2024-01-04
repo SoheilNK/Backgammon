@@ -54,7 +54,7 @@ const Profile: React.FC = () => {
   return (
     <div>
       <div className="mx-auto p-4 sm:px-6 lg:px-8">
-        <header className="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+        <header className="py-16 px-4 sm:px-6 lg:px-8  bg-slate-100  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
           <h3 className="text-xl font-bold">
             {currentUser.username}'s Profile
           </h3>

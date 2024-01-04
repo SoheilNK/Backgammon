@@ -100,8 +100,9 @@ export const getAccessToken = async () => {
 //get the user from the local storage
 export const getUser = () => {
   //read online status from local storage as a boolean
-  const online = JSON.parse(localStorage.getItem("online") || "{}");
-  if (online) {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  //if the user is online
+  if (isLoggedIn) {
     const user = localStorage.getItem("user");
 
     if (!user) {

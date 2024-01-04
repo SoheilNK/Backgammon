@@ -39,6 +39,7 @@
     /* Add more custom styles as needed */
 }
 
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y))
     rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
@@ -69,7 +70,7 @@
   /* Color Theme Swatches in RGBA */
   --color2: #f25c05;
   --color1: #d18457;
-  --color4: rgba(1, 89, 89, 1);
+  --color4: rgba(20, 83, 45);
   --color5: RGB(21, 128, 61);
   --color51: RGB(152, 251, 152, 0.5);
   --color3: #ffedd5;
