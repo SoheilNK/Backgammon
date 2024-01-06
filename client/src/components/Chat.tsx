@@ -78,6 +78,17 @@ const Chat: React.FC<chatProps> = (props) => {
             audioDice.play();
           }
 
+          //check for onlineUser
+          if (dataFromServer.type === "onlineUser") {
+            console.log("got reply for onlineUser! ", dataFromServer);
+            //add onlineUser to local storage
+            const newOnlineUser = JSON.parse(
+              dataFromServer.data as unknown as string
+            );
+
+            localStorage.setItem("onlineUser", JSON.stringify(newOnlineUser));
+          }
+
           //handle hostLeft
           if (dataFromServer.type === "hostLeft") {
             console.log("got reply for hostLeft! ", dataFromServer);

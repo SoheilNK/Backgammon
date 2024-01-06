@@ -97,7 +97,6 @@ function GamePlay({
   };
 
   //manage state for online game
-  // const [onlineGame, setOnlineGame] = useLocalStorage("onlineGame", null);
   let onlineGame = JSON.parse(localStorage.getItem("onlineGame") || "{}");
 
   useEffect(() => {
