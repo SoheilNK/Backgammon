@@ -200,7 +200,7 @@ function OnlineGame() {
     "selectedColumn",
     50
   );
-  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 0);
+  const [whiteBar, setWhiteBar] = useLocalStorage("whiteBar", 1); //testState
   const [blackBar, setBlackBar] = useLocalStorage("blackBar", 0);
   const [whiteOut, setWhiteOut] = useLocalStorage("whiteOut", 0); //initialState
   const [blackOut, setBlackOut] = useLocalStorage("blackOut", 0); //initialState

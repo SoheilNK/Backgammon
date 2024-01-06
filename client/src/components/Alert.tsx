@@ -2,6 +2,7 @@ import { Color, TdiceRoll } from "./GamePlay";
 import { anyMoveAvailable } from "../services/gameRules";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { getUser } from "../services/user.service";
 interface AlertProps {
   gameState: string;
   onGameState: (gameState: string) => void;
@@ -37,6 +38,9 @@ export function Alert({
 }: AlertProps) {
   let alertMessage: string = "";
   let isOnline = localStorage.getItem("online");
+  let noMoves = false;
+  let username = getUser().username;
+    
   const navigate = useNavigate();
   //define a countdown timer state
   const [countDown, setCountDown] = useState(5);
@@ -88,6 +92,7 @@ export function Alert({
   ) {
     alertSeen = false;
     onGameState("noMoves");
+    noMoves = true;
     alertMessage =
       currentPlayer +
       " has no possible moves with a roll of " +
@@ -123,8 +128,8 @@ export function Alert({
               Go back to the Online Games Table
             </button>
           )}
-          {gameState !== "new" &&
-            gameState !== "starting" && (
+          {(gameState !== "new" &&
+            gameState !== "starting" && !(isOnline && noMoves && currentPlayer === username))&&(
                 <button
                   onClick={() => {
                     if (gameState === "noMoves") {
