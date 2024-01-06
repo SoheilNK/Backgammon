@@ -64,7 +64,7 @@ export default function Dice({
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    currentDiceRoll = [6,6]; //test
+    // currentDiceRoll = [6,6]; //test
 
     onRemainingTime(rollTime); //reset animation time
     //play a sound

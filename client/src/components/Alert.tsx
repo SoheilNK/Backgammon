@@ -40,11 +40,10 @@ export function Alert({
   let isOnline = localStorage.getItem("online");
   let noMoves = false;
   let username = getUser().username;
-    
+
   const navigate = useNavigate();
   //define a countdown timer state
   const [countDown, setCountDown] = useState(5);
-  
 
   if (gameState === "starting") {
     alertSeen = false;
@@ -52,14 +51,13 @@ export function Alert({
     alertMessage = "The game will start in " + countDown + " seconds";
     //set a timer to start the game after 5 seconds
     setTimeout(() => {
-      if (countDown === 0) {
+      if (countDown <= 1) {
         onGameState("playing");
         setCountDown(5);
       }
       setCountDown(countDown - 1);
     }, 1000);
   }
-
 
   if (gameState === "abandoned") {
     alertSeen = false;
@@ -91,7 +89,6 @@ export function Alert({
       (currentDiceRoll[0] != 0 || currentDiceRoll[1] != 0))
   ) {
     alertSeen = false;
-    onGameState("noMoves");
     noMoves = true;
     alertMessage =
       currentPlayer +
@@ -129,24 +126,24 @@ export function Alert({
             </button>
           )}
           {(gameState !== "new" &&
-            gameState !== "starting" && !(isOnline && noMoves && currentPlayer === username))&&(
-                <button
-                  onClick={() => {
-                    if (gameState === "noMoves") {
-                      onAlertSeen(true);
-                      onMoveLeft(0);
-                    }
-                    if (gameState === "abandoned") {
-                      onAlertSeen(true);
-                      onGameState("new");
-                      onResetState();
-                    }
-                  }}
-                  className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
-                >
-                  OK
-                </button>
-              )}
+            gameState !== "starting" && !(isOnline && noMoves && currentPlayer === username)) && (
+            <button
+              onClick={() => {
+                if (noMoves) {
+                  onAlertSeen(true);
+                  onMoveLeft(0);
+                }
+                if (gameState === "abandoned") {
+                  onAlertSeen(true);
+                  onGameState("new");
+                  onResetState();
+                }
+              }}
+              className="bg-blue-900 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded m-2"
+            >
+              OK
+            </button>
+          )}
         </div>
       </div>
     );
