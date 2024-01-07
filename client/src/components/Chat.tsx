@@ -133,8 +133,12 @@ const Chat: React.FC<chatProps> = (props) => {
           if (dataFromServer.type === "gameUpdate") {
             console.log("got reply for GameUpdate! ", dataFromServer);
             const newOnlineGame =
-              dataFromServer.data as unknown as type.WsMessage;
+              dataFromServer.data as unknown as type.OnlineGame;
             localStorage.setItem("onlineGame", JSON.stringify(newOnlineGame));
+            //update state
+            const newState = newOnlineGame.state;
+            props.onNewState(newState);
+            console.log("State Synced!");
           }
 
           //handle state updates

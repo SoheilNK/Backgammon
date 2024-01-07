@@ -1,6 +1,6 @@
 {
    "name": "sosepbackgammon",
-   "version": "2.1.5",
+   "version": "2.1.6",
    "description": "This is the backend and frontend of the SosepBackgammon project",
    "type": "commonjs",
    "author": "Soheil Najmabadi Kia",
@@ -50,6 +50,7 @@
       "start": "node ./build/index.js",
       "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts",
       "trace": "set debug=* && ts-node-dev --trace-warnings --respawn --transpile-only ./src/index.ts",
-      "zip": "node zipFiles.js"
+      "zip": "node zipFiles.js",
+      "predeploy": "tsc && cd client && npm run build && cd .. && node zipFiles.js"
    }
 }

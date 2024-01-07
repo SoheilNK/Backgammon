@@ -89,17 +89,6 @@ export class WebSocketServer {
               data: game,
             })
           );
-          // let opponentId = game.hostId === userID ? game.guestId : game.hostId;
-          // const client = this.clients.get(opponentId);
-          // if (client) {
-          //   client.sendUTF(
-          //     JSON.stringify({
-          //       type: "gameUpdate",
-          //       data: JSON.stringify(game),
-          //     })
-          //   );
-          //   console.log(`Updated OnlineGmae Sent Message to ${opponentId}`);
-          // }
         });
       }
       console.log(
@@ -116,6 +105,17 @@ export class WebSocketServer {
             // console.log("Received Message: ", message.utf8Data);
             let wsMessage = JSON.parse(message.utf8Data) as types.WsMessage;
             let msgFor = wsMessage.msgFor;
+            //check if the message is of type state
+            if (wsMessage.type === "state") {
+              //update the onlineGames array with the new state
+              let gameIndex = onlineGames.findIndex(
+                (game) => game.matchId === wsMessage.matchId
+              );
+              if (gameIndex !== -1) {
+                onlineGames[gameIndex].state = wsMessage.msg;
+                console.log("new state saved in server: " + onlineGames[gameIndex].state);  
+              }
+            }
             //get the opponent's id from the onlineGames array
             thisGame = onlineGames.find(
               (game: any) => game.matchId === wsMessage.matchId

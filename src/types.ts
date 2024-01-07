@@ -38,6 +38,7 @@ export interface OnlineGame {
   hostId: string;
   guestId: string;
   status: string;
+  state: string;
 }
 
 

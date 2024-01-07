@@ -4,18 +4,8 @@ import { NextFunction, Request, Response } from "express";
 import * as interfaces from "../types";
 import { webSocketServerInstance } from "../index";
 
-// Define an interface for the OnlineGame object
-export interface OnlineGame {
-  matchId: string;
-  hostName: string;
-  guestName: string;
-  hostId: string;
-  guestId: string;
-  status: string;
-}
-
 // Define an array to store all online games
-export const onlineGames: OnlineGame[] = [];
+export const onlineGames: interfaces.OnlineGame[] = [];
 export class GameController {
   private userRepository = AppDataSource.getRepository(User);
 
@@ -41,13 +31,14 @@ export class GameController {
     let matchId = Date.now().toString();
 
     // Create a new onlineGame object
-    const newOnlineGame: OnlineGame = {
+    const newOnlineGame: interfaces.OnlineGame = {
       matchId: matchId,
       hostName: username,
       hostId: userId,
       guestName: "",
       guestId: "",
       status: "Waiting for guest",
+      state: '',
     };
 
     onlineGames.push(newOnlineGame);
