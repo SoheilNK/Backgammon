@@ -112,7 +112,7 @@ export class WebSocketServer {
                 (game) => game.matchId === wsMessage.matchId
               );
               if (gameIndex !== -1) {
-                onlineGames[gameIndex].state = wsMessage.msg;
+                onlineGames[gameIndex].state = JSON.stringify(wsMessage.msg);
                 console.log("new state saved in server: " + onlineGames[gameIndex].state);  
               }
             }
