@@ -1,5 +1,5 @@
 
-## SoSep Backgammon Game
+## SoSep Backgammon an Online Multi-Player Backgammon Game
 ---
 
 ### **Description**
