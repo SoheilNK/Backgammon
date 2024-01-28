@@ -1,6 +1,6 @@
 {
 	"name": "sosepbackgammon",
-	"version": "2.1.6",
+	"version": "2.1.7",
 	"description": "This is the backend and frontend of the SosepBackgammon project",
 	"type": "commonjs",
 	"author": "Soheil Najmabadi Kia",
