@@ -19,6 +19,7 @@ import * as type from "../types";
 import { sendWsMessage } from "./Chat";
 
 type BoardProps = {
+  volumeLevel: number;
   currentBoardState: Color[][];
   onMove: (boardState: Color[][]) => void;
   currentDiceRoll: TdiceRoll;
@@ -41,6 +42,7 @@ type BoardProps = {
   onAlertSeen: (seen: boolean) => void;
 };
 export function Board({
+  volumeLevel,
   currentBoardState,
   onMove,
   currentDiceRoll,
@@ -286,6 +288,7 @@ export function Board({
 
     if (checkerMoved) {
       //play a sound
+      audioMove.volume = volumeLevel;
       audioMove.play(); //test
       //For online game, send a message to the opponent to play the dice sound
       if (online) {

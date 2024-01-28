@@ -5,9 +5,10 @@ import { Message } from "./Message";
 import { Alert } from "./Alert";
 import { togglePlayer } from "../services/gameRules";
 import { getUser } from "../services/user.service";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as type from "../types";
 import { sendWsMessage } from "./Chat";
+import VolumeControl from "./VolumeControl";
 
 //----------------------------------------------
 export type Color = "White" | "Black" | null;
@@ -90,7 +91,8 @@ function GamePlay({
   setStarted,
 }: GamePlayProps) {
   const rollTime = 1300; // in milliseconds
-
+  const [volumeLevel, setVolumeLevel] = useState<number>(0.5); // 1 is 100%, 0 is 0%
+  
   PlayerNames = {
     white: [player1],
     black: [player2],
@@ -215,6 +217,7 @@ function GamePlay({
           onResetState={onResetState}
         />
         <Board
+          volumeLevel={volumeLevel}
           currentBoardState={currentBoardState}
           onMove={(boardState) => setCurrentBoardState(boardState)}
           currentDiceRoll={currentDiceRoll}
@@ -238,6 +241,7 @@ function GamePlay({
         />
         <div className="absolute -top-3 sm:-top-1">
           <Dice
+            volumeLevel={volumeLevel}
             gameState={gameState}
             remainingTime={remainingTime}
             onRemainingTime={(time) => setRemainingTime(time)}
@@ -252,6 +256,12 @@ function GamePlay({
             onAlertSeen={(seen) => setAlertSeen(seen)}
             currentPlayer={currentPlayer}
             started={started}
+          />
+        </div>
+        <div className="absolute -left-20 sm:-left-24 top-1/2 transform -translate-y-1/2 -rotate-90">
+          <VolumeControl
+            volumeLevel={volumeLevel}
+            setVolumeLevel={setVolumeLevel}
           />
         </div>
       </div>

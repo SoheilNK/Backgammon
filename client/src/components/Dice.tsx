@@ -9,6 +9,7 @@ import * as type from "../types";
 import { sendWsMessage } from "./Chat";
 
 interface DiceProps {
+  volumeLevel: number;
   gameState: string;  
   remainingTime: number;
   onRemainingTime: (time: number) => void;
@@ -26,6 +27,7 @@ interface DiceProps {
 }
 
 export default function Dice({
+  volumeLevel,
   gameState,
   remainingTime,
   onRemainingTime,
@@ -68,6 +70,7 @@ export default function Dice({
 
     onRemainingTime(rollTime); //reset animation time
     //play a sound
+    audioDice.volume = volumeLevel;
     audioDice.play(); //test
 
     //For online game, send a message to the opponent to play the dice sound
