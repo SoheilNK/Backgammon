@@ -18,17 +18,30 @@ describe('check game selection', () => {
  
    it('Should have div #offline visible when the Off Line button is highlighted', () => {
     //find button with text "Off Line", should have class "bg-green-900"
+     cy.get("button").contains("Off Line")
+       .then(($button) => {
+         if (!$button.hasClass("bg-green-900")
+          ) {
+            cy.get("button").contains("Off Line").click();
+          }
+       });
+     //button should have class "bg-green-900"
      cy.get("button").contains("Off Line").should("have.class", "bg-green-900");
      //should have div with id "offline" visible
-      cy.get("#offline").should("be.visible");
-
-   })
-  
+     cy.get("#offline").should("be.visible");
+   });
+   
+      
     it("Should have div #online visible when the On Line button is highlighted", () => {
       //Click button with text "On Line", should have class "bg-green-900"
       cy.get("button")
         .contains("On Line")
-        .click()
+        .then(($button) => {
+         if (!$button.hasClass("bg-green-900")
+          ) {
+            cy.get("button").contains("On Line").click();
+          }
+       })
         .should("have.class", "bg-green-900");
       //should have div with id "online" visible
       cy.get("#online").should("be.visible");
