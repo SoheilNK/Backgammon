@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('check game selection', () => {
 
    beforeEach(() => {

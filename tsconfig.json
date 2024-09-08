@@ -10,7 +10,10 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "types": [
+         "cypress"
+      ]
    },
    "include": [
       "src/**/*.ts"
