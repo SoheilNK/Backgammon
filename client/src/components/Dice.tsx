@@ -10,7 +10,7 @@ import { sendWsMessage } from "./Chat";
 
 interface DiceProps {
   volumeLevel: number;
-  gameState: string;  
+  gameState: string;
   remainingTime: number;
   onRemainingTime: (time: number) => void;
   currentDiceRoll: TdiceRoll;
@@ -43,30 +43,32 @@ export default function Dice({
   started,
 }: DiceProps): JSX.Element {
   let rollingTime = remainingTime;
-  
+
   const [online, setOnline] = useLocalStorage("online", false);
+
   const userName = getUser().username.toString();
+  console.log(userName, "userName");
 
   let disabled =
     moveLeft > 0 ||
     whiteOut === 15 ||
     blackOut === 15 ||
-    (online && currentPlayer !== userName) ||
-    started === "no" || gameState === "starting";
+    currentPlayer !== userName ||
+    started === "no" ||
+    gameState === "starting";
+
   var glowDice = classNames("", {
     "opacity-5": disabled,
     "opacity-100": !disabled,
   });
 
   function handleClick() {
-    if (disabled) {
-      return;
-    }
+    console.log(disabled, "disabled");
+
     currentDiceRoll = [
       Math.round(Math.random() * 5 + 1),
       Math.round(Math.random() * 5 + 1),
     ] as TdiceRoll;
-    // currentDiceRoll = [6,6]; //test
 
     onRemainingTime(rollTime); //reset animation time
     //play a sound
@@ -74,20 +76,20 @@ export default function Dice({
     audioDice.play(); //test
 
     //For online game, send a message to the opponent to play the dice sound
-    if (online) {
-      //get onlineGame from local storage
-      const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
-      const matchId = onlineGame.matchId;
-      const userName = getUser().username.toString();
-      const wsMessage: type.WsMessage = {
-        type: "diceRoll",
-        msg: "diceRoll",
-        user: userName,
-        matchId: matchId,
-        msgFor: userName === onlineGame.hostName ? "guest" : "host",
-      };
-      sendWsMessage(wsMessage);
-    }
+    // if (online) {
+    //   //get onlineGame from local storage
+    //   const onlineGame = JSON.parse(localStorage.getItem("onlineGame")!);
+    //   const matchId = onlineGame.matchId;
+    //   const userName = getUser().username.toString();
+    //   const wsMessage: type.WsMessage = {
+    //     type: "diceRoll",
+    //     msg: "diceRoll",
+    //     user: userName,
+    //     matchId: matchId,
+    //     msgFor: userName === onlineGame.hostName ? "guest" : "host",
+    //   };
+    //   sendWsMessage(wsMessage);
+    // }
 
     let newMoveLeft = 2;
     if (currentDiceRoll[0] === currentDiceRoll[1]) {

@@ -92,7 +92,7 @@ function GamePlay({
 }: GamePlayProps) {
   const rollTime = 1300; // in milliseconds
   const [volumeLevel, setVolumeLevel] = useState<number>(0.5); // 1 is 100%, 0 is 0%
-  
+
   PlayerNames = {
     white: [player1],
     black: [player2],
@@ -118,34 +118,7 @@ function GamePlay({
     // const fetchData = async () => {
     console.log("state has changed:", currentPlayer);
     //send the state to the server
-    if (onlineGame !== null) {
-      const username = getUser().username;
-      const matchId = onlineGame.matchId;
-      const hostName = onlineGame.hostName;
-      const wsMessage: type.WsMessage = {
-        type: "state",
-        msg: {
-          remainingTime: remainingTime,
-          scores: scores,
-          currentPlayer: currentPlayer,
-          currentDiceRoll: currentDiceRoll,
-          currentBoardState: currentBoardState,
-          moveLeft: moveLeft,
-          selectedColumn: selectedColumn,
-          whiteBar: whiteBar,
-          blackBar: blackBar,
-          whiteOut: whiteOut,
-          blackOut: blackOut,
-          alertSeen: alertSeen,
-        },
-        user: username,
-        matchId: matchId,
-        msgFor: hostName === username ? "guest" : "host",
-      };
-      if (currentPlayer === username) {
-        sendWsMessage(wsMessage);
-      }
-    }
+
     // };
     // fetchData();
   }, [

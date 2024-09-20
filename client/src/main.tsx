@@ -13,6 +13,7 @@ import ForgotPassPage from "./pages/ForgotPass";
 
 import { unstable_HistoryRouter as Router } from "react-router-dom"; //***************** */
 import history from "./history";
+import OfflineGame from "./pages/OfflineGame";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -35,18 +36,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           errorElement={<ErrorPage />}
         />
         <Route
-          path="/myprofile"
-          element={<MyProfile />}
-          errorElement={<ErrorPage />}
-        />
-        <Route
-          path="/signin"
-          element={<LoginPage />}
-          errorElement={<ErrorPage />}
-        />
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassPage />}
+          path="/offLineGame"
+          element={<OfflineGame />}
           errorElement={<ErrorPage />}
         />
       </Routes>
