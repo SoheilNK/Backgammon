@@ -2,7 +2,7 @@
   "name": "sosepbackgammon",
   "homepage": "/",
   "private": true,
-  "version": "2.1.6",
+  "version": "2.1.9",
   "type": "module",
   "scripts": {
     "dev": "vite",
